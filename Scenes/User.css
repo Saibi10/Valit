@@ -1,0 +1,120 @@
+/* Main Styles */
+.main-background {
+    -fx-background-color: white;
+}
+
+/* Top Navigation Bar */
+.top-bar {
+    -fx-background-color: white;
+    -fx-padding: 10 20 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.app-title {
+    -fx-text-fill: #00917c;
+    -fx-padding: 0 20 0 0;
+}
+
+.button-container {
+    -fx-padding: 0 20;
+}
+
+/* Navigation Buttons */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: #e8f5f3;
+}
+
+.nav-button .label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 12px;
+}
+
+/* Profile Button */
+.profile-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+}
+
+.profile-button:hover {
+    -fx-background-color: #e8f5f3;
+}
+
+/* Side Navigation */
+.side-nav {
+    -fx-background-color: #f8f9fa;
+}
+
+.side-tab-pane {
+    -fx-background-color: transparent;
+}
+
+.side-tab-pane .tab-header-area {
+    -fx-padding: 0;
+}
+
+.side-tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-padding: 10 15;
+}
+
+.side-tab-pane .tab:selected {
+    -fx-background-color: #00917c;
+}
+
+.side-tab-pane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.side-tab-pane .tab-label {
+    -fx-text-fill: #495057;
+}
+
+/* Side Buttons */
+.side-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #495057;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-min-width: 150;
+}
+
+.side-button:hover {
+    -fx-background-color: #e8f5f3;
+    -fx-text-fill: #00917c;
+}
+
+/* Content Area */
+.content-area {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.welcome-text {
+    -fx-font-size: 24px;
+    -fx-text-fill: #00917c;
+}
+
+/* Split Pane */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-box-border: transparent;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: #e9ecef;
+    -fx-padding: 0 1 0 1;
+}
+
+/* Tab Content */
+.tab-content {
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}

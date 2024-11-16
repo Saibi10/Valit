@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" styleClass="main-background" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UserController">
+
+    <!-- Top Navigation Bar -->
+    <VBox spacing="0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- Header with logo and search -->
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-bar">
+            <Label styleClass="logo-text" text="TravelEase">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <TextField promptText="Search..." styleClass="search-field" />
+            </HBox>
+         <VBox alignment="CENTER" styleClass="nav-item">
+            <children>
+               <StackPane styleClass="icon-circle">
+                  <children>
+                     <Button onAction="#handleAvailableTours" styleClass="icon-button">
+                        <graphic>
+                           <ImageView fitHeight="30" fitWidth="30" styleClass="icon-image">
+                              <image>
+                                 <Image url="@../icons/Profile.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                     </Button>
+                  </children>
+               </StackPane>
+               <Label styleClass="nav-label" text="Profile" />
+            </children>
+         </VBox>
+        </HBox>
+
+        <!-- Icon Navigation Bar -->
+        <HBox alignment="CENTER" spacing="40" styleClass="icon-nav-bar">
+            <!-- Available Tours -->
+            <VBox alignment="CENTER" styleClass="nav-item">
+                <StackPane styleClass="icon-circle">
+                    <Button onAction="#handleAvailableTours" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="30" fitWidth="30" styleClass="icon-image">
+                                <Image url="@../icons/icons8-airplane-50.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </StackPane>
+                <Label styleClass="nav-label" text="Available Tours" />
+            </VBox>
+
+            <!-- Custom Tour -->
+            <VBox alignment="CENTER" styleClass="nav-item">
+                <StackPane styleClass="icon-circle">
+                    <Button onAction="#handleCustomTour" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="30" fitWidth="30" styleClass="icon-image">
+                                <Image url="@../icons/CustomPackage.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </StackPane>
+                <Label styleClass="nav-label" text="Custom Tour" />
+            </VBox>
+
+            <!-- Booking Data -->
+            <VBox alignment="CENTER" styleClass="nav-item">
+                <StackPane styleClass="icon-circle">
+                    <Button onAction="#handleBookingData" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="30" fitWidth="30" styleClass="icon-image">
+                                <Image url="@../icons/Bookings.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </StackPane>
+                <Label styleClass="nav-label" text="Bookings" />
+            </VBox>
+
+            <!-- Customer Support -->
+            <VBox alignment="CENTER" styleClass="nav-item">
+                <StackPane styleClass="icon-circle">
+                    <Button onAction="#handleCustomerSupport" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="30" fitWidth="30" styleClass="icon-image">
+                                <Image url="@../icons/CustomerSupport.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </StackPane>
+                <Label styleClass="nav-label" text="Support" />
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+
+        <!-- Main Content -->
+        <StackPane styleClass="content-area">
+            <Label styleClass="welcome-text" text="Welcome to Tourism Management System" />
+        </StackPane>
+    </SplitPane>
+</AnchorPane>
