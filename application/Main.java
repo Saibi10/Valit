@@ -13,7 +13,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			//BorderPane root = new BorderPane();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Home.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/User.fxml"));
 			Parent root = loader.load();
 			Scene scene = new Scene(root,1200,800);
 			primaryStage.setScene(scene);
