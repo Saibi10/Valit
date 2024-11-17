@@ -1,6 +1,5 @@
 package application;
 
-import java.lang.invoke.MethodHandle;
 import java.sql.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import java.util.ArrayList;
@@ -46,4 +45,4 @@ public class DatabaseHandler {
     
 
 
-}
+}	

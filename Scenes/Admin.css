@@ -81,7 +81,6 @@
 .table-view {
     -fx-background-color: white;
     -fx-border-color: transparent; /* Remove border around the table */
-    -fx-table-cell-border-color: transparent; /* Remove cell borders */
 }
 
 /* Row Line Style */
