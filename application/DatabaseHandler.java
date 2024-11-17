@@ -20,7 +20,7 @@ public class DatabaseHandler {
 
     }
     
-    public ArrayList<ArrayList<Object>> getTop3Customers() {
+    public ArrayList<ArrayList<Object>> getTop3Customers() throws SQLException {
         ArrayList<ArrayList<Object>> topCustomers = new ArrayList<>();
         String query = 
             "SELECT TOP 3 u.FullName, COUNT(b.ID) AS NumberOfBookings, SUM(t.TourPrice) AS TotalAmountPaid " +
@@ -43,5 +43,7 @@ public class DatabaseHandler {
         }
         return topCustomers;
     }
+    
+
 
 }

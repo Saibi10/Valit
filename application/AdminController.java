@@ -2,6 +2,7 @@ package application;
 
 import java.sql.SQLException;
 
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -22,10 +23,10 @@ public class AdminController {
 	@FXML
 	private Pane dashboardDiv;
 	
-	private TourismManagementSystem TSM;;
+	private TourismManagementSystem TMS;
 	
-	public AdminController() throws SQLException  {
-		//TSM = new TourismManagementSystem();
+	public AdminController() throws SQLException {
+		TMS = new TourismManagementSystem();
 	}
 	
  	private void removeAllButtonClasses() {
@@ -72,7 +73,7 @@ public class AdminController {
 		}
 	}
 	
-	public void toursSelected() {
+	public void toursSelected() throws SQLException {
 		if(toursTab.getStyleClass().contains("tab"))
 		{
 			removeAllButtonClasses();
