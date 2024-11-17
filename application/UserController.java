@@ -1,58 +1,77 @@
 package application;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class UserController {
-    
+public class UserController implements Initializable {
+
     @FXML
-    private void initialize() {
-        // This method is automatically called after the FXML file is loaded
-        setupImages();
-    }
-    
-    private void setupImages() {
-        try {
-            // You can add image loading logic here when you have the images
-            // For example:
-            // toursButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/tours.png"))));
-        } catch (Exception e) {
-            e.printStackTrace();
+    private VBox pnItems = null;
+    @FXML
+    private Button btnOverview;
+
+    @FXML
+    private Button btnOrders;
+
+    @FXML
+    private Button btnCustomers;
+
+    @FXML
+    private Button btnMenus;
+
+    @FXML
+    private Button btnPackages;
+
+    @FXML
+    private Button btnSettings;
+
+    @FXML
+    private Button btnSignout;
+
+    @FXML
+    private Pane pnlCustomer;
+
+    @FXML
+    private Pane pnlOrders;
+
+    @FXML
+    private Pane pnlOverview;
+
+    @FXML
+    private Pane pnlMenus;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+            }
+
+
+    public void handleClicks(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == btnCustomers) {
+            pnlCustomer.setStyle("-fx-background-color : #1620A1");
+            pnlCustomer.toFront();
         }
-    }
-    
-    @FXML
-    private void handleAvailableTours() {
-        // Handle available tours button click
-        System.out.println("Available Tours clicked");
-    }
-    
-    @FXML
-    private void handleCustomTour() {
-        // Handle custom tour button click
-        System.out.println("Custom Tour clicked");
-    }
-    
-    @FXML
-    private void handleBookingData() {
-        // Handle booking data button click
-        System.out.println("Booking Data clicked");
-    }
-    
-    @FXML
-    private void handleCustomerSupport() {
-        // Handle customer support button click
-        System.out.println("Customer Support clicked");
-    }
-    
-    @FXML
-    private void handleProfile() {
-        // Handle profile button click
-        System.out.println("Profile clicked");
+        if (actionEvent.getSource() == btnMenus) {
+            pnlMenus.setStyle("-fx-background-color : #53639F");
+            pnlMenus.toFront();
+        }
+        if (actionEvent.getSource() == btnOverview) {
+            pnlOverview.setStyle("-fx-background-color : #02030A");
+            pnlOverview.toFront();
+        }
+        if(actionEvent.getSource()==btnOrders)
+        {
+            pnlOrders.setStyle("-fx-background-color : #464F67");
+            pnlOrders.toFront();
+        }
     }
 }
