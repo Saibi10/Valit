@@ -1,0 +1,81 @@
+.main-background {
+	-fx-background-color: white; 
+}
+
+.header-background {
+	-fx-text-fill :  #0096FF;
+	-fx-font-size :  25px;
+	-fx-font-family : "Lucida Console";
+	-fx-font-weight : border;
+}
+
+.node {
+	-fx-background-color: white; 
+    -fx-border-color: gray;
+    -fx-border-width: 1px;  
+    -fx-border-style: solid; 
+	-fx-border-radius: 10px; 
+	-fx-font-weight : 700;
+	-fx-font-size: 14px;
+}
+
+.node:hover {
+	-fx-background-color: #E5E7EB;
+	-fx-border-radius: 10px; 
+	-fx-cursor: hand;  
+}
+
+.tab {
+    -fx-background-color: white; 
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent; 
+    -fx-faint-focus-color: transparent; 
+    -fx-background-radius: 10px; 
+    -fx-border-radius: 10px; 
+    -fx-padding: 10px; 
+	-fx-font-family: Helvetica;
+	-fx-font-size: 15px;
+	-fx-font-weight : 700;
+	-fx-cursor: hand;  
+	-fx-text-fill: grey; 
+}
+
+.tab:hover {
+	-fx-background-color: #E5E7EB;
+}
+
+.tab-selected {
+    -fx-background-color: #F4F6FF; 
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent; 
+    -fx-faint-focus-color: transparent;
+    -fx-background-radius: 10px; 
+    -fx-border-radius: 10px; 
+    -fx-padding: 10px; 
+	-fx-font-size: 15px;
+	-fx-font-family: Helvetica;
+	-fx-font-weight : bolder;
+}
+
+.main-div {
+	-fx-background-color: #E5E7EB; 
+}
+
+.header-main-div {
+	-fx-font-size: 27px;
+	-fx-font-family: Verdana;
+	-fx-font-weight : bolder;
+}
+
+.small-div-main-div {
+	-fx-background-color: white; 
+	-fx-border-radius: 15px; 
+	-fx-background-radius: 15px; 
+	-fx-font-size: 13px;
+	-fx-font-family: "Andale Mono", monospace;
+	-fx-font-weight : bold;
+	
+}
+
+
+
