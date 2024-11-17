@@ -46,14 +46,14 @@
                   </ImageView>
                   <TextField layoutX="34.0" layoutY="221.0" prefHeight="45.0" prefWidth="385.0" promptText="jhon@example.com" styleClass="text-field-input" stylesheets="@Home.css" />
                   <Label fx:id="emailText" layoutX="34.0" layoutY="194.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Email" textAlignment="CENTER" />
-                  <TextField layoutX="34.0" layoutY="302.0" prefHeight="45.0" prefWidth="385.0" styleClass="small-text" stylesheets="@Home.css" />
+                  <TextField layoutX="34.0" layoutY="302.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" />
                   <Label fx:id="passwordText" layoutX="34.0" layoutY="275.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Password" textAlignment="CENTER" />
                   <Button fx:id="signinButton" layoutX="34.0" layoutY="387.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="385.0" styleClass="login-button" stylesheets="@Home.css" text="Sign In" />
                   <Label fx:id="servicePolicyLabel" layoutX="42.0" layoutY="464.0" prefHeight="52.0" prefWidth="370.0" style="-fx-font-size: 16px;" styleClass="normal-text" stylesheets="@Home.css" text="By continuing, you agree to TravelEase's Terms of Service and Privacy Policy." textAlignment="CENTER" wrapText="true" />
                </children>
             </Pane>
-            <TextField fx:id="passwordTextField" layoutX="395.0" layoutY="421.0" prefHeight="45.0" prefWidth="385.0" styleClass="small-text" stylesheets="@Home.css" visible="false" />
-            <TextField fx:id="passwordTextField2" layoutX="395.0" layoutY="495.0" prefHeight="45.0" prefWidth="385.0" styleClass="small-text" stylesheets="@Home.css" visible="false" />
+            <TextField fx:id="passwordTextField" layoutX="395.0" layoutY="421.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" visible="false" />
+            <TextField fx:id="passwordTextField2" layoutX="395.0" layoutY="495.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" visible="false" />
             <Label fx:id="passwordRegisterLable" layoutX="395.0" layoutY="395.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Password" textAlignment="CENTER" visible="false" />
             <Label fx:id="passwordCRegisterLable" layoutX="395.0" layoutY="466.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Confirm Password" textAlignment="CENTER" visible="false" />
          </children>
