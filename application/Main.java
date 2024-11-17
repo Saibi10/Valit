@@ -15,14 +15,15 @@ public class Main extends Application {
 	public void start(Stage primaryStage)  {
 		try {
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Admin.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/User.fxml"));
       
 			Parent root = loader.load();
 			Scene scene = new Scene(root,1200,800);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-//			TourismManagementSystem TMS = new TourismManagementSystem();
+ 			TourismManagementSystem TMS = new TourismManagementSystem();
+ 			
 		} catch(Exception e) {
 			System.out.print("Error");
 			e.printStackTrace();
