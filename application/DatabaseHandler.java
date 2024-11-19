@@ -1,4 +1,7 @@
 package application;
+import Models.TopCustomers;
+import Models.Tours;
+import Models.Booking;
 
 import java.lang.invoke.MethodHandle;
 import java.sql.*;
@@ -13,30 +16,27 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TourismManagementSystem;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
 
     }
     
-    public ArrayList<ArrayList<Object>> getTop3Customers() throws SQLException {
-        ArrayList<ArrayList<Object>> topCustomers = new ArrayList<>();
+    public ArrayList<TopCustomers> getTop3CustomersModel() {
+        ArrayList<TopCustomers> topCustomers = new ArrayList<>();
         String query = 
-            "SELECT TOP 3 u.FullName, COUNT(b.ID) AS NumberOfBookings, SUM(t.TourPrice) AS TotalAmountPaid " +
+            "SELECT TOP 5 u.FullName, COUNT(b.ID) AS NumberOfBookings, SUM(t.TourPrice) AS TotalAmountPaid " +
             "FROM Booking b " +
             "JOIN Users u ON b.UserID = u.UserID " +
             "JOIN Tour t ON b.TourID = t.TourID " +
             "GROUP BY u.FullName " +
-            "ORDER BY NumberOfBookings DESC, TotalAmountPaid DESC "; // Adjust for your SQL Server (LIMIT is not supported, use TOP for SQL Server)
+            "ORDER BY NumberOfBookings DESC, TotalAmountPaid DESC";
 
         try (ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
-                ArrayList<Object> customerData = new ArrayList<>();
-                customerData.add(rs.getString("FullName"));           // Customer's Full Name
-                customerData.add(rs.getInt("NumberOfBookings"));     // Number of bookings
-                customerData.add(rs.getDouble("TotalAmountPaid"));   // Total amount paid
-                topCustomers.add(customerData);
+                TopCustomers customer = new TopCustomers(rs.getString("FullName") ,rs.getString("NumberOfBookings") ,rs.getString("TotalAmountPaid" ));
+                topCustomers.add(customer);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,6 +44,102 @@ public class DatabaseHandler {
         return topCustomers;
     }
     
+ // Method to fetch top tours based on bookings and average rating
+    public ArrayList<Tours> getTopTours() throws SQLException {
+        ArrayList<Tours> topToursList = new ArrayList<>();
+        
+        String query = "SELECT TOP 5" +
+                       "t.TourName, " +
+                       "COUNT(b.ID) AS Bookings, " +
+                       "AVG(b.Rating) AS AverageRating " +
+                       "FROM Booking b " +
+                       "JOIN Tour t ON b.TourID = t.TourID " +
+                       "WHERE b.Status = 'Completed' " +
+                       "GROUP BY t.TourName " +
+                       "ORDER BY Bookings DESC, AverageRating DESC ";
+        
+        ResultSet rs = st.executeQuery(query);
+        
+        while (rs.next()) {
+            String tourName = rs.getString("TourName");
+            String bookings = rs.getString("Bookings");
+            String rating = rs.getString("AverageRating");
+            
+            topToursList.add(new Tours(tourName, bookings, rating));
+        }
+        
+        return topToursList;
+    }
+    
+    public ArrayList<Tours> getAllTours() throws SQLException {
+        ArrayList<Tours> toursList = new ArrayList<>();
 
+        String query = "SELECT " +
+        	    "t.TourName, " +
+        	    "t.TourPrice, " +
+        	    "t.TransportID, " +
+        	    "t.StartDate, "+
+        	    "CAST(t.TourDescription AS NVARCHAR(MAX)) AS TourDescription, "+
+        	    "t.Duration, "+
+        	    "CAST(t.GoogleMapLink AS NVARCHAR(MAX)) AS GoogleMapLink, "+
+        	    "COUNT(b.ID) AS Bookings, "+
+        	    "AVG(CAST(b.Rating AS FLOAT)) AS AverageRating "+
+        	"FROM Tour t "+
+        	"LEFT JOIN Booking b ON t.TourID = b.TourID "+
+        	"GROUP BY "+
+        	    "t.TourName, " +
+        	    "t.TourPrice, "+
+        	    "t.TransportID, "+
+        	    "t.StartDate, " +
+        	    "t.Duration, "+
+        	    "CAST(t.TourDescription AS NVARCHAR(MAX)), "+
+        	    "CAST(t.GoogleMapLink AS NVARCHAR(MAX)); ";
+        
+        ResultSet rs = st.executeQuery(query);
+
+        while (rs.next()) {
+            String tourName = rs.getString("TourName");
+            String bookings = rs.getString("Bookings");
+            String rating = rs.getString("AverageRating");
+            String tourDescription = rs.getString("TourDescription");
+            String tourPrice = rs.getString("TourPrice");
+            String transportID = rs.getString("TransportID");
+            String startDate = rs.getString("StartDate");
+            String duration = rs.getString("Duration");
+            String googleMapLink = rs.getString("GoogleMapLink");
+
+            // Create a Tours object and add it to the list
+            toursList.add(new Tours(tourName, bookings, rating, tourDescription, tourPrice, transportID, startDate, duration, googleMapLink));
+        }
+
+        return toursList;
+    }
+
+    public ArrayList<Booking> getAllBookings() {
+        ArrayList<Booking> bookingsList = new ArrayList<>();
+        String query = "SELECT " +
+                       "t.TourName, " +
+                       "u.FullName AS Customer, " +
+                       "b.BookingDate AS Date, " +
+                       "b.Status " +
+                       "FROM Booking b " +
+                       "JOIN Tour t ON b.TourID = t.TourID " +
+                       "JOIN Users u ON b.UserID = u.UserID";
+
+        try (ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                String tourName = rs.getString("TourName");
+                String customerName = rs.getString("Customer");
+                String date = rs.getString("Date");
+                String status = rs.getString("Status");
+
+                // Add the booking to the list
+                bookingsList.add(new Booking(tourName, customerName, date, status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookingsList;
+    }
 
 }
