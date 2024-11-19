@@ -1,4 +1,4 @@
-CREATE DATABASE TourismManagementSystem;
+CREATE DATABASE TMS;
 
 CREATE TABLE Users (
     UserID INT identity(1,1) PRIMARY KEY,
@@ -40,7 +40,7 @@ CREATE TABLE Booking (
 );
 ALTER TABLE Booking
 ADD 
-    Rating INT CHECK (Rating BETWEEN 1 AND 5),    -- Rating column (values between 1 and 5)
+    Rating INT CHECK (Rating BETWEEN 0 AND 5),    -- Rating column (values between 1 and 5)
     Status VARCHAR(20) DEFAULT 'Pending';         -- Status column with a default value of 'Pending'
 
 
@@ -144,7 +144,7 @@ WHERE ID = 1;
 
 UPDATE Booking
 SET 
-    Rating = 4,          -- Example rating (4)
+         -- Example rating (4)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 2;
 
@@ -156,7 +156,7 @@ WHERE ID = 3;
 
 UPDATE Booking
 SET 
-    Rating = 5,          -- Example rating (5)
+         -- Example rating (5)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 4;
 
@@ -168,7 +168,7 @@ WHERE ID = 5;
 
 UPDATE Booking
 SET 
-    Rating = 4,          -- Example rating (4)
+         -- Example rating (4)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 6;
 
@@ -180,7 +180,7 @@ WHERE ID = 7;
 
 UPDATE Booking
 SET 
-    Rating = 5,          -- Example rating (5)
+         -- Example rating (5)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 8;
 
@@ -191,7 +191,7 @@ SET
 WHERE ID = 9;
 
 UPDATE Booking
-SET 
-    Rating = 2,          -- Example rating (2)
+SET         -- Example rating (2)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 10;
+
