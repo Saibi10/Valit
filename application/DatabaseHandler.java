@@ -75,27 +75,30 @@ public class DatabaseHandler {
     public ArrayList<Tours> getAllTours() throws SQLException {
         ArrayList<Tours> toursList = new ArrayList<>();
 
+        // Updated query to join with TourImages and aggregate images
         String query = "SELECT " +
-        	    "t.TourName, " +
-        	    "t.TourPrice, " +
-        	    "t.TransportID, " +
-        	    "t.StartDate, "+
-        	    "CAST(t.TourDescription AS NVARCHAR(MAX)) AS TourDescription, "+
-        	    "t.Duration, "+
-        	    "CAST(t.GoogleMapLink AS NVARCHAR(MAX)) AS GoogleMapLink, "+
-        	    "COUNT(b.ID) AS Bookings, "+
-        	    "AVG(CAST(b.Rating AS FLOAT)) AS AverageRating "+
-        	"FROM Tour t "+
-        	"LEFT JOIN Booking b ON t.TourID = b.TourID "+
-        	"GROUP BY "+
-        	    "t.TourName, " +
-        	    "t.TourPrice, "+
-        	    "t.TransportID, "+
-        	    "t.StartDate, " +
-        	    "t.Duration, "+
-        	    "CAST(t.TourDescription AS NVARCHAR(MAX)), "+
-        	    "CAST(t.GoogleMapLink AS NVARCHAR(MAX)); ";
-        
+                       "t.TourName, " +
+                       "t.TourPrice, " +
+                       "t.TransportID, " +
+                       "t.StartDate, " +
+                       "CAST(t.TourDescription AS NVARCHAR(MAX)) AS TourDescription, " +
+                       "t.Duration, " +
+                       "CAST(t.GoogleMapLink AS NVARCHAR(MAX)) AS GoogleMapLink, " +
+                       "COUNT(b.ID) AS Bookings, " +
+                       "AVG(CAST(b.Rating AS FLOAT)) AS AverageRating, " +
+                       "STRING_AGG(CAST(ti.ImagePath AS NVARCHAR(MAX)), ',') AS TourImages " + // Aggregate image paths
+                       "FROM Tour t " +
+                       "LEFT JOIN Booking b ON t.TourID = b.TourID " +
+                       "LEFT JOIN TourImages ti ON t.TourID = ti.TourID " + // Join with TourImages
+                       "GROUP BY " +
+                       "t.TourName, " +
+                       "t.TourPrice, " +
+                       "t.TransportID, " +
+                       "t.StartDate, " +
+                       "t.Duration, " +
+                       "CAST(t.TourDescription AS NVARCHAR(MAX)), " +
+                       "CAST(t.GoogleMapLink AS NVARCHAR(MAX));";
+
         ResultSet rs = st.executeQuery(query);
 
         while (rs.next()) {
@@ -108,13 +111,25 @@ public class DatabaseHandler {
             String startDate = rs.getString("StartDate");
             String duration = rs.getString("Duration");
             String googleMapLink = rs.getString("GoogleMapLink");
+            String tourImages = rs.getString("TourImages");
+
+            // Split the aggregated image paths into a list
+            ArrayList<String> imagesList = new ArrayList<>();
+            if (tourImages != null) {
+                String[] imagesArray = tourImages.split(",");
+                for (String image : imagesArray) {
+                    imagesList.add(image.trim());
+                }
+            }
 
             // Create a Tours object and add it to the list
-            toursList.add(new Tours(tourName, bookings, rating, tourDescription, tourPrice, transportID, startDate, duration, googleMapLink));
+            Tours tour = new Tours(tourName, bookings, rating, tourDescription, tourPrice, transportID, startDate, duration, googleMapLink , imagesList);
+            toursList.add(tour);
         }
 
         return toursList;
     }
+
 
     public ArrayList<Booking> getAllBookings() {
         ArrayList<Booking> bookingsList = new ArrayList<>();

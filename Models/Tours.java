@@ -1,4 +1,5 @@
 package Models;
+import java.util.ArrayList;
 
 public class Tours {
 	String TourName;
@@ -10,6 +11,7 @@ public class Tours {
 	String StartDate;
 	String Duration;
 	String GoogleMapLink;
+	ArrayList<String> TourImages;
 	
 	public Tours(String TourName, String Bookings, String Rating) {
 		this.TourName  = TourName;
@@ -17,7 +19,7 @@ public class Tours {
 		this.Rating = Rating;
 	}
 	
-	public Tours(String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink) {
+	public Tours(String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink , ArrayList<String> TourImages) {
 		this.TourName  = TourName;
 		this.Bookings = Bookings;
 		this.Rating = Rating;
@@ -27,6 +29,7 @@ public class Tours {
 		this.StartDate = StartDate;
 		this.Duration = Duration;
 		this.GoogleMapLink = GoogleMapLink;
+		this.TourImages = TourImages;
 	}
 	
 	public String getTourName() 
@@ -66,4 +69,9 @@ public class Tours {
 	public String getGoogleMapLink() {
 		return GoogleMapLink;
 	}
+	
+	public ArrayList<String> getTourImages() {
+		return TourImages;
+	}
+	
 }

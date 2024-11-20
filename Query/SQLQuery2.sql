@@ -11,3 +11,5 @@ select * from Booking
 select * from Tour
 
 select * from TransportProvider
+
+select * from TourImages
