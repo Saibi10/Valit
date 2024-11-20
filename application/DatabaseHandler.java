@@ -1,8 +1,10 @@
 package application;
 import Models.TopCustomers;
 import Models.Tours;
+import Models.TransportProvider;
 import Models.Booking;
 
+import java.lang.invoke.MethodHandle;
 import java.sql.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import java.util.ArrayList;
@@ -15,9 +17,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TourismManagementSystem;encrpt=true;trustServerCertificate=true";
-
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -143,4 +143,27 @@ public class DatabaseHandler {
         return bookingsList;
     }
 
-}	
+    public ArrayList<TransportProvider> getAllTransportProviders() {
+        ArrayList<TransportProvider> transportProvidersList = new ArrayList<>();
+
+        String query = "SELECT Name, Rating, FleetSize, Contact, VehicleTypes FROM TransportProvider";
+
+        try (ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                String rating = rs.getString("Rating");
+                String fleetSize = rs.getString("FleetSize");
+                String contact = rs.getString("Contact");
+                String vehicleTypes = rs.getString("VehicleTypes");
+
+                // Create a TransportProvider object and add it to the list
+                TransportProvider transportProvider = new TransportProvider(name, rating, fleetSize, contact, vehicleTypes);
+                transportProvidersList.add(transportProvider);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transportProvidersList;
+    }
+}

@@ -89,10 +89,8 @@
 
 /* Table Style */
 .table-view {
-
     -fx-background-color: #1F2937; /* Dark background color for the table */
     -fx-border-color: transparent; /* Remove border around the table */   
-
 }
 
 /* Row Line Style */
