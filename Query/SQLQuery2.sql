@@ -9,3 +9,5 @@ ORDER BY NumberOfBookings DESC, TotalAmountPaid DESC;
 select * from Booking
 
 select * from Tour
+
+select * from TransportProvider

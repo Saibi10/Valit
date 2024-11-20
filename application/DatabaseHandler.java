@@ -1,6 +1,7 @@
 package application;
 import Models.TopCustomers;
 import Models.Tours;
+import Models.TransportProvider;
 import Models.Booking;
 
 import java.lang.invoke.MethodHandle;
@@ -142,4 +143,27 @@ public class DatabaseHandler {
         return bookingsList;
     }
 
+    public ArrayList<TransportProvider> getAllTransportProviders() {
+        ArrayList<TransportProvider> transportProvidersList = new ArrayList<>();
+
+        String query = "SELECT Name, Rating, FleetSize, Contact, VehicleTypes FROM TransportProvider";
+
+        try (ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                String rating = rs.getString("Rating");
+                String fleetSize = rs.getString("FleetSize");
+                String contact = rs.getString("Contact");
+                String vehicleTypes = rs.getString("VehicleTypes");
+
+                // Create a TransportProvider object and add it to the list
+                TransportProvider transportProvider = new TransportProvider(name, rating, fleetSize, contact, vehicleTypes);
+                transportProvidersList.add(transportProvider);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transportProvidersList;
+    }
 }

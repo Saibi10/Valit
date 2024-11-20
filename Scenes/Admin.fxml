@@ -17,9 +17,8 @@
             <Button fx:id="dashboardTab" layoutX="2.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#dashboardSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab-selected" stylesheets="@Admin.css" text="Dashboard" />
             <Button fx:id="toursTab" layoutX="2.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#toursSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Tours" />
             <Button fx:id="bookingTab" layoutX="3.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#bookingsSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Bookings" />
-            <Button fx:id="customersTab" layoutX="3.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#customersSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Customers" />
-            <Button fx:id="transportTab" layoutX="4.0" layoutY="349.0" mnemonicParsing="false" onMouseClicked="#transportSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Transport" />
-            <Button fx:id="chatTab" layoutX="3.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#settingSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Chat" />
+            <Button fx:id="transportTab" layoutX="14.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#transportSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Transport" />
+            <Button fx:id="chatTab" layoutX="2.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#settingSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Chat" />
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/icons8-graph-48.png" />
@@ -37,15 +36,10 @@
             </ImageView>
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/icons8-customers-60.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
-               <image>
                   <Image url="@../icons/icons8-truck-48.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="451.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/icons8-chat-60.png" />
                </image>
@@ -137,8 +131,8 @@
                   <TableView fx:id="tourTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
                     <columns>
                       <TableColumn fx:id="nameTourColumn" prefWidth="187.0" text="Tour" />
-                      <TableColumn fx:id="durationTourColumn" prefWidth="215.0" text="Customer" />
-                        <TableColumn fx:id="priceTourColumn" prefWidth="156.0" text="Date" />
+                      <TableColumn fx:id="durationTourColumn" prefWidth="215.0" text="Duration" />
+                        <TableColumn fx:id="priceTourColumn" prefWidth="156.0" text="Price" />
                         <TableColumn fx:id="bookingsTourColumn" prefWidth="169.0" text="NumberofBookings" />
                         <TableColumn fx:id="actionColumn" prefWidth="184.0" text="Action" />
                     </columns>
@@ -147,7 +141,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="BookingMainDiv" layoutX="228.0" layoutY="42.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
+      <Pane fx:id="BookingMainDiv" layoutX="228.0" layoutY="42.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
          <children>
             <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                <children>
@@ -160,6 +154,26 @@
                         <TableColumn fx:id="dateBookingColumn" prefWidth="156.0" text="Date" />
                         <TableColumn fx:id="statusBookingColumn" prefWidth="169.0" text="Status" />
                         <TableColumn fx:id="actionBookingColumn" prefWidth="184.0" text="Action" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="transportMainDiv" layoutX="226.0" layoutY="41.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
+         <children>
+            <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+               <children>
+                  <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Transport Providers" />
+                  <Label layoutX="23.0" layoutY="65.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 16px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Manage your transport partners" />
+                  <TableView fx:id="transportTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
+                     <columns>
+                        <TableColumn fx:id="nameTransportColumn" prefWidth="155.0" text="Name" />
+                        <TableColumn fx:id="vehicleTypeTransportColumn" prefWidth="197.0" text="VehicleType" />
+                        <TableColumn fx:id="fleetSizeTransportColumn" prefWidth="94.0" text="FleetSize" />
+                        <TableColumn fx:id="contactTransportColumn" prefWidth="156.0" text="Contact" />
+                        <TableColumn fx:id="ratingTransportColumn" prefWidth="156.0" text="Rating" />
+                        <TableColumn fx:id="actionTransportColumn" prefWidth="153.0" text="Actions" />
                      </columns>
                   </TableView>
                </children>

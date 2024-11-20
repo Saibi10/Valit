@@ -28,6 +28,18 @@ CREATE TABLE TransportProvider (
     Rating DECIMAL(3, 2) CHECK (Rating BETWEEN 0 AND 5) -- Rating between 0 and 5, with 2 decimal places
 );
 
+ALTER TABLE TransportProvider
+ADD 
+    FleetSize INT NOT NULL DEFAULT 0,                     -- Default value for FleetSize
+    Contact VARCHAR(100) NOT NULL DEFAULT 'Unknown';      -- Default value for Contact
+
+ALTER TABLE TransportProvider
+DROP COLUMN TransportType;
+
+ALTER TABLE TransportProvider
+ADD 
+    VehicleTypes VARCHAR(255) NOT NULL DEFAULT 'Unknown'  -- Default value for VehicleTypes
+
 CREATE TABLE Booking (
     ID INT IDENTITY(1,1) PRIMARY KEY,                   -- Unique booking identifier
     UserID INT NOT NULL,                                -- Reference to the Users table
@@ -195,3 +207,110 @@ SET         -- Example rating (2)
     Status = 'Pending'   -- Example status (Pending)
 WHERE ID = 10;
 
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Bus, Coach',
+    FleetSize = 50,
+    Contact = 'info@citybusco.com'
+WHERE Name = 'City Bus Co.';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Train, High-Speed Rail',
+    FleetSize = 10,
+    Contact = 'support@expressrail.com'
+WHERE Name = 'Express Rail';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Commercial Airplanes',
+    FleetSize = 25,
+    Contact = 'contact@skyways.com'
+WHERE Name = 'Skyways';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Luxury Sedans, SUVs',
+    FleetSize = 15,
+    Contact = 'book@luxurylimo.com'
+WHERE Name = 'Luxury Limo Service';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Riverboats, Speedboats',
+    FleetSize = 8,
+    Contact = 'info@riverboat.com'
+WHERE Name = 'Riverboat Rides';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Rental Cars, SUVs',
+    FleetSize = 30,
+    Contact = 'rentals@adventurerentals.com'
+WHERE Name = 'Adventure Rentals';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Bikes, E-Bikes',
+    FleetSize = 20,
+    Contact = 'contact@cycleadventures.com'
+WHERE Name = 'Cycle Adventures';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Metro Trains',
+    FleetSize = 12,
+    Contact = 'support@metrorail.com'
+WHERE Name = 'Metro Rail Services';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Commercial Airplanes',
+    FleetSize = 20,
+    Contact = 'help@aircomforts.com'
+WHERE Name = 'Air Comforts';
+
+UPDATE TransportProvider
+SET 
+    VehicleTypes = 'Eco-Friendly Buses',
+    FleetSize = 18,
+    Contact = 'info@ecobus.com'
+WHERE Name = 'Eco Bus Tours';
+
+INSERT INTO Users (Email, FullName, Password, UserType)
+VALUES
+('user11@example.com', 'Kevin Brown', 'password_hash11', 'Customer'),
+('user12@example.com', 'Linda White', 'password_hash12', 'Customer'),
+('user13@example.com', 'Mason Green', 'password_hash13', 'Admin'),
+('user14@example.com', 'Nora Black', 'password_hash14', 'Customer'),
+('user15@example.com', 'Olivia Pink', 'password_hash15', 'Manager');
+
+INSERT INTO Booking (UserID, TourID, TransportProviderID, BookingDate, Rating, Status)
+VALUES
+(11, 1, 1, '2024-12-11', 4, 'Completed'),
+(12, 2, 2, '2024-12-12', 5, 'Pending'),
+(13, 3, 3, '2024-12-13', NULL, 'Pending'),
+(14, 4, 4, '2024-12-14', 3, 'Completed'),
+(15, 5, 5, '2024-12-15', NULL, 'Pending'),
+(1, 6, 2, '2024-12-16', 4, 'Completed'),
+(2, 7, 3, '2024-12-17', 5, 'Pending'),
+(3, 8, 4, '2024-12-18', NULL, 'Pending');
+
+INSERT INTO Tour (TourName, TourDescription, TourPrice, TransportID, StartDate, Duration, GoogleMapLink)
+VALUES
+('Winter Wonderland', 
+'Enjoy a magical winter experience with activities like skiing, snowboarding, and hot springs. Perfect for those who love the winter season.', 
+500.00, 2, '2025-01-25', 6, 'https://goo.gl/maps/winter1'),
+
+('City Lights Night Tour', 
+'Experience the city come alive at night with stunning skyline views, vibrant nightlife, and illuminated landmarks.', 
+150.00, 1, '2025-02-01', 1, 'https://goo.gl/maps/citylights1'),
+
+('Tropical Island Escape', 
+'Relax on a secluded island with pristine beaches, clear blue waters, and luxury accommodations.', 
+800.00, 3, '2025-02-10', 7, 'https://goo.gl/maps/tropical1');
+
+INSERT INTO TransportProvider (Name , Rating, VehicleTypes, FleetSize, Contact)
+VALUES
+('Seaside Shuttles', 'Boat', 4.5, 'Ferries, Speedboats', 12, 'info@seasideshuttles.com'),
+('Mountain Climbers Inc.', 'Bus', 4.6, 'Mini-Buses, Vans', 20, 'support@mountainclimbers.com');
