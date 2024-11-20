@@ -545,9 +545,6 @@ public class AdminController {
 		} else if (bookingTab.getStyleClass().contains("tab-selected")) {
 			bookingTab.getStyleClass().remove("tab-selected");
 			bookingTab.getStyleClass().add("tab");
-		} else if (customersTab.getStyleClass().contains("tab-selected")) {
-			customersTab.getStyleClass().remove("tab-selected");
-			customersTab.getStyleClass().add("tab");
 		} else if (transportTab.getStyleClass().contains("tab-selected")) {
 			transportTab.getStyleClass().remove("tab-selected");
 			transportTab.getStyleClass().add("tab");
