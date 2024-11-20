@@ -4,6 +4,7 @@ import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
 
+import java.lang.invoke.MethodHandle;
 import java.sql.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import java.util.ArrayList;
@@ -16,9 +17,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TourismManagementSystem;encrpt=true;trustServerCertificate=true";
-
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -144,7 +143,6 @@ public class DatabaseHandler {
         return bookingsList;
     }
 
-<<<<<<< HEAD
     public ArrayList<TransportProvider> getAllTransportProviders() {
         ArrayList<TransportProvider> transportProvidersList = new ArrayList<>();
 
@@ -169,6 +167,3 @@ public class DatabaseHandler {
         return transportProvidersList;
     }
 }
-=======
-}	
->>>>>>> c96339c618d14c993b4ae98b04aa2604ec7b6e93
