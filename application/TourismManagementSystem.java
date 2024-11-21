@@ -3,6 +3,7 @@ import Models.Booking;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
+import Models.MyBooking;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +36,12 @@ public class TourismManagementSystem {
 		ArrayList<Booking> allBookings = DB.getAllBookings();
 		return allBookings;
 	}
+	
+	public ArrayList<MyBooking> getBookingsByUserId(int userId) throws SQLException {
+	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
+	    return userBookings;
+	}
+
 	
 	public ArrayList<TransportProvider> getAllTransportProviders() throws SQLException {
 		ArrayList<TransportProvider> allTransportProvider = DB.getAllTransportProviders();

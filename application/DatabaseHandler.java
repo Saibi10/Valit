@@ -1,8 +1,10 @@
 package application;
 import Models.TopCustomers;
+
 import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
+import Models.MyBooking;
 
 import java.lang.invoke.MethodHandle;
 import java.sql.*;
@@ -181,4 +183,46 @@ public class DatabaseHandler {
 
         return transportProvidersList;
     }
+    
+    public ArrayList<MyBooking> getMyBookingsByUserId(int userId) {
+        ArrayList<MyBooking> myBookingsList = new ArrayList<>();
+
+        // Query to join Booking and Tour tables to get tour information based on UserID
+        String query = "SELECT " +
+                       "t.TourName, " +
+                       "b.BookingDate, " +
+                       "t.TourPrice, " +
+                       "t.StartDate, " +
+                       "t.TourDescription " +
+                       "FROM Booking b " +
+                       "JOIN Tour t ON b.TourID = t.TourID " +
+                       "WHERE b.UserID = ?"; // Use the UserID to filter the bookings
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String tourName = rs.getString("TourName");
+                    String bookingDate = rs.getString("BookingDate");
+                    double tourPrice = rs.getDouble("TourPrice");
+                    String startDate = rs.getString("StartDate");
+                    String tourDescription = rs.getString("TourDescription");
+
+                    // Create a MyBooking object and add it to the list
+                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
+                    myBookingsList.add(myBooking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return myBookingsList;
+    }
+
+    
+   
+
+
 }
