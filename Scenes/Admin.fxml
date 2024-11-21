@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #1F2937; -fx-font-size: 25pzx;" stylesheets="@Admin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1203.0" style="-fx-background-color: #1F2937; -fx-font-size: 25pzx;" stylesheets="@Admin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminController">
    <children>
       <Pane fx:id="tabsPane" layoutY="51.0" prefHeight="748.0" prefWidth="226.0" style="-fx-background-color: #1F2937;">
          <children>
@@ -52,7 +55,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;" visible="false">
+      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="971.0" styleClass="main-div" stylesheets="@Admin.css">
                <children>
@@ -133,8 +136,8 @@
                       <TableColumn fx:id="nameTourColumn" prefWidth="187.0" text="Tour" />
                       <TableColumn fx:id="durationTourColumn" prefWidth="215.0" text="Duration" />
                         <TableColumn fx:id="priceTourColumn" prefWidth="156.0" text="Price" />
-                        <TableColumn fx:id="bookingsTourColumn" prefWidth="169.0" text="NumberofBookings" />
-                        <TableColumn fx:id="actionColumn" prefWidth="184.0" text="Action" />
+                        <TableColumn fx:id="bookingsTourColumn" prefWidth="237.0" text="NumberofBookings" />
+                        <TableColumn fx:id="actionColumn" prefWidth="116.0" text="Action" />
                     </columns>
                   </TableView>
                </children>
@@ -160,7 +163,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="transportMainDiv" layoutX="226.0" layoutY="41.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
+      <Pane fx:id="transportMainDiv" layoutX="226.0" layoutY="41.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
          <children>
             <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                <children>
@@ -169,16 +172,110 @@
                   <TableView fx:id="transportTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
                      <columns>
                         <TableColumn fx:id="nameTransportColumn" prefWidth="155.0" text="Name" />
-                        <TableColumn fx:id="vehicleTypeTransportColumn" prefWidth="197.0" text="VehicleType" />
-                        <TableColumn fx:id="fleetSizeTransportColumn" prefWidth="94.0" text="FleetSize" />
-                        <TableColumn fx:id="contactTransportColumn" prefWidth="156.0" text="Contact" />
-                        <TableColumn fx:id="ratingTransportColumn" prefWidth="156.0" text="Rating" />
-                        <TableColumn fx:id="actionTransportColumn" prefWidth="153.0" text="Actions" />
+                        <TableColumn fx:id="vehicleTypeTransportColumn" prefWidth="219.0" text="VehicleType" />
+                        <TableColumn fx:id="fleetSizeTransportColumn" prefWidth="72.0" text="FleetSize" />
+                        <TableColumn fx:id="contactTransportColumn" prefWidth="270.0" text="Contact" />
+                        <TableColumn fx:id="ratingTransportColumn" prefWidth="68.0" text="Rating" />
+                        <TableColumn fx:id="actionTransportColumn" prefWidth="127.0" text="Actions" />
                      </columns>
                   </TableView>
                </children>
             </Pane>
          </children>
       </Pane>
+      <ScrollPane fx:id="editTourMainDiv" layoutX="228.0" layoutY="50.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1033.0" prefWidth="956.0" style="-fx-background-color: #111827;">
+               <children>
+                  <Pane layoutX="10.0" layoutY="7.0" prefHeight="1014.0" prefWidth="941.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+                     <children>
+                        <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Edit Tour:" />
+                        <Label layoutX="25.0" layoutY="55.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 14px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Update the details of your tour package" />
+                        <Label fx:id="headerEditTour" layoutX="173.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Paris Explorer" />
+                        <ImageView fx:id="image1" fitHeight="157.0" fitWidth="274.0" layoutX="29.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../tour%20images/skardu-image1.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="23.0" layoutY="453.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Tour Name" />
+                        <TextField fx:id="tourNameEditTour" layoutX="22.0" layoutY="481.0" prefHeight="47.0" prefWidth="844.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <Label layoutX="25.0" layoutY="540.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Description" />
+                        <Label layoutX="27.0" layoutY="745.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Price ($)" />
+                        <TextField fx:id="priceEditTour" layoutX="59.0" layoutY="773.0" prefHeight="47.0" prefWidth="354.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="25.0" layoutY="773.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <Label layoutX="465.0" layoutY="745.0" prefHeight="30.0" prefWidth="130.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Duration (days)" />
+                        <TextField fx:id="duarationEditTour" layoutX="497.0" layoutY="773.0" prefHeight="47.0" prefWidth="370.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="463.0" layoutY="773.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="31.0" layoutY="784.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-dollar-48.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="471.0" layoutY="785.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-calendar-100.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="27.0" layoutY="833.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Google Maps Link" />
+                        <TextField fx:id="googleMapEditTour" layoutX="59.0" layoutY="861.0" prefHeight="47.0" prefWidth="810.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="25.0" layoutY="861.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="31.0" layoutY="872.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-location-50.png" />
+                           </image>
+                        </ImageView>
+                        <Button layoutX="30.0" layoutY="938.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="834.0" styleClass="edit-main-button" stylesheets="@Admin.css" text="Save Changes" />
+                        <Pane layoutX="30.0" layoutY="94.0" prefHeight="73.0" prefWidth="842.0" styleClass="edit-small-div" stylesheets="@Admin.css">
+                           <children>
+                              <Label layoutX="57.0" layoutY="-1.0" prefHeight="30.0" prefWidth="139.0" style="-fx-text-fill: #9ca3af; -fx-font-size: 15px;" text="Total Bookings" />
+                              <Label fx:id="bookingEditTour" layoutX="57.0" layoutY="22.0" prefHeight="36.0" prefWidth="265.0" style="-fx-text-fill: white; -fx-font-size: 35px; -fx-font-weight: bolder;" text="152" />
+                              <ImageView fitHeight="41.0" fitWidth="55.0" layoutX="3.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-users-64222.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Label layoutX="29.0" layoutY="189.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Tour Images" />
+                        <ImageView fx:id="image2" fitHeight="157.0" fitWidth="274.0" layoutX="314.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../tour%20images/skardu-image2.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="image3" fitHeight="157.0" fitWidth="274.0" layoutX="600.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../icons/skardu-image2.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage1EditTour" layoutX="64.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="30.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="36.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage2EditTour" layoutX="349.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="315.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="321.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage3EditTour" layoutX="634.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="600.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="606.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <ComboBox fx:id="transportProviderEditTour" layoutX="26.0" layoutY="697.0" prefHeight="45.0" prefWidth="839.0" styleClass="edit-combo-box" stylesheets="@Admin.css" />
+                        <Label layoutX="29.0" layoutY="667.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Transpoprt Provider" />
+                        <TextArea fx:id="descriptionEditTour" layoutX="26.0" layoutY="574.0" prefHeight="89.0" prefWidth="839.0" styleClass="edit-text-area" stylesheets="@Admin.css" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </Pane>

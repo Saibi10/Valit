@@ -138,7 +138,7 @@
     -fx-border-color: transparent; /* No border */
     -fx-cursor: hand; /* Change the cursor to a hand when hovering over the button */
     -fx-padding: 5px 10px; /* Adjust padding if needed */
-    -fx-text-fill: #F3F4F6
+    -fx-text-fill: #F3F4F6;
 }
 
 /* Hover effect for the button */
@@ -147,5 +147,68 @@
     -fx-border-color: transparent; /* Ensure the border remains transparent on hover */
 }
 
+.edit-main-header {
+	-fx-text-fill: #60A5FA;
+	-fx-font-size: 30px;
+}
+
+.edit-main-label {
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 15px;
+}
+
+.edit-main-text-fields {
+	-fx-background-color: #374151;
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 14px;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
+	-fx-padding: 8px 12px; /* Light background color for rows */
+}
+
+.edit-main-button {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-font-weight: bolder; /* Normal font weight */
+    -fx-padding: 0px 0px; /* Light background color for rows */
+}
+
+.edit-main-button:hover {
+    -fx-background-color: #1D4ED8;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-border-radius: 14px; /* Rounded corners */
+    -fx-font-weight: bolder; /* Normal font weight */
+    -fx-padding: 0px 0px; /* Light background color for rows */
+    -fx-cursor: hand;
+}
+
+.edit-main-image {
+	-fx-border-radius: 5px; /* Rounded corners */
+}
+
+.edit-small-div {
+	-fx-background-color: #374151;
+	-fx-border-radius: 5px; /* Rounded corners */
+	-fx-border-color: gray; /* Light background color for rows */
+}
+
+.edit-combo-box {
+	-fx-background-color: #374151;
+	-fx-text-fill: #9CA3AF;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
+}
+
+.edit-text-area {
+    -fx-control-inner-background: #374151; /* Background color */
+    -fx-text-fill: #f3f4f6; /* Text color */
+    -fx-border-color: gray; /* Optional: Border color */
+    -fx-font-size: 14px; /* Optional: Font size */
+    -fx-border-radius: 5px; /* Light background color for rows */
+    -fx-border-width: 0px; /* Optional: Border width */
+}
 
 

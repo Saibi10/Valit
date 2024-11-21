@@ -13,11 +13,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,6 +50,37 @@ public class AdminController {
 	private Pane BookingMainDiv;
 	@FXML
 	private Pane transportMainDiv;
+	@FXML
+	private ScrollPane editTourMainDiv;
+	
+	@FXML
+	private Label headerEditTour;
+	@FXML
+	private Label bookingEditTour;
+	@FXML
+	private TextField textImage1EditTour;
+	@FXML
+	private TextField textImage2EditTour;
+	@FXML
+	private TextField textImage3EditTour;
+	@FXML
+	private TextField tourNameEditTour;
+	@FXML
+	private TextArea descriptionEditTour;
+	@FXML
+	private TextField priceEditTour;
+	@FXML
+	private TextField duarationEditTour;
+	@FXML
+	private TextField googleMapEditTour;
+	@FXML
+	private ComboBox transportProviderEditTour;
+	@FXML
+	private ImageView image1;
+	@FXML
+	private ImageView image2;
+	@FXML
+	private ImageView image3;
 
 	// ----------------------------TABLE
 	@FXML
@@ -122,7 +156,7 @@ public class AdminController {
 
 	@FXML
 	public void initialize() throws SQLException {
-
+		descriptionEditTour.setWrapText(true);
 		ArrayList<TopCustomers> topCustomers = TMS.getTop3Customers();
 		ObservableList<TopCustomers> data = FXCollections.observableArrayList(topCustomers);
 
@@ -270,8 +304,30 @@ public class AdminController {
 		        // Set up actions for buttons
 		        editButton.setOnAction(event -> {
 		            Tours selectedTour = getTableView().getItems().get(getIndex());
-		            System.out.println("Edit button clicked for: " + selectedTour.getTourName());
-		            // Add your edit logic here
+		            System.out.println("Edit button clicked for: " + selectedTour.getTourImages());
+		            hideAllPane();
+		            editTourMainDiv.setVisible(true);
+		            headerEditTour.setText(selectedTour.getTourName());
+		            bookingEditTour.setText(selectedTour.getBookings());
+		            tourNameEditTour.setText(selectedTour.getTourName());
+		            descriptionEditTour.setText(selectedTour.getTourDescription());
+		            priceEditTour.setText(selectedTour.getPrice());
+		            duarationEditTour.setText(selectedTour.getDuration());
+		            googleMapEditTour.setText(selectedTour.getGoogleMapLink());
+		            ArrayList<String> img = selectedTour.getTourImages();
+		            if(img.size() > 0) {
+		            	textImage1EditTour.setText(img.get(0));
+		            	image1.setImage(new Image(getClass().getResourceAsStream(img.get(0))));
+		            }
+		            if(img.size() > 1) {
+		            	textImage2EditTour.setText(img.get(1));
+		            	image2.setImage(new Image(getClass().getResourceAsStream(img.get(1))));
+		            }
+		            if(img.size() > 2) {
+		            	textImage3EditTour.setText(img.get(2));
+		            	image3.setImage(new Image(getClass().getResourceAsStream(img.get(2))));	
+		            }
+		            
 		        });
 
 		        deleteButton.setOnAction(event -> {
@@ -530,9 +586,6 @@ public class AdminController {
 		        }
 		    }
 		});
-
-
-		
 	}
 	
 	private void removeAllButtonClasses() {
@@ -559,6 +612,7 @@ public class AdminController {
 		toursMainDiv.setVisible(false);
 		BookingMainDiv.setVisible(false);
 		transportMainDiv.setVisible(false);
+		editTourMainDiv.setVisible(false);
 	}
 
 	public void dashboardSelected() throws SQLException {

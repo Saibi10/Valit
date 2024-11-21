@@ -134,6 +134,12 @@ VALUES
 ('Air Comforts', 'Flight', 4.8),
 ('Eco Bus Tours', 'Bus', 4.3);
 
+INSERT INTO TourImages (TourID , ImagePath)
+VALUES
+( 1 , '..\tour images\skardu-image1.png'),
+( 1 , '..\tour images\skardu-image2.png'),
+( 1 , '..\tour images\skardu-image3.png')
+
 
 INSERT INTO Booking (UserID, TourID, TransportProviderID, BookingDate)
 VALUES
