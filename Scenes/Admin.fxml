@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: white; -fx-font-size: 25pzx;" stylesheets="@Admin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1203.0" style="-fx-background-color: #1F2937; -fx-font-size: 25pzx;" stylesheets="@Admin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AdminController">
    <children>
-      <Pane fx:id="tabsPane" layoutY="51.0" prefHeight="748.0" prefWidth="226.0" style="-fx-background-color: white;">
+      <Pane fx:id="tabsPane" layoutY="51.0" prefHeight="748.0" prefWidth="226.0" style="-fx-background-color: #1F2937;">
          <children>
-            <Button fx:id="dashboardTab" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#dashboardSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab-selected" stylesheets="@Admin.css" text="Dashboard" />
-            <Button fx:id="toursTab" layoutX="14.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#toursSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab" stylesheets="@Admin.css" text="Tours" />
-            <Button fx:id="bookingTab" layoutX="14.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#bookingsSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab" stylesheets="@Admin.css" text="Bookings" />
-            <Button fx:id="customersTab" layoutX="14.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#customersSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab" stylesheets="@Admin.css" text="Customers" />
-            <Button fx:id="transportTab" layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onMouseClicked="#transportSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab" stylesheets="@Admin.css" text="Transport" />
-            <Button fx:id="chatTab" layoutX="14.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#settingSelected" prefHeight="60.0" prefWidth="168.0" styleClass="tab" stylesheets="@Admin.css" text="Chat" />
+            <Button fx:id="dashboardTab" layoutX="2.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#dashboardSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab-selected" stylesheets="@Admin.css" text="Dashboard" />
+            <Button fx:id="toursTab" layoutX="2.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#toursSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Tours" />
+            <Button fx:id="bookingTab" layoutX="3.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#bookingsSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Bookings" />
+            <Button fx:id="transportTab" layoutX="14.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#transportSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Transport" />
+            <Button fx:id="chatTab" layoutX="2.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#settingSelected" prefHeight="60.0" prefWidth="213.0" styleClass="tab" stylesheets="@Admin.css" text="Chat" />
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/icons8-graph-48.png" />
@@ -27,27 +29,22 @@
             </ImageView>
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/icons8-location-50gray.png" />
+                  <Image url="@../icons/icons8-location-50.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/icons8-booking-48.png" />
+                  <Image url="@../icons/icons8-booking-48%20(1).png" />
                </image>
             </ImageView>
             <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/icons8-customers-60.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
-               <image>
                   <Image url="@../icons/icons8-truck-48.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="451.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="23.0" fitWidth="33.0" layoutX="25.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/icons8-speech-bubble-60.png" />
+                  <Image url="@../icons/icons8-chat-60.png" />
                </image>
             </ImageView>
             <Button fx:id="chatTab1" layoutX="13.0" layoutY="698.0" mnemonicParsing="false" onMouseClicked="#settingSelected" prefHeight="41.0" prefWidth="201.0" styleClass="node" stylesheets="@Admin.css" text="Settings" />
@@ -58,61 +55,64 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" visible="false">
+      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="968.0" styleClass="main-div" stylesheets="@Admin.css">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="971.0" styleClass="main-div" stylesheets="@Admin.css">
                <children>
                   <Label layoutX="14.0" layoutY="37.0" prefHeight="51.0" prefWidth="373.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Dashboard Overview" visible="false" />
                   <Pane fx:id="totalBookingSmallDiv" layoutX="14.0" layoutY="95.0" prefHeight="139.0" prefWidth="201.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Total Bookings" />
-                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="1,234" />
-                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="+20.1% from last month" />
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Total Bookings" />
+                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="1,234" />
+                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: #9CA3AF;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="+20.1% from last month" />
                      </children>
                   </Pane>
-                  <Pane fx:id="totalBookingSmallDiv1" layoutX="19.0" layoutY="319.0" prefHeight="362.0" prefWidth="440.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+                  <Pane fx:id="totalBookingSmallDiv1" layoutX="19.0" layoutY="320.0" prefHeight="362.0" prefWidth="440.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <TableView fx:id="recentBookingTable" layoutX="1.0" layoutY="61.0" prefHeight="303.0" prefWidth="439.0" stylesheets="@Admin.css">
+                        <TableView fx:id="recentBookingTable" layoutX="1.0" layoutY="61.0" prefHeight="285.0" prefWidth="438.0" stylesheets="@Admin.css">
                           <columns>
-                            <TableColumn editable="false" prefWidth="145.0" sortable="false" text="Customer" />
-                            <TableColumn editable="false" prefWidth="157.0" sortable="false" text="Number of Bookings" />
-                              <TableColumn prefWidth="135.0" text="Total Amount Paid" />
+                            <TableColumn fx:id="CustomerColumn" prefWidth="145.0" text="Customer" />
+                            <TableColumn fx:id="nobColumn" prefWidth="154.0" text="NumberofBookings" />
+                              <TableColumn fx:id="tapColumn" prefWidth="139.0" text="TotalAmountPaid" />
                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
-                        <Label layoutX="11.0" layoutY="16.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 20px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Top Customers" />
+                        <Label layoutX="11.0" layoutY="16.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 20px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Top Customers" />
                      </children>
                   </Pane>
                   <Pane fx:id="totalBookingSmallDiv11" layoutX="490.0" layoutY="318.0" prefHeight="365.0" prefWidth="435.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <TableView fx:id="popularToursTable" layoutX="1.0" layoutY="59.0" prefHeight="306.0" prefWidth="434.0" stylesheets="@Admin.css">
+                        <TableView fx:id="popularToursTable" layoutX="1.0" layoutY="59.0" prefHeight="289.0" prefWidth="432.0" stylesheets="@Admin.css">
                            <columns>
-                              <TableColumn editable="false" prefWidth="174.0" sortable="false" text="Tour Name" />
-                              <TableColumn editable="false" prefWidth="148.0" sortable="false" text="Bookings" />
-                              <TableColumn editable="false" prefWidth="116.0" sortable="false" text="Rating" />
+                              <TableColumn fx:id="tournameColumn" editable="false" prefWidth="161.0" sortable="false" text="TourName" />
+                              <TableColumn fx:id="bookingsColumn" editable="false" prefWidth="129.0" sortable="false" text="Bookings" />
+                              <TableColumn fx:id="ratingColumn" editable="false" prefWidth="138.0" sortable="false" text="Rating" />
                            </columns>
                         </TableView>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 20px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Popular Tours" />
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 20px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Popular Tours" />
                      </children>
                   </Pane>
                   <Pane fx:id="totalBookingSmallDiv2" layoutX="251.0" layoutY="95.0" prefHeight="139.0" prefWidth="201.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Revenu" />
-                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="1,234" />
-                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="+20.1% from last month" />
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Revenu" />
+                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="1,234" />
+                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: #9CA3AF;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="+20.1% from last month" />
                      </children>
                   </Pane>
                   <Pane fx:id="totalBookingSmallDiv21" layoutX="490.0" layoutY="95.0" prefHeight="139.0" prefWidth="201.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Active Tour" />
-                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="1,234" />
-                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="+20.1% from last month" />
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="125.0" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Active Tour" />
+                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="1,234" />
+                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: #9CA3AF;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="+20.1% from last month" />
                      </children>
                   </Pane>
                   <Pane fx:id="totalBookingSmallDiv211" layoutX="727.0" layoutY="95.0" prefHeight="139.0" prefWidth="201.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="154.0" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Customer Satisfaction" />
-                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="1,234" />
-                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="+20.1% from last month" />
+                        <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="154.0" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="Customer Satisfaction" />
+                        <Label layoutX="14.0" layoutY="50.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-weight: bolder; -fx-font-size: 35px;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="1,234" />
+                        <Label layoutX="14.0" layoutY="96.0" prefHeight="30.0" prefWidth="168.0" style="-fx-font-size: 12px; -fx-text-fill: #9CA3AF;" styleClass="small-div-main-div-text" stylesheets="@Admin.css" text="+20.1% from last month" />
                      </children>
                   </Pane>
                   <Label layoutX="19.0" layoutY="12.0" prefHeight="51.0" prefWidth="373.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Dashboard Overview" />
@@ -125,19 +125,157 @@
             <Image url="@../icons/traveleaseLowPXL.png" />
          </image>
       </ImageView>
-      <Pane layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0">
+      <Pane fx:id="toursMainDiv" layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
          <children>
-            <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="247.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Avalibale Tours" />
-            <Label layoutX="23.0" layoutY="65.0" prefHeight="30.0" prefWidth="284.0" style="-fx-font-size: 16px; -fx-text-fill: gray;" styleClass="small-div-main-div" stylesheets="@Admin.css" text="Manage your tour offerings" />
-            <TableView layoutX="14.0" layoutY="167.0" prefHeight="580.0" prefWidth="959.0">
-              <columns>
-                <TableColumn prefWidth="187.0" text="Name" />
-                <TableColumn prefWidth="215.0" text="Duration" />
-                  <TableColumn prefWidth="156.0" text="Price" />
-                  <TableColumn prefWidth="169.0" text="Bookings" />
-              </columns>
-            </TableView>
+            <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+               <children>
+                  <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="247.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Avalibale Tours" />
+                  <Label layoutX="23.0" layoutY="65.0" prefHeight="30.0" prefWidth="320.0" style="-fx-font-size: 16px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Manage your tour offerings" />
+                  <TableView fx:id="tourTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
+                    <columns>
+                      <TableColumn fx:id="nameTourColumn" prefWidth="187.0" text="Tour" />
+                      <TableColumn fx:id="durationTourColumn" prefWidth="215.0" text="Duration" />
+                        <TableColumn fx:id="priceTourColumn" prefWidth="156.0" text="Price" />
+                        <TableColumn fx:id="bookingsTourColumn" prefWidth="237.0" text="NumberofBookings" />
+                        <TableColumn fx:id="actionColumn" prefWidth="116.0" text="Action" />
+                    </columns>
+                  </TableView>
+               </children>
+            </Pane>
          </children>
       </Pane>
+      <Pane fx:id="BookingMainDiv" layoutX="228.0" layoutY="42.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
+         <children>
+            <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+               <children>
+                  <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="247.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Tour Bookings" />
+                  <Label layoutX="23.0" layoutY="65.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 16px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="View and manage tour bookings" />
+                  <TableView fx:id="bookingTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
+                     <columns>
+                        <TableColumn fx:id="tourBookingColumn" prefWidth="187.0" text="Tour" />
+                        <TableColumn fx:id="customerBookingColumn" prefWidth="215.0" text="Customer" />
+                        <TableColumn fx:id="dateBookingColumn" prefWidth="156.0" text="Date" />
+                        <TableColumn fx:id="statusBookingColumn" prefWidth="169.0" text="Status" />
+                        <TableColumn fx:id="actionBookingColumn" prefWidth="184.0" text="Action" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="transportMainDiv" layoutX="226.0" layoutY="41.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
+         <children>
+            <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+               <children>
+                  <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="header-main-div" stylesheets="@Admin.css" text="Transport Providers" />
+                  <Label layoutX="23.0" layoutY="65.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 16px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Manage your transport partners" />
+                  <TableView fx:id="transportTable" layoutX="6.0" layoutY="167.0" prefHeight="521.0" prefWidth="929.0">
+                     <columns>
+                        <TableColumn fx:id="nameTransportColumn" prefWidth="155.0" text="Name" />
+                        <TableColumn fx:id="vehicleTypeTransportColumn" prefWidth="219.0" text="VehicleType" />
+                        <TableColumn fx:id="fleetSizeTransportColumn" prefWidth="72.0" text="FleetSize" />
+                        <TableColumn fx:id="contactTransportColumn" prefWidth="270.0" text="Contact" />
+                        <TableColumn fx:id="ratingTransportColumn" prefWidth="68.0" text="Rating" />
+                        <TableColumn fx:id="actionTransportColumn" prefWidth="127.0" text="Actions" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <ScrollPane fx:id="editTourMainDiv" layoutX="228.0" layoutY="50.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1033.0" prefWidth="956.0" style="-fx-background-color: #111827;">
+               <children>
+                  <Pane layoutX="10.0" layoutY="7.0" prefHeight="1014.0" prefWidth="941.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+                     <children>
+                        <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Edit Tour:" />
+                        <Label layoutX="25.0" layoutY="55.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 14px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Update the details of your tour package" />
+                        <Label fx:id="headerEditTour" layoutX="173.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Paris Explorer" />
+                        <ImageView fx:id="image1" fitHeight="157.0" fitWidth="274.0" layoutX="29.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../tour%20images/skardu-image1.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="23.0" layoutY="453.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Tour Name" />
+                        <TextField fx:id="tourNameEditTour" layoutX="22.0" layoutY="481.0" prefHeight="47.0" prefWidth="844.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <Label layoutX="25.0" layoutY="540.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Description" />
+                        <Label layoutX="27.0" layoutY="745.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Price ($)" />
+                        <TextField fx:id="priceEditTour" layoutX="59.0" layoutY="773.0" prefHeight="47.0" prefWidth="354.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="25.0" layoutY="773.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <Label layoutX="465.0" layoutY="745.0" prefHeight="30.0" prefWidth="130.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Duration (days)" />
+                        <TextField fx:id="duarationEditTour" layoutX="497.0" layoutY="773.0" prefHeight="47.0" prefWidth="370.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="463.0" layoutY="773.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="31.0" layoutY="784.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-dollar-48.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="471.0" layoutY="785.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-calendar-100.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="27.0" layoutY="833.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Google Maps Link" />
+                        <TextField fx:id="googleMapEditTour" layoutX="59.0" layoutY="861.0" prefHeight="47.0" prefWidth="810.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="25.0" layoutY="861.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="31.0" layoutY="872.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-location-50.png" />
+                           </image>
+                        </ImageView>
+                        <Button layoutX="30.0" layoutY="938.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="834.0" styleClass="edit-main-button" stylesheets="@Admin.css" text="Save Changes" />
+                        <Pane layoutX="30.0" layoutY="94.0" prefHeight="73.0" prefWidth="842.0" styleClass="edit-small-div" stylesheets="@Admin.css">
+                           <children>
+                              <Label layoutX="57.0" layoutY="-1.0" prefHeight="30.0" prefWidth="139.0" style="-fx-text-fill: #9ca3af; -fx-font-size: 15px;" text="Total Bookings" />
+                              <Label fx:id="bookingEditTour" layoutX="57.0" layoutY="22.0" prefHeight="36.0" prefWidth="265.0" style="-fx-text-fill: white; -fx-font-size: 35px; -fx-font-weight: bolder;" text="152" />
+                              <ImageView fitHeight="41.0" fitWidth="55.0" layoutX="3.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-users-64222.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Label layoutX="29.0" layoutY="189.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Tour Images" />
+                        <ImageView fx:id="image2" fitHeight="157.0" fitWidth="274.0" layoutX="314.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../tour%20images/skardu-image2.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="image3" fitHeight="157.0" fitWidth="274.0" layoutX="600.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;">
+                           <image>
+                              <Image url="@../icons/skardu-image2.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage1EditTour" layoutX="64.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="30.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="36.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage2EditTour" layoutX="349.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="315.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="321.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="textImage3EditTour" layoutX="634.0" layoutY="391.0" prefHeight="47.0" prefWidth="237.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <TextField layoutX="600.0" layoutY="391.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="606.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-image-50.png" />
+                           </image>
+                        </ImageView>
+                        <ComboBox fx:id="transportProviderEditTour" layoutX="26.0" layoutY="697.0" prefHeight="45.0" prefWidth="839.0" styleClass="edit-combo-box" stylesheets="@Admin.css" />
+                        <Label layoutX="29.0" layoutY="667.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Transpoprt Provider" />
+                        <TextArea fx:id="descriptionEditTour" layoutX="26.0" layoutY="574.0" prefHeight="89.0" prefWidth="839.0" styleClass="edit-text-area" stylesheets="@Admin.css" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </Pane>

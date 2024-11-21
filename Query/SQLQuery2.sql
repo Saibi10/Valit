@@ -4,3 +4,12 @@ JOIN Users u ON b.UserID = u.UserID
 JOIN Tour t ON b.TourID = t.TourID
 GROUP BY u.FullName
 ORDER BY NumberOfBookings DESC, TotalAmountPaid DESC;
+
+
+select * from Booking
+
+select * from Tour
+
+select * from TransportProvider
+
+select * from TourImages

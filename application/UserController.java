@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,14 +30,34 @@ public class UserController implements Initializable {
     private Button bookingTabBtn;
 	@FXML
     private Button supportTabBtn;
+	@FXML
+	private Button customTourSubmit;
 	
+	
+	@FXML
+	private Pane customTourPane;
+	@FXML
+	private TextField locationBox;
+	@FXML
+	private TextField descriptionBox;
+	
+	
+	public void SetVisibilityFalse()
+    {
+    	customTourPane.setVisible(false);
+    }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+    	
+    	SetVisibilityFalse();
+    	customTourSubmit.setOnAction(event -> onCustomTourSubmit(event));
+    }
 
-
+    
     public void TourButtonClicked(ActionEvent actionEvent)
 	{
+    	SetVisibilityFalse();
 		feature1Btn.setText("New Tours");
 		feature2Btn.setText("Popular Tours");
 		feature3Btn.setText("Tour Reviews");
@@ -49,7 +71,8 @@ public class UserController implements Initializable {
 
     public void BookingButtonClicked(ActionEvent actionEvent)
 	{
-    		feature1Btn.setText("My Bookings");
+    	SetVisibilityFalse();
+    	feature1Btn.setText("My Bookings");
 		feature2Btn.setText("Booking History");
 		feature3Btn.setText("Booking Reports");
 		
@@ -61,7 +84,8 @@ public class UserController implements Initializable {
     
     public void CustomButtonClicked(ActionEvent actionEvent)
 	{
-    		feature1Btn.setText("Create Request");
+    	SetVisibilityFalse();
+    	feature1Btn.setText("Create Request");
 		feature2Btn.setText("Pending Requests");
 		
 		feature3Btn.setDisable(true);
@@ -72,7 +96,8 @@ public class UserController implements Initializable {
     
     public void SupportButtonClicked(ActionEvent actionEvent)
 	{
-    		feature1Btn.setText("Contact Admin");
+    	SetVisibilityFalse();
+    	feature1Btn.setText("Contact Admin");
 		feature2Btn.setText("Transport Issue");
 		feature3Btn.setText("Menu Issue");
 		
@@ -83,8 +108,11 @@ public class UserController implements Initializable {
 		feature4Btn.setOpacity(0);
 	}
     
+    
+    
     public void feature1Click(ActionEvent actionEvent)
     {
+    		SetVisibilityFalse();
     		if(feature1Btn.getText() == "New Tours")
     		{
     			System.out.println("New Tours");
@@ -95,7 +123,7 @@ public class UserController implements Initializable {
     		}
     		else if(feature1Btn.getText() == "Create Request")
     		{
-    			System.out.println("Create Request");
+    			customTourPane.setVisible(true);
     		}
     		else if(feature1Btn.getText() == "Contact Admin")
     		{
@@ -103,9 +131,21 @@ public class UserController implements Initializable {
     		}
     }
     
+    @FXML
+    private void onCustomTourSubmit(ActionEvent actionEvent) {
+        String location = locationBox.getText();
+        String description = descriptionBox.getText();
+        
+        System.out.println("Location: " + location);
+        System.out.println("Description: " + description);
+
+        //SavetoDatabase()
+    }
+    
     public void feature2Click(ActionEvent actionEvent)
     {
-    		if(feature2Btn.getText() == "Popular Tours")
+    	SetVisibilityFalse();
+    	if(feature2Btn.getText() == "Popular Tours")
 		{
 			System.out.println("New Tours");
 		}
@@ -125,7 +165,8 @@ public class UserController implements Initializable {
     
     public void feature3Click(ActionEvent actionEvent)
     {
-    		if(feature3Btn.getText() == "Tour Reviews")
+    	SetVisibilityFalse();
+    	if(feature3Btn.getText() == "Tour Reviews")
 		{
 			System.out.println("New Tours");
 		}
@@ -141,7 +182,8 @@ public class UserController implements Initializable {
     
     public void feature4Click(ActionEvent actionEvent)
     {
-    		if(feature4Btn.getText() == "My Tours")
+    	SetVisibilityFalse();
+    	if(feature4Btn.getText() == "My Tours")
 		{
 			System.out.println("New Tours");
 		}
