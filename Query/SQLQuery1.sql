@@ -80,9 +80,16 @@ VALUES
 
 INSERT INTO Tour (TourName, TourDescription, TourPrice, TransportID, StartDate, Duration, GoogleMapLink)
 VALUES
+('Expired', 
+'Discover the vibrant city life with guided tours of historic landmarks, modern architecture, bustling markets, and cultural hotspots. Ideal for travelers who want to soak in the essence of urban living.', 
+200.00, 3, '2024-11-18', 3, 'https://goo.gl/maps/city2')
+
+INSERT INTO Tour (TourName, TourDescription, TourPrice, TransportID, StartDate, Duration, GoogleMapLink)
+VALUES
 ('City Explorer', 
 'Discover the vibrant city life with guided tours of historic landmarks, modern architecture, bustling markets, and cultural hotspots. Ideal for travelers who want to soak in the essence of urban living.', 
 200.00, 1, '2024-12-01', 3, 'https://goo.gl/maps/city1'),
+
 
 ('Mountain Adventure', 
 'Experience the thrill of mountain hiking and camping. Trek through scenic trails, enjoy breathtaking views, and connect with nature. Perfect for adventure seekers looking for a challenge.', 
@@ -121,18 +128,18 @@ VALUES
 450.00, 5, '2025-01-20', 6, 'https://goo.gl/maps/rainforest1');
 
 
-INSERT INTO TransportProvider (Name, Rating)
+INSERT INTO TransportProvider (Name, TransportType, Rating)
 VALUES
-('City Bus Co.',  4.5),
-('Express Rail',  4.8),
-('Skyways',  4.9),
-('Luxury Limo Service',  4.2),
-('Riverboat Rides',  4.7),
-('Adventure Rentals',  4.3),
-('Cycle Adventures',  4.6),
-('Metro Rail Services',  4.4),
-('Air Comforts',  4.8),
-('Eco Bus Tours', 4.3);
+('City Bus Co.', 'Bus', 4.5),
+('Express Rail', 'Train', 4.8),
+('Skyways', 'Flight', 4.9),
+('Luxury Limo Service', 'Taxi', 4.2),
+('Riverboat Rides', 'Boat', 4.7),
+('Adventure Rentals', 'Car', 4.3),
+('Cycle Adventures', 'Bike', 4.6),
+('Metro Rail Services', 'Train', 4.4),
+('Air Comforts', 'Flight', 4.8),
+('Eco Bus Tours', 'Bus', 4.3);
 
 INSERT INTO TourImages (TourID , ImagePath)
 VALUES
@@ -320,3 +327,9 @@ INSERT INTO TransportProvider (Name , Rating, VehicleTypes, FleetSize, Contact)
 VALUES
 ('Seaside Shuttles', 'Boat', 4.5, 'Ferries, Speedboats', 12, 'info@seasideshuttles.com'),
 ('Mountain Climbers Inc.', 'Bus', 4.6, 'Mini-Buses, Vans', 20, 'support@mountainclimbers.com');
+
+
+UPDATE Booking
+SET 
+    Rating  = NULL
+WHERE Status = 'Confirmed';
