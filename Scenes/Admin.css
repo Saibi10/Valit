@@ -196,31 +196,10 @@
 }
 
 .edit-combo-box {
-    -fx-background-color: #374151; /* Background color */
-    -fx-text-fill: #f3f4f6; /* Text color */
-    -fx-border-color: gray; /* Border color */
-    -fx-border-radius: 5px; /* Rounded border */
-}
-
-.edit-combo-box .text-field {
-    -fx-background-color: #374151; /* Background color for text field */
-    -fx-text-fill: #f3f4f6; /* Text color */
-    -fx-border-color: transparent; /* No additional border inside */
-}
-
-.edit-combo-box:focused .text-field {
-    -fx-background-color: #374151; /* Keep background color on focus */
-    -fx-text-fill: #f3f4f6; /* Keep text color on focus */
-}
-
-.edit-combo-box .list-cell {
-    -fx-background-color: #374151; /* Background color for dropdown items */
-    -fx-text-fill: #f3f4f6; /* Text color for dropdown items */
-}
-
-.edit-combo-box .list-cell:hover {
-    -fx-background-color: #4B5563; /* Slightly lighter color on hover */
-    -fx-text-fill: #f3f4f6; /* Text color on hover */
+	-fx-background-color: #374151;
+	-fx-text-fill: #9CA3AF;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
 }
 
 .edit-text-area {
@@ -232,53 +211,4 @@
     -fx-border-width: 0px; /* Optional: Border width */
 }
 
-.date-picker {
-    -fx-background-color: #374151; /* Background color of the DatePicker */
-    -fx-text-fill: white;        /* Text color */
-}
-
-.date-picker .text-field {
-    -fx-background-color: #374151; /* Background color of the text field */
-    -fx-text-fill: #f3f4f6;        /* Text color of the text field */
-    -fx-border-color: gray;     /* Optional: Add a border color */
-    -fx-border-radius: 5px;      /* Optional: Round border corners */
-}
-
-.date-picker:hover {
-    -fx-background-color: #1D4ED8; /* Slightly lighter color on hover */
-    -fx-cursor: hand;
-}
-
-.date-picker .arrow {
-    -fx-background-color: black; /* Background color of the arrow button */
-    -fx-border-color: white;     /* Optional: Border for the arrow button */
-}
-
-.date-picker .arrow:hover {
-    -fx-background-color: #1F1F1F; /* Slightly lighter color on hover */
-}
-
-
-.search-text-field {
-	
-}
-
-.completed-button {
-	-fx-background-color: #374151;
-	-fx-text-fill: #f3f4f6;
-	-fx-font-size: 15px;
-	-fx-border-color: gray; /* Light background color for rows */
-	-fx-border-radius: 5px; /* Light background color for rows */
-	-fx-padding: 8px 12px; /* Light background color for rows */
-}
-
-.completed-button:hover {
-	-fx-background-color: #1F1F1F;
-	-fx-text-fill: #f3f4f6;
-	-fx-font-size: 15px;
-	-fx-border-color: gray; /* Light background color for rows */
-	-fx-border-radius: 5px; /* Light background color for rows */
-	-fx-padding: 8px 12px; /* Light background color for rows */
-	-fx-cursor: hand;
-}
 
