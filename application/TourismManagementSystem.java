@@ -52,4 +52,9 @@ public class TourismManagementSystem {
 	public void deleteTour(String tour) {
 		DB.deleteTourByID(tour);
 	}
+	
+	public void confirmTourBooking(String booking) {
+		DB.confirmBooking(booking);
+	}
+	
 }

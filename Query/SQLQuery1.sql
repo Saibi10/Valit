@@ -83,9 +83,16 @@ VALUES
 
 INSERT INTO Tour (TourName, TourDescription, TourPrice, TransportID, StartDate, Duration, GoogleMapLink)
 VALUES
+('Expired', 
+'Discover the vibrant city life with guided tours of historic landmarks, modern architecture, bustling markets, and cultural hotspots. Ideal for travelers who want to soak in the essence of urban living.', 
+200.00, 3, '2024-11-18', 3, 'https://goo.gl/maps/city2')
+
+INSERT INTO Tour (TourName, TourDescription, TourPrice, TransportID, StartDate, Duration, GoogleMapLink)
+VALUES
 ('City Explorer', 
 'Discover the vibrant city life with guided tours of historic landmarks, modern architecture, bustling markets, and cultural hotspots. Ideal for travelers who want to soak in the essence of urban living.', 
 200.00, 1, '2024-12-01', 3, 'https://goo.gl/maps/city1'),
+
 
 ('Mountain Adventure', 
 'Experience the thrill of mountain hiking and camping. Trek through scenic trails, enjoy breathtaking views, and connect with nature. Perfect for adventure seekers looking for a challenge.', 
@@ -323,3 +330,9 @@ INSERT INTO TransportProvider (Name , Rating, VehicleTypes, FleetSize, Contact)
 VALUES
 ('Seaside Shuttles', 'Boat', 4.5, 'Ferries, Speedboats', 12, 'info@seasideshuttles.com'),
 ('Mountain Climbers Inc.', 'Bus', 4.6, 'Mini-Buses, Vans', 20, 'support@mountainclimbers.com');
+
+
+UPDATE Booking
+SET 
+    Rating  = NULL
+WHERE Status = 'Confirmed';

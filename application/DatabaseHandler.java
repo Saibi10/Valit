@@ -55,7 +55,6 @@ public class DatabaseHandler {
                        "AVG(b.Rating) AS AverageRating " +
                        "FROM Booking b " +
                        "JOIN Tour t ON b.TourID = t.TourID " +
-                       "WHERE b.Status = 'Completed' " +
                        "GROUP BY t.TourName " +
                        "ORDER BY Bookings DESC, AverageRating DESC ";
         
@@ -131,10 +130,9 @@ public class DatabaseHandler {
         return toursList;
     }
 
-
     public ArrayList<Booking> getAllBookings() {
         ArrayList<Booking> bookingsList = new ArrayList<>();
-        String query = "SELECT " +
+        String query = "SELECT b.ID, " +
                        "t.TourName, " +
                        "u.FullName AS Customer, " +
                        "b.BookingDate AS Date, " +
@@ -145,13 +143,14 @@ public class DatabaseHandler {
 
         try (ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
+            	String ID = rs.getString("ID");
                 String tourName = rs.getString("TourName");
                 String customerName = rs.getString("Customer");
                 String date = rs.getString("Date");
                 String status = rs.getString("Status");
 
                 // Add the booking to the list
-                bookingsList.add(new Booking(tourName, customerName, date, status));
+                bookingsList.add(new Booking(ID,tourName, customerName, date, status));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -361,6 +360,28 @@ public class DatabaseHandler {
         }
     }
 
-    
+    public boolean confirmBooking(String bookingID) {
+        String updateQuery = "UPDATE Booking SET Status = 'Confirmed' WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the booking ID parameter
+            updateStmt.setString(1, bookingID);
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if any rows were updated
+            if (rowsAffected > 0) {
+                System.out.println("Booking confirmed successfully for ID: " + bookingID);
+                return true;
+            } else {
+                System.out.println("No booking found with ID: " + bookingID);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

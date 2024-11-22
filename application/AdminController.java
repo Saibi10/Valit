@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,6 +95,10 @@ public class AdminController {
 	private TextField searchTourText;
 	@FXML
 	private Button showCompletedButton;
+	@FXML
+	private ComboBox bookingStatusDropDown;
+	@FXML
+	private TextField searchBooking;
 
 	// ----------------------------TABLE
 	@FXML
@@ -175,6 +180,22 @@ public class AdminController {
 
 	@FXML
 	public void initialize() throws SQLException {
+		
+		bookingStatusDropDown.getItems().addAll(
+		        "All Bookings",
+		        "Pending Bookings",
+		        "Confirmed Bookings",
+		        "Completed Bookings",
+		        "Cancelled Bookings"
+		    );
+
+		    // Optionally, set a default value
+		    bookingStatusDropDown.setValue("All Booking");
+
+		    // Add style (if needed)
+		    bookingStatusDropDown.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
+		                                   "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
+		
 		addTour = false;
 		descriptionEditTour.setWrapText(true);
 		ArrayList<TopCustomers> topCustomers = TMS.getTop3Customers();
@@ -232,7 +253,8 @@ public class AdminController {
 					super.updateItem(item, empty);
 					if (empty || item == null) {
 						setText(null);
-						setStyle(""); // Reset the style when the cell is empty
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
 					} else {
 						setText(item);
 						setStyle(
@@ -251,7 +273,8 @@ public class AdminController {
 					super.updateItem(item, empty);
 					if (empty || item == null) {
 						setText(null);
-						setStyle(""); // Reset the style when the cell is empty
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
 					} else {
 						setText(item);
 						setStyle(
@@ -471,9 +494,8 @@ public class AdminController {
 		});
 	}
 
-	private void setAllBookingTable() throws SQLException {
+	private void setAllBookingTable(ArrayList<Booking> allBookings ) throws SQLException {
 
-		ArrayList<Booking> allBookings = TMS.getAllBookings();
 		ObservableList<Booking> data = FXCollections.observableArrayList(allBookings);
 
 		tourBookingColumn.setCellValueFactory(new PropertyValueFactory<Booking, String>("Tour"));
@@ -485,139 +507,181 @@ public class AdminController {
 
 		statusBookingColumn.setCellValueFactory(new PropertyValueFactory<Booking, String>("Status"));
 
-		statusBookingColumn.setCellFactory(column -> {
-			return new TableCell<Booking, String>() {
-				private final Button statusButton = new Button();
-				{
-					// Button styling
-					statusButton.setStyle("-fx-background-color: #2563EB; " + "-fx-text-fill: white; "
-							+ "-fx-border-color: transparent; " + "-fx-font-size: 12px; " + // Adjust font size
-							"-fx-font-weight: bold; " + // Bold text
-							"-fx-padding: 3 8; " + // Reduce padding for smaller button size
-							"-fx-border-radius: 10; " + // Rounded edges
-							"-fx-background-radius: 4;"); // Match border radius for button shape
-					statusButton.setPrefHeight(20); // Adjust height
-
-					statusButton.setOnMouseEntered(event -> statusButton.setStyle("-fx-background-color: #1E3A8A; "
-							+ "-fx-text-fill: white; " + "-fx-border-color: transparent; " + "-fx-font-size: 12px; "
-							+ "-fx-font-weight: bold; " + "-fx-padding: 3 8; " + "-fx-border-radius: 4; "
-							+ "-fx-background-radius: 4;"));
-
-					statusButton.setOnMouseExited(event -> statusButton.setStyle("-fx-background-color: #2563EB; "
-							+ "-fx-text-fill: white; " + "-fx-border-color: transparent; " + "-fx-font-size: 12px; "
-							+ "-fx-font-weight: bold; " + "-fx-padding: 3 8; " + "-fx-border-radius: 4; "
-							+ "-fx-background-radius: 4;"));
-					this.setStyle(
-							"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-				}
-
-				@Override
-				protected void updateItem(String item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (empty || item == null) {
-						setGraphic(null);
-					} else {
-						// Set button text based on status
-						statusButton.setText(item);
-
-						setGraphic(statusButton);
-					}
-				}
-			};
-		});
-		bookingTable.setItems(data);
-
-		actionBookingColumn.setCellFactory(column -> new TableCell<Booking, Void>() {
-		    private final ComboBox<String> actionComboBox = new ComboBox<>();
+		statusBookingColumn.setCellFactory(column -> new TableCell<Booking, String>() {
+		    private final Button statusButton = new Button();
 
 		    {
-		        // ComboBox base style
-		        actionComboBox.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
-		                                "-fx-border-color: transparent; -fx-font-size: 12px; -fx-font-weight: bold;");
-		        this.setStyle(
-						"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-
-		        // Style the displayed value (button cell)
-		        actionComboBox.setButtonCell(new ListCell<>() {
-		            @Override
-		            protected void updateItem(String item, boolean empty) {
-		                super.updateItem(item, empty);
-		                if (empty || item == null) {
-		                    setText("Select Action"); // Default text
-		                    setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
-		                             "-fx-font-size: 12px; -fx-font-weight: bold;");
-		                } else {
-		                    setText(item);
-		                    setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
-		                             "-fx-font-size: 12px; -fx-font-weight: bold;");
-		                }
-		            }
-		        });
-
-		        // Style dropdown items
-		        actionComboBox.setCellFactory(listView -> new ListCell<>() {
-		            @Override
-		            protected void updateItem(String item, boolean empty) {
-		                super.updateItem(item, empty);
-		                if (empty || item == null) {
-		                    setText(null);
-		                    setStyle(null);
-		                } else {
-		                    setText(item);
-		                    setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
-		                             "-fx-font-size: 12px; -fx-font-weight: bold;");
-		                }
-		            }
-		        });
-
-		        actionComboBox.setPrefWidth(150); // Fixed width
-		        actionComboBox.setPrefHeight(30); // Fixed height
+		        // Base styling for the button
+		        statusButton.setStyle("-fx-text-fill: white; " + 
+		                              "-fx-border-color: transparent; " + 
+		                              "-fx-font-size: 12px; " + 
+		                              "-fx-font-weight: bold; " + 
+		                              "-fx-padding: 3 8; " + 
+		                              "-fx-border-radius: 10; " + 
+		                              "-fx-background-radius: 4;");
+		        statusButton.setPrefHeight(20); // Adjust height
+		        this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
 		    }
 
 		    @Override
-		    protected void updateItem(Void item, boolean empty) {
+		    protected void updateItem(String item, boolean empty) {
 		        super.updateItem(item, empty);
-		        if (empty) {
+
+		        if (empty || item == null) {
 		            setGraphic(null);
 		        } else {
-		            Booking booking = getTableView().getItems().get(getIndex());
-		            actionComboBox.getItems().clear(); // Clear previous options
+		            // Set button text based on status
+		            statusButton.setText(item);
 
-		            // Add default option
-		            actionComboBox.getItems().add("Select Action");
-
-		            // Add dynamic options based on status
-		            if ("Pending".equalsIgnoreCase(booking.getStatus())) {
-		                actionComboBox.getItems().addAll("Confirm Booking", "Cancel Booking");
-		            } else if ("Pending".equalsIgnoreCase(booking.getStatus())) {
-		                actionComboBox.getItems().add("Cancel Booking");
+		            // Change button color based on booking status
+		            switch (item.toLowerCase()) {
+		                case "pending":
+		                    statusButton.setStyle("-fx-background-color: #F59E0B; -fx-text-fill: white; " +
+		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
+		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
+		                                          "-fx-background-radius: 4;");
+		                    break;
+		                case "confirmed":
+		                    statusButton.setStyle("-fx-background-color: #16A34A; -fx-text-fill: white; " +
+		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
+		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
+		                                          "-fx-background-radius: 4;");
+		                    break;
+		                case "completed":
+		                    statusButton.setStyle("-fx-background-color: #9333EA; -fx-text-fill: white; " +
+		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
+		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
+		                                          "-fx-background-radius: 4;");
+		                    break;
+		                case "cancelled":
+		                    statusButton.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; " +
+		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
+		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
+		                                          "-fx-background-radius: 4;");
+		                    break;
+		                default:
+		                    // Default styling for unknown status
+		                    statusButton.setStyle("-fx-background-color: #6B7280; -fx-text-fill: white; " +
+		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
+		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
+		                                          "-fx-background-radius: 4;");
+		                    break;
 		            }
 
-		            // Restore the previously selected value
-		            String selectedAction = booking.getSelectedAction();
-		            if (selectedAction != null && actionComboBox.getItems().contains(selectedAction)) {
-		                actionComboBox.setValue(selectedAction); // Set to previously selected value
-		            } else {
-		                actionComboBox.setValue("Select Action"); // Set default value
-		            }
-
-		            // Handle ComboBox actions and save the selected value
-		            actionComboBox.setOnAction(event -> {
-		                String selectedActionValue = actionComboBox.getValue();
-		                if (!"Select Action".equals(selectedActionValue)) {
-		                    booking.setSelectedAction(selectedActionValue); // Save selected action to Booking
-		                    if ("Confirm Booking".equals(selectedActionValue)) {
-		                        // Add logic to confirm the booking
-		                    } else if ("Cancel Booking".equals(selectedActionValue)) {
-		                        // Add logic to cancel the booking
-		                    }
-		                }
-		            });
-
-		            setGraphic(actionComboBox); // Set the ComboBox as the cell's graphic
+		            // Set the button as the cell's graphic
+		            setGraphic(statusButton);
 		        }
 		    }
+		});
+
+		bookingTable.setItems(data);
+
+		actionBookingColumn.setCellFactory(column -> new TableCell<Booking, Void>() {
+			private final ComboBox<String> actionComboBox = new ComboBox<>();
+
+			{
+				// ComboBox base style
+				actionComboBox.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+						+ "-fx-border-color: transparent; -fx-font-size: 12px; -fx-font-weight: bold; -fx-cursor: hand;");
+				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+
+				// Style the displayed value (button cell)
+				actionComboBox.setButtonCell(new ListCell<>() {
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty || item == null) {
+							setText("Select Action"); // Default text
+							setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+									+ "-fx-font-size: 12px; -fx-font-weight: bold;");
+						} else {
+							setText(item);
+							setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+									+ "-fx-font-size: 12px; -fx-font-weight: bold;");
+						}
+					}
+				});
+
+				// Style dropdown items
+				actionComboBox.setCellFactory(listView -> new ListCell<>() {
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty || item == null) {
+							setText(null);
+							setStyle(null);
+						} else {
+							setText(item);
+							setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+									+ "-fx-font-size: 12px; -fx-font-weight: bold;");
+							// Add hover effect
+							setOnMouseEntered(
+									event -> setStyle("-fx-background-color: #1F2937; -fx-text-fill: #9CA3AF; "
+											+ "-fx-font-size: 12px; -fx-font-weight: bold; -fx-cursor: hand;"));
+
+							setOnMouseExited(event -> setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+									+ "-fx-font-size: 12px; -fx-font-weight: bold;"));
+						}
+					}
+				});
+
+				actionComboBox.setPrefWidth(150); // Fixed width
+				actionComboBox.setPrefHeight(30); // Fixed height
+			}
+
+			@Override
+			protected void updateItem(Void item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty) {
+					setGraphic(null);
+				} else {
+					Booking booking = getTableView().getItems().get(getIndex());
+					actionComboBox.getItems().clear(); // Clear previous options
+
+					// Add default option
+					actionComboBox.getItems().add("Select Action");
+
+					// Add dynamic options based on status
+					if ("Pending".equalsIgnoreCase(booking.getStatus())) {
+						actionComboBox.getItems().addAll("Confirm Booking", "Cancel Booking");
+					} else if ("Confirmed".equalsIgnoreCase(booking.getStatus())) {
+						actionComboBox.getItems().add("Cancel Booking");
+					}
+
+					// Restore the previously selected value
+					String selectedAction = booking.getSelectedAction();
+					if (selectedAction != null && actionComboBox.getItems().contains(selectedAction)) {
+						actionComboBox.setValue(selectedAction); // Set to previously selected value
+					} else {
+						actionComboBox.setValue("Select Action"); // Set default value
+					}
+
+					// Handle ComboBox actions and save the selected value
+					actionComboBox.setOnAction(event -> {
+						String selectedActionValue = actionComboBox.getValue();
+						if (!"Select Action".equals(selectedActionValue)) {
+							booking.setSelectedAction(selectedActionValue); // Save selected action to Booking
+							if ("Confirm Booking".equals(selectedActionValue)) {
+								TMS.confirmTourBooking(booking.getID());
+								hideAllPane();
+								removeAllButtonClasses();
+								bookingTab.getStyleClass().remove("tab-selected");
+								bookingTab.getStyleClass().add("tab");
+								try {
+									bookingsSelected();
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							} else if ("Cancel Booking".equals(selectedActionValue)) {
+								// Add logic to cancel the booking
+							}
+						}
+					});
+
+					setGraphic(actionComboBox); // Set the ComboBox as the cell's graphic
+				}
+			}
 		});
 
 	}
@@ -818,6 +882,41 @@ public class AdminController {
 		}
 	}
 
+	public void searchBooking(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) { // Check if the Enter key is pressed
+			String searchText = searchBooking.getText().trim(); // Get and trim the search text
+			System.out.print("hello");
+			try {
+				// Get all tours from TMS
+				ArrayList<Booking> allTours = TMS.getAllBookings();
+
+				if (searchText.isEmpty()) {
+					// If the search text is empty, restore all tours
+					setAllBookingTable(allTours);
+					System.out.println("Search text is empty. Restoring all tours.");
+					return;
+				}
+
+				// Create a new list to store matching tours
+				ArrayList<Booking> matchingTours = new ArrayList<>();
+
+				// Filter tours based on the search text (best match based on startsWith)
+				for (Booking tour : allTours) {
+					if (tour.getCustomer().toLowerCase().startsWith(searchText.toLowerCase())) {
+						matchingTours.add(tour);
+					}
+				}
+
+				// Pass the filtered tours to the setAllToursTable function
+				setAllBookingTable(matchingTours);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.err.println("Error fetching tours: " + e.getMessage());
+			}
+		}
+	}
+	
 	public void showCompetedTours() throws SQLException {
 		if (showCompletedButton.getText().equals("Show Completed")) {
 			showCompletedButton.setText("Showing Completed");
@@ -855,6 +954,42 @@ public class AdminController {
 
 	}
 
+	public void bookingDropDown()  throws SQLException {
+		ArrayList<Booking> allBookings = TMS.getAllBookings();
+		if(bookingStatusDropDown.getValue().equals("All Bookings")) {
+			setAllBookingTable(allBookings);
+		} else if (bookingStatusDropDown.getValue().equals("Pending Bookings")) {
+
+			ArrayList<Booking> filteredBookings = allBookings.stream()
+			    .filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
+			    .collect(Collectors.toCollection(ArrayList::new));
+
+			setAllBookingTable(filteredBookings);
+		} else if (bookingStatusDropDown.getValue().equals("Confirmed Bookings")) {
+
+			ArrayList<Booking> filteredBookings = allBookings.stream()
+			    .filter(booking -> "Confirmed".equalsIgnoreCase(booking.getStatus()))
+			    .collect(Collectors.toCollection(ArrayList::new));
+
+			setAllBookingTable(filteredBookings);
+		} else if (bookingStatusDropDown.getValue().equals("Completed Bookings")) {
+
+			ArrayList<Booking> filteredBookings = allBookings.stream()
+			    .filter(booking -> "Completed".equalsIgnoreCase(booking.getStatus()))
+			    .collect(Collectors.toCollection(ArrayList::new));
+
+			setAllBookingTable(filteredBookings);
+		} else if (bookingStatusDropDown.getValue().equals("Cancelled Bookings")) {
+
+			ArrayList<Booking> filteredBookings = allBookings.stream()
+			    .filter(booking -> "Cancelled".equalsIgnoreCase(booking.getStatus()))
+			    .collect(Collectors.toCollection(ArrayList::new));
+
+			setAllBookingTable(filteredBookings);
+		}
+		
+	}
+	
 	private void removeAllButtonClasses() {
 		if (dashboardTab.getStyleClass().contains("tab-selected")) {
 			dashboardTab.getStyleClass().remove("tab-selected");
@@ -936,7 +1071,8 @@ public class AdminController {
 			bookingTab.getStyleClass().remove("tab");
 			bookingTab.getStyleClass().add("tab-selected");
 			BookingMainDiv.setVisible(true);
-			setAllBookingTable();
+			ArrayList<Booking> allBookings = TMS.getAllBookings();
+			setAllBookingTable(allBookings);
 		}
 	}
 
