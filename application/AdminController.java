@@ -161,7 +161,10 @@ public class AdminController {
 	@FXML
 	private TableColumn<TransportProvider, Void> actionTransportColumn;
 	
-	private TourismManagementSystem TMS;
+	private TourismManagementSystem TMS;	
+	private Tours editTourCurrent;
+
+	private boolean addTour;
 
 	public AdminController() throws SQLException {
 		TMS = new TourismManagementSystem();

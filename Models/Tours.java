@@ -8,6 +8,7 @@ public class Tours {
 	String TourDescription;
 	String Price;
 	String TransportID;
+	String TransportType;
 	String StartDate;
 	String Duration;
 	String GoogleMapLink;
@@ -17,6 +18,13 @@ public class Tours {
 		this.TourName  = TourName;
 		this.Bookings = Bookings;
 		this.Rating = Rating;
+	}
+	
+	public Tours(String TourName, String Price, String Duration, String TransportType) {
+		this.TourName  = TourName;
+		this.Price = Price;
+		this.Duration = Duration;
+		this.TransportType = TransportType;
 	}
 	
 	public Tours(String TourID,String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink , ArrayList<String> TourImages) {
