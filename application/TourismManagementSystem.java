@@ -27,6 +27,11 @@ public class TourismManagementSystem {
 		return topTours;
 	}
 	
+	public ArrayList<Tours> getTopTours2() throws SQLException {
+		ArrayList<Tours> topTours = DB.getTopTours2();
+		return topTours;
+	}
+	
 	public ArrayList<Tours> getAllTours() throws SQLException {
 		ArrayList<Tours> allTours = DB.getAllTours();
 		return allTours;

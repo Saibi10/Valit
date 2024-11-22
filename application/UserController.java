@@ -86,6 +86,19 @@ public class UserController implements Initializable {
 	private TableColumn<MyBooking, String> TourDesc;
 	@FXML
 	private TableColumn<MyBooking, Void> deleteAction;
+	
+	@FXML
+	private TableView<Tours> tourTable;
+	@FXML
+	private TableColumn<Tours, String> tourNameCol;
+	@FXML
+	private TableColumn<Tours, String> tourPriceCol;
+	@FXML
+	private TableColumn<Tours, String> tourDurationCol;
+	@FXML
+	private TableColumn<Tours, String> tourTransportCol;
+	@FXML
+	private TableColumn<Tours, Void> tourActionCol;
 
 	@FXML
 	private TextField locationBox;
@@ -187,6 +200,7 @@ public class UserController implements Initializable {
     		if(feature1Btn.getText() == "New Tours")
     		{
     			tourTablePane.setVisible(true);
+    			setToursTable();
     		}
     		else if(feature1Btn.getText() == "My Bookings")
     		{
@@ -202,7 +216,53 @@ public class UserController implements Initializable {
     			System.out.println("Contact Admin");
     		}
     }
+
+    public void feature2Click(ActionEvent actionEvent)
+    {
+    	SetVisibilityFalse();
+    	if(feature2Btn.getText() == "Popular Tours")
+		{
+			System.out.println("New Tours");
+		}
+		else if(feature2Btn.getText() == "Booking History")
+		{
+			System.out.println("My Bookings");
+		}
+		else if(feature2Btn.getText() == "Pending Requests")
+		{
+			System.out.println("Create Request");
+		}
+		else if(feature2Btn.getText() == "Transport Issue")
+		{
+			System.out.println("Contact Admin");
+		}
+    }
     
+    public void feature3Click(ActionEvent actionEvent)
+    {
+    	SetVisibilityFalse();
+    	if(feature3Btn.getText() == "Tour Reviews")
+		{
+			System.out.println("New Tours");
+		}
+		else if(feature3Btn.getText() == "Booking Reports")
+		{
+			System.out.println("My Bookings");
+		}
+		else if(feature3Btn.getText() == "Menu Issue")
+		{
+			System.out.println("Create Request");
+		}
+    }
+    
+    public void feature4Click(ActionEvent actionEvent)
+    {
+    	SetVisibilityFalse();
+    	if(feature4Btn.getText() == "My Tours")
+		{
+			System.out.println("New Tours");
+		}
+    }
     
     public void feature2Click(ActionEvent actionEvent) throws SQLException
     {
@@ -525,6 +585,11 @@ public class UserController implements Initializable {
         // Set font styling for the whole table
         myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");   
     }
+        // Set font styling for the whole table
+        myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+        
+    }
+    
 
     @FXML
     private void onCustomTourSubmit(ActionEvent actionEvent) {
@@ -535,5 +600,84 @@ public class UserController implements Initializable {
         System.out.println("Description: " + description);
 
         //SavetoDatabase()
+    }
+    
+    private void setToursTable() throws SQLException {
+        // Retrieve the list of bookings for the current user
+        ArrayList<Tours> tours = TMS.getTopTours2();
+
+        // Convert the list of bookings to an ObservableList
+        ObservableList<Tours> data = FXCollections.observableArrayList(tours);
+
+        // Set the value for each column to match the corresponding method in the MyBooking object
+        tourNameCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getTourName())
+        );
+     
+        tourPriceCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getPrice())
+        );
+     
+        tourDurationCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getDuration())
+        );
+
+        tourTransportCol.setCellValueFactory(cellData -> 
+        	new SimpleStringProperty(cellData.getValue().getTourName())
+        );
+        
+        tourActionCol.setCellFactory(column -> new TableCell<>() {
+            private final Button tourActionButton = new Button("Join");
+
+            {
+            	tourActionButton.setStyle(
+            		    "-fx-background-color: linear-gradient(to bottom, #FF7F50, #FF4500);" +
+            		    "-fx-text-fill: white;" +
+            		    "-fx-font-weight: bold;" +
+            		    "-fx-font-size: 14px;" +
+            		    "-fx-padding: 5px 20px;" +  // Reduced vertical padding
+            		    "-fx-background-radius: 15px;" +
+            		    "-fx-border-radius: 15px;" +
+            		    "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.3, 0, 2);"
+            		);
+            	
+                // Handle button click
+                tourActionButton.setOnAction(event -> {
+                    Tours tour = getTableView().getItems().get(getIndex());
+                    if (tour != null) {
+                        // Print the tour name and user ID
+                        System.out.println("Tour Name: " + tour.getTourName());
+                        System.out.println("User ID: " + UserId);
+
+                        // Optional: Remove the booking from the table
+                        getTableView().getItems().remove(tour);
+
+                        // Optional: Implement actual delete logic (e.g., delete from database)
+//                        try {
+//                            //TMS.deleteBooking(booking.getBookingId());
+//                        } catch (SQLException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(tourActionButton);
+                }
+            }
+        });
+        
+
+        // Apply the data to the table
+        tourTable.setItems(data);
+        // Set font styling for the whole table
+        tourTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+        
     }
 }
