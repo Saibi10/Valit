@@ -6,8 +6,6 @@ import Models.Tours;
 import Models.TransportProvider;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -16,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
@@ -28,8 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -58,7 +53,7 @@ public class AdminController {
 	private Pane transportMainDiv;
 	@FXML
 	private ScrollPane editTourMainDiv;
-
+	
 	@FXML
 	private Label headerEditTour;
 	@FXML
@@ -134,8 +129,6 @@ public class AdminController {
 	private TableColumn<Tours, String> bookingsTourColumn;
 	@FXML
 	private TableColumn<Tours, Void> actionColumn;
-	@FXML
-	private TableColumn<Tours, String> StatusTourColumn;
 
 	// ----------------------------TABLE
 
@@ -151,7 +144,7 @@ public class AdminController {
 	private TableColumn<Booking, String> statusBookingColumn;
 	@FXML
 	private TableColumn<Booking, Void> actionBookingColumn;
-
+	
 	// ----------------------------TABLE
 	@FXML
 	private TableView<TransportProvider> transportTable;
@@ -167,12 +160,8 @@ public class AdminController {
 	private TableColumn<TransportProvider, String> ratingTransportColumn;
 	@FXML
 	private TableColumn<TransportProvider, Void> actionTransportColumn;
-
+	
 	private TourismManagementSystem TMS;
-
-	private Tours editTourCurrent;
-
-	private boolean addTour;
 
 	public AdminController() throws SQLException {
 		TMS = new TourismManagementSystem();
@@ -224,17 +213,15 @@ public class AdminController {
 
 	}
 
-	private void setBackGroundColor(TableColumn<Tours, String> column) {
-		column.setCellFactory(col -> {
+	private void setBackGroundColor(TableColumn<Tours, String> test) {
+		test.setCellFactory(column -> {
 			return new TableCell<Tours, String>() {
 				@Override
 				protected void updateItem(String item, boolean empty) {
 					super.updateItem(item, empty);
 					if (empty || item == null) {
 						setText(null);
-						setStyle("-fx-background-color: #1F2937; -fx-border-color: transparent;"); // Set consistent
-																									// background color
-																									// for empty rows
+						setStyle(""); // Reset the style when the cell is empty
 					} else {
 						setText(item);
 						setStyle(
@@ -284,7 +271,7 @@ public class AdminController {
 			};
 		});
 	}
-
+	
 	private void setBackGroundColorTransportProvider(TableColumn<TransportProvider, String> test) {
 		test.setCellFactory(column -> {
 			return new TableCell<TransportProvider, String>() {
@@ -304,193 +291,96 @@ public class AdminController {
 		});
 	}
 
-	private void setAllToursTable(ArrayList<Tours> allTours) throws SQLException {
+	private void setAllToursTable() throws SQLException {
 
+		// ----------------------------------------
+
+		ArrayList<Tours> allTours = TMS.getAllTours();
 		ObservableList<Tours> data3 = FXCollections.observableArrayList(allTours);
 
-		// Set up other columns
-		nameTourColumn.setCellValueFactory(new PropertyValueFactory<>("TourName"));
+		nameTourColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("TourName"));
 		setBackGroundColor(nameTourColumn);
-		durationTourColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+		durationTourColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Duration"));
 		setBackGroundColor(durationTourColumn);
-		priceTourColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
+		priceTourColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Price"));
 		setBackGroundColor(priceTourColumn);
-		bookingsTourColumn.setCellValueFactory(new PropertyValueFactory<>("Bookings"));
-		setBackGroundColor(bookingsTourColumn);
-		StatusTourColumn.setCellValueFactory(new PropertyValueFactory<>("StartDate"));
+		bookingsTourColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Bookings"));
 		setBackGroundColor(bookingsTourColumn);
 
-		// Set StatusTourColumn
-		StatusTourColumn.setCellFactory(param -> new TableCell<>() {
-			private final Button statusButton = new Button();
-
-			{
-				// Set base styling for the button
-				statusButton.setStyle("-fx-font-size: 10px; " + // Smaller text
-						"-fx-font-weight: normal; " + // Normal font weight
-						"-fx-padding: 2px 5px; " + // Reduced padding
-						"-fx-border-radius: 5px; " + // Slightly rounded corners
-						"-fx-cursor: default;"); // No pointer cursor
-				statusButton.setFocusTraversable(false);
-				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-			}
-
-			@Override
-			protected void updateItem(String item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (empty) {
-					setGraphic(null);
-				} else {
-					// Get the tour associated with the current row
-					Tours tour = getTableView().getItems().get(getIndex());
-
-					try {
-						// Parse start date and duration
-						LocalDate startDate = LocalDate.parse(tour.getStartDate());
-						int durationDays = Integer.parseInt(tour.getDuration());
-						LocalDate endDate = startDate.plusDays(durationDays);
-						LocalDate today = LocalDate.now();
-
-						if (endDate.isAfter(today)) {
-							// Future or in-progress tour
-							statusButton.setText("Active");
-							statusButton.setStyle("-fx-background-color: #2563EB; " + // Blue background
-									"-fx-text-fill: white; " + // White text
-									"-fx-font-size: 14px; " + // Smaller text
-									"-fx-font-weight: bold; " + // Normal font weight
-									"-fx-padding: 2px 5px; " + // Reduced padding
-									"-fx-border-radius: 10px;");
-						} else {
-							// Completed tour
-							statusButton.setText("Completed");
-							statusButton.setStyle("-fx-background-color: #10B981; " + // Green background
-									"-fx-text-fill: white; " + // White text
-									"-fx-font-size: 14px; " + // Smaller text
-									"-fx-font-weight: bold; " + // Normal font weight
-									"-fx-padding: 2px 5px; " + // Reduced padding
-									"-fx-border-radius: 5px;");
-						}
-					} catch (Exception e) {
-						// Handle any parsing or logic errors
-						e.printStackTrace();
-					}
-
-					// Set the button as the graphic
-					setGraphic(statusButton);
-				}
-			}
-		});
-
-		// Set data to the table
 		tourTable.setItems(data3);
 
-		// Set action column (Edit/Delete buttons)
+		// Set a custom cellFactory for the action column
 		actionColumn.setCellFactory(param -> new TableCell<>() {
-			private final Button editButton = new Button();
-			private final Button deleteButton = new Button();
-			private final HBox buttonContainer = new HBox(10);
+		    private final Button editButton = new Button();
+		    private final Button deleteButton = new Button();
+		    private final HBox buttonContainer = new HBox(10); // HBox to hold the buttons, with spacing
 
-			{
-				// Setup edit button
-				Image editImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-edit-64.png"));
-				ImageView editImageView = new ImageView(editImage);
-				editImageView.setFitWidth(20);
-				editImageView.setFitHeight(20);
-				editButton.setGraphic(editImageView);
-				editButton.getStyleClass().add("table-button");
+		    {
+		    	this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+		        // Edit Button
+		        Image editImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-edit-64.png"));
+		        ImageView editImageView = new ImageView(editImage);
+		        editImageView.setFitWidth(20); // Set image width
+		        editImageView.setFitHeight(20); // Set image height
+		        editButton.setGraphic(editImageView);
+		        editButton.getStyleClass().add("table-button"); // Add style class for the button
 
-				// Setup delete button
-				Image deleteImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-delete-48.png"));
-				ImageView deleteImageView = new ImageView(deleteImage);
-				deleteImageView.setFitWidth(20);
-				deleteImageView.setFitHeight(20);
-				deleteButton.setGraphic(deleteImageView);
-				deleteButton.getStyleClass().add("table-button");
+		        // Delete Button
+		        Image deleteImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-delete-48.png"));
+		        ImageView deleteImageView = new ImageView(deleteImage);
+		        deleteImageView.setFitWidth(20); // Set image width
+		        deleteImageView.setFitHeight(20); // Set image height
+		        deleteButton.setGraphic(deleteImageView);
+		        deleteButton.getStyleClass().add("table-button"); // Add style class for the button
 
-				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+		        // Set up actions for buttons
+		        editButton.setOnAction(event -> {
+		            Tours selectedTour = getTableView().getItems().get(getIndex());
+		            System.out.println("Edit button clicked for: " + selectedTour.getTourImages());
+		            hideAllPane();
+		            editTourMainDiv.setVisible(true);
+		            headerEditTour.setText(selectedTour.getTourName());
+		            bookingEditTour.setText(selectedTour.getBookings());
+		            tourNameEditTour.setText(selectedTour.getTourName());
+		            descriptionEditTour.setText(selectedTour.getTourDescription());
+		            priceEditTour.setText(selectedTour.getPrice());
+		            duarationEditTour.setText(selectedTour.getDuration());
+		            googleMapEditTour.setText(selectedTour.getGoogleMapLink());
+		            ArrayList<String> img = selectedTour.getTourImages();
+		            if(img.size() > 0) {
+		            	textImage1EditTour.setText(img.get(0));
+		            	image1.setImage(new Image(getClass().getResourceAsStream(img.get(0))));
+		            }
+		            if(img.size() > 1) {
+		            	textImage2EditTour.setText(img.get(1));
+		            	image2.setImage(new Image(getClass().getResourceAsStream(img.get(1))));
+		            }
+		            if(img.size() > 2) {
+		            	textImage3EditTour.setText(img.get(2));
+		            	image3.setImage(new Image(getClass().getResourceAsStream(img.get(2))));	
+		            }
+		            
+		        });
 
-				// Add actions for buttons
-				editButton.setOnAction(event -> {
-					try {
-						Tours selectedTour = getTableView().getItems().get(getIndex());
-						editTourCurrent = selectedTour;
-						System.out.println("Edit button clicked for: " + selectedTour.getTourImages());
-						hideAllPane();
-						editTourButton.setText("Save Changes");
-						addTour = false;
-						editTourMainDiv.setVisible(true);
-						headerEditTour.setText(selectedTour.getTourName());
-						bookingEditTour.setText(selectedTour.getBookings());
-						tourNameEditTour.setText(selectedTour.getTourName());
-						descriptionEditTour.setText(selectedTour.getTourDescription());
-						priceEditTour.setText(selectedTour.getPrice());
-						duarationEditTour.setText(selectedTour.getDuration());
-						googleMapEditTour.setText(selectedTour.getGoogleMapLink());
-						ArrayList<String> img = selectedTour.getTourImages();
-						if (img.size() > 0) {
-							textImage1EditTour.setText(img.get(0));
-							image1.setImage(new Image(getClass().getResourceAsStream(img.get(0))));
-						}
-						if (img.size() > 1) {
-							textImage2EditTour.setText(img.get(1));
-							image2.setImage(new Image(getClass().getResourceAsStream(img.get(1))));
-						}
-						if (img.size() > 2) {
-							textImage3EditTour.setText(img.get(2));
-							image3.setImage(new Image(getClass().getResourceAsStream(img.get(2))));
-						}
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-						LocalDate localDate = LocalDate.parse(selectedTour.getStartDate());
-						tourDateEditTour.setValue(localDate);
+		        deleteButton.setOnAction(event -> {
+		            Tours selectedTour = getTableView().getItems().get(getIndex());
+		            System.out.println("Delete button clicked for: " + selectedTour.getTourName());
+		            // Add your delete logic here
+		        });
 
-						ArrayList<TransportProvider> allTransportProviders = TMS.getAllTransportProviders();
+		        // Add buttons to the HBox
+		        buttonContainer.getChildren().addAll(editButton, deleteButton);
+		    }
 
-						transportProviderEditTour.getItems().clear();
-
-						for (TransportProvider provider : allTransportProviders) {
-							String formattedProvider = provider.getName() + " | " + provider.getVehicleTypes() + " | "
-									+ provider.getContact() + " | " + provider.getRating();
-							transportProviderEditTour.getItems().add(formattedProvider);
-
-							// Set selected item based on TransportID
-							if (provider.getID().equals(selectedTour.getTransportID())) {
-								transportProviderEditTour.setValue(formattedProvider);
-							}
-						}
-
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				});
-
-				deleteButton.setOnAction(event -> {
-					Tours selectedTour = getTableView().getItems().get(getIndex());
-					System.out.println("Delete button clicked for: " + selectedTour.getTourName());
-					TMS.deleteTour(selectedTour.getTourID());
-					hideAllPane();
-					removeAllButtonClasses();
-					toursTab.getStyleClass().remove("tab-selected");
-					toursTab.getStyleClass().add("tab");
-					try {
-						toursSelected();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				});
-
-				buttonContainer.getChildren().addAll(editButton, deleteButton);
-			}
-
-			@Override
-			protected void updateItem(Void item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty) {
-					setGraphic(null);
-				} else {
-					setGraphic(buttonContainer);
-				}
-			}
+		    @Override
+		    protected void updateItem(Void item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (empty) {
+		            setGraphic(null);
+		        } else {
+		            setGraphic(buttonContainer);
+		        }
+		    }
 		});
 	}
 
@@ -509,6 +399,31 @@ public class AdminController {
 
 		statusBookingColumn.setCellFactory(column -> new TableCell<Booking, String>() {
 		    private final Button statusButton = new Button();
+		statusBookingColumn.setCellFactory(column -> {
+			return new TableCell<Booking, String>() {
+				private final Button statusButton = new Button();
+				{
+					// Button styling
+					statusButton.setStyle("-fx-background-color: #2563EB; " + "-fx-text-fill: white; "
+							+ "-fx-border-color: transparent; " + "-fx-font-size: 12px; " + // Adjust font size
+							"-fx-font-weight: bold; " + // Bold text
+							"-fx-padding: 3 8; " + // Reduce padding for smaller button size
+							"-fx-border-radius: 10; " + // Rounded edges
+							"-fx-background-radius: 4;"); // Match border radius for button shape
+					statusButton.setPrefHeight(20); // Adjust height
+
+					statusButton.setOnMouseEntered(event -> statusButton.setStyle("-fx-background-color: #1E3A8A; "
+							+ "-fx-text-fill: white; " + "-fx-border-color: transparent; " + "-fx-font-size: 12px; "
+							+ "-fx-font-weight: bold; " + "-fx-padding: 3 8; " + "-fx-border-radius: 4; "
+							+ "-fx-background-radius: 4;"));
+					
+					statusButton.setOnMouseExited(event -> statusButton.setStyle("-fx-background-color: #2563EB; "
+							+ "-fx-text-fill: white; " + "-fx-border-color: transparent; " + "-fx-font-size: 12px; "
+							+ "-fx-font-weight: bold; " + "-fx-padding: 3 8; " + "-fx-border-radius: 4; "
+							+ "-fx-background-radius: 4;"));
+					this.setStyle(
+							"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+				}
 
 		    {
 		        // Base styling for the button
@@ -572,10 +487,22 @@ public class AdminController {
 		            setGraphic(statusButton);
 		        }
 		    }
+					if (empty || item == null) {
+		                setGraphic(null);
+		            } else {
+		                // Set button text based on status
+		                statusButton.setText(item);
+		                
+		               
+
+		                setGraphic(statusButton);
+		            }
+				}
+			};
 		});
 
 		bookingTable.setItems(data);
-
+		
 		actionBookingColumn.setCellFactory(column -> new TableCell<Booking, Void>() {
 			private final ComboBox<String> actionComboBox = new ComboBox<>();
 
@@ -601,6 +528,73 @@ public class AdminController {
 						}
 					}
 				});
+		    {
+		        // Add your options
+		        actionComboBox.getItems().addAll("Confirm Booking", "Cancel Booking");
+
+		        // Apply base style for the ComboBox
+		        actionComboBox.setStyle("-fx-background-color: #374151; " +
+		                                "-fx-text-fill: #9CA3AF; " +
+		                                "-fx-border-color: transparent; " +
+		                                "-fx-font-size: 12px; " +
+		                                "-fx-font-weight: bold;");
+		        
+		        this.setStyle(
+						"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+
+		        // Custom cell factory for dropdown items with hover effect
+		        actionComboBox.setCellFactory(listView -> new ListCell<>() {
+		            @Override
+		            protected void updateItem(String item, boolean empty) {
+		                super.updateItem(item, empty);
+		                if (empty || item == null) {
+		                    setText(null);
+		                    setStyle(null);
+		                } else {
+		                    setText(item);
+		                    setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
+		                             "-fx-font-size: 12px; -fx-font-weight: bold;");
+
+		                    // Add hover effect
+		                    setOnMouseEntered(event -> {
+		                        setStyle("-fx-background-color: #1F2937; -fx-text-fill: #9CA3AF; " +
+		                                 "-fx-font-size: 12px; -fx-font-weight: bold;");
+		                    });
+
+		                    setOnMouseExited(event -> {
+		                        setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
+		                                 "-fx-font-size: 12px; -fx-font-weight: bold;");
+		                    });
+		                }
+		            }
+		        });
+
+		        // Apply style to the displayed value
+		        actionComboBox.setButtonCell(new ListCell<>() {
+		            @Override
+		            protected void updateItem(String item, boolean empty) {
+		                super.updateItem(item, empty);
+		                if (empty || item == null) {
+		                    setText(null);
+		                } else {
+		                    setText(item);
+		                    setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
+		                             "-fx-font-size: 12px; -fx-font-weight: bold;");
+		                }
+		            }
+		        });
+
+		        // Handle ComboBox actions
+		        actionComboBox.setOnAction(event -> {
+		            String selectedAction = actionComboBox.getValue();
+		            Booking booking = getTableView().getItems().get(getIndex());
+		            if ("Confirm Booking".equals(selectedAction)) {
+		                // Add logic to confirm the booking
+		            } else if ("Cancel Booking".equals(selectedAction)) {
+		                // Add logic to cancel the booking
+		            }
+		        });
+		    }
 
 				// Style dropdown items
 				actionComboBox.setCellFactory(listView -> new ListCell<>() {
@@ -682,19 +676,42 @@ public class AdminController {
 					setGraphic(actionComboBox); // Set the ComboBox as the cell's graphic
 				}
 			}
+		            // Add default option
+		            actionComboBox.getItems().add("Select Action");
+		            actionComboBox.setValue("Select Action"); // Set it as the default value
+
+		            // Add dynamic options based on status
+		            if ("Pending".equalsIgnoreCase(booking.getStatus())) {
+		                actionComboBox.getItems().addAll("Confirm Booking", "Cancel Booking");
+		            } else if ("Completed".equalsIgnoreCase(booking.getStatus())) {
+		                actionComboBox.getItems().add("Cancel Booking");
+		            }
+
+		            // Prevent "Select Action" from being reselected
+		            actionComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+		                if ("Select Action".equals(newVal)) {
+		                    actionComboBox.getSelectionModel().clearSelection();
+		                }
+		            });
+		            
+		            actionComboBox.setPrefWidth(150); // Fixed width
+		            actionComboBox.setPrefHeight(30); // Fixed height
+
+		            setGraphic(actionComboBox);
+		        }
+		    }
 		});
 
 	}
 
 	private void setAllTransportProvider() throws SQLException {
 		ArrayList<TransportProvider> allTransportProvider = TMS.getAllTransportProviders();
-
+		
 		ObservableList<TransportProvider> data3 = FXCollections.observableArrayList(allTransportProvider);
 
 		nameTransportColumn.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("Name"));
 		setBackGroundColorTransportProvider(nameTransportColumn);
-		vehicleTypeTransportColumn
-				.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("VehicleTypes"));
+		vehicleTypeTransportColumn.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("VehicleTypes"));
 		setBackGroundColorTransportProvider(vehicleTypeTransportColumn);
 		fleetSizeTransportColumn.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("FleetSize"));
 		setBackGroundColorTransportProvider(fleetSizeTransportColumn);
@@ -704,7 +721,7 @@ public class AdminController {
 		setBackGroundColorTransportProvider(ratingTransportColumn);
 
 		transportTable.setItems(data3);
-
+		
 		actionTransportColumn.setCellFactory(param -> new TableCell<>() {
 			private final Button editButton = new Button();
 			private final Button deleteButton = new Button();
@@ -927,31 +944,55 @@ public class AdminController {
 			// Filter completed tours
 			LocalDate today = LocalDate.now();
 			ArrayList<Tours> completedTours = new ArrayList<>();
+		    private final Button editButton = new Button();
+		    private final Button deleteButton = new Button();
+		    private final HBox buttonContainer = new HBox(10); // HBox to hold the buttons, with spacing
 
-			for (Tours tour : allTours) {
-				LocalDate startDate = LocalDate.parse(tour.getStartDate()); // Assuming startDate is in ISO format
-																			// (yyyy-MM-dd)
-				int durationDays = Integer.parseInt(tour.getDuration());
-				LocalDate endDate = startDate.plusDays(durationDays);
+		    {
+		    	this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+		        // Edit Button
+		        Image editImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-edit-64.png"));
+		        ImageView editImageView = new ImageView(editImage);
+		        editImageView.setFitWidth(20); // Set image width
+		        editImageView.setFitHeight(20); // Set image height
+		        editButton.setGraphic(editImageView);
+		        editButton.getStyleClass().add("table-button"); // Add style class for the button
 
-				// Add to completed tours if the end date is before today
-				if (endDate.isBefore(today)) {
-					completedTours.add(tour);
-				}
-			}
+		        // Delete Button
+		        Image deleteImage = new Image(getClass().getResourceAsStream("..\\icons\\icons8-delete-48.png"));
+		        ImageView deleteImageView = new ImageView(deleteImage);
+		        deleteImageView.setFitWidth(20); // Set image width
+		        deleteImageView.setFitHeight(20); // Set image height
+		        deleteButton.setGraphic(deleteImageView);
+		        deleteButton.getStyleClass().add("table-button"); // Add style class for the button
 
-			// Pass the completed tours to the table
-			setAllToursTable(completedTours);
+		        // Set up actions for buttons
+		        editButton.setOnAction(event -> {
+		            TransportProvider selectedProvider = getTableView().getItems().get(getIndex());
+		            System.out.println("Edit button clicked for: " + selectedProvider.getName());
+		            // Add your edit logic here
+		        });
 
-		} else {
-			showCompletedButton.setText("Show Completed");
-			hideAllPane();
-			removeAllButtonClasses();
-			toursTab.getStyleClass().remove("tab-selected");
-			toursTab.getStyleClass().add("tab");
-			toursSelected();
-		}
+		        deleteButton.setOnAction(event -> {
+		            TransportProvider selectedProvider = getTableView().getItems().get(getIndex());
+		            System.out.println("Delete button clicked for: " + selectedProvider.getName());
+		            // Add your delete logic here
+		        });
 
+		        // Add buttons to the HBox
+		        buttonContainer.getChildren().addAll(editButton, deleteButton);
+		    }
+
+		    @Override
+		    protected void updateItem(Void item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (empty) {
+		            setGraphic(null);
+		        } else {
+		            setGraphic(buttonContainer);
+		        }
+		    }
+		});
 	}
 
 	public void bookingDropDown()  throws SQLException {
@@ -1006,8 +1047,6 @@ public class AdminController {
 		} else if (settingsTab.getStyleClass().contains("tab-selected")) {
 			settingsTab.getStyleClass().remove("tab-selected");
 			settingsTab.getStyleClass().add("tab");
-		} else {
-			return;
 		}
 	}
 
@@ -1036,30 +1075,7 @@ public class AdminController {
 			hideAllPane();
 			toursTab.getStyleClass().remove("tab");
 			toursTab.getStyleClass().add("tab-selected");
-
-			try {
-				ArrayList<Tours> allTours = TMS.getAllTours();
-
-				// Get the current date
-				LocalDate today = LocalDate.now();
-
-				// Filter tours with start dates in the future
-				ArrayList<Tours> futureTours = new ArrayList<>();
-				for (Tours tour : allTours) {
-					LocalDate startDate = LocalDate.parse(tour.getStartDate()); // Assuming startDate is in ISO format
-																				// (yyyy-MM-dd)
-					if (startDate.isAfter(today)) { // Check if the start date is after today
-						futureTours.add(tour);
-					}
-				}
-
-				// Send future tours to the table
-				this.setAllToursTable(futureTours);
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.println("Error while fetching or filtering tours: " + e.getMessage());
-			}
-
+			this.setAllToursTable();
 			toursMainDiv.setVisible(true);
 		}
 	}
@@ -1085,7 +1101,7 @@ public class AdminController {
 		}
 	}
 
-	public void transportSelected() throws SQLException {
+	public void transportSelected()throws SQLException  {
 		if (transportTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
 			hideAllPane();
