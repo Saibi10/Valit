@@ -170,8 +170,6 @@ public class AdminController {
 
 	private TourismManagementSystem TMS;
 
-	private Tours editTourCurrent;
-
 	private boolean addTour;
 
 	public AdminController() throws SQLException {
