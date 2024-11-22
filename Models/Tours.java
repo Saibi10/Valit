@@ -2,7 +2,6 @@ package Models;
 import java.util.ArrayList;
 
 public class Tours {
-	String TourID;
 	String TourName;
 	String Bookings;
 	String Rating;
@@ -21,8 +20,6 @@ public class Tours {
 		this.Rating = Rating;
 	}
 	
-	public Tours(String TourID,String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink , ArrayList<String> TourImages) {
-		this.TourID = TourID;
 	public Tours(String TourName, String Price, String Duration, String TransportType) {
 		this.TourName  = TourName;
 		this.Price = Price;
@@ -31,6 +28,7 @@ public class Tours {
 	}
 	
 	public Tours(String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink , ArrayList<String> TourImages) {
+		this.TourName  = TourName;
 		this.Bookings = Bookings;
 		this.Rating = Rating;
 		this.TourDescription = TourDescription;
@@ -40,23 +38,6 @@ public class Tours {
 		this.Duration = Duration;
 		this.GoogleMapLink = GoogleMapLink;
 		this.TourImages = TourImages;
-	}
-	public Tours(String TourID, String tourName, String bookings, String description, String price, String duration, String googleMapLink, String startDate, String transportProviderID, ArrayList<String>tourImages) {
-		this.TourID = TourID;
-		this.TourName  = tourName;
-		this.Bookings = bookings;
-		this.TourDescription = description;
-		this.Price = price;
-		this.TransportID = transportProviderID;
-		this.StartDate = startDate;
-		this.Duration = duration;
-		this.GoogleMapLink = googleMapLink;
-		this.TourImages = tourImages;
-	}
-	
-	
-	public String getTourID() {
-		return TourID;
 	}
 	
 	public String getTourName() 
