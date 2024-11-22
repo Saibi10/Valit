@@ -13,8 +13,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.awt.Image;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,12 +72,14 @@ public class UserController implements Initializable {
 	private TableColumn<MyBooking, String> StartDate;
 	@FXML
 	private TableColumn<MyBooking, String> TourDesc;
+	@FXML
+	private TableColumn<MyBooking, Void> deleteAction;
 
-	
+	@FXML
 	private TextField locationBox;
 	@FXML
 	private TextField descriptionBox;
-
+	@FXML
 	private TourismManagementSystem TMS;
 	
 	private int UserId = 1; // Assuming Userid = 1 is logged in right now
@@ -96,6 +100,10 @@ public class UserController implements Initializable {
     	
     	SetVisibilityFalse();
     	customTourSubmit.setOnAction(event -> onCustomTourSubmit(event));
+    	feature1Btn.setText("New Tours");
+		feature2Btn.setText("Popular Tours");
+		feature3Btn.setText("Tour Reviews");
+		feature4Btn.setText("My Tours");
     }
 
     
@@ -176,45 +184,6 @@ public class UserController implements Initializable {
     		}
     }
     
-    private void setBackGroundColorString(TableColumn<MyBooking, String> test) {
-		test.setCellFactory(column -> {
-			return new TableCell<MyBooking, String>() {
-				@Override
-				protected void updateItem(String item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty || item == null) {
-						setText(null);
-						setStyle(""); // Reset the style when the cell is empty
-					} else {
-						setText(item);
-						setStyle(
-								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-					}
-				}
-			};
-		});
-	}
-    
-    private void setBackGroundColorDouble(TableColumn<MyBooking, Double> test) {
-        test.setCellFactory(column -> {
-            return new TableCell<MyBooking, Double>() {
-                @Override
-                protected void updateItem(Double item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                        setStyle(""); // Reset the style when the cell is empty
-                    } else {
-                        setText(String.format("%.2f", item)); // Format the Double value as a string (e.g., 12.34)
-                        setStyle(
-                                "-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-                    }
-                }
-            };
-        });
-    }
-
-   
     
     private void setMyBookingsTable() throws SQLException {
         // Retrieve the list of bookings for the current user
@@ -227,49 +196,77 @@ public class UserController implements Initializable {
         TourName.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getTourName())
         );
-        setBackGroundColorString(TourName);
+     
         BookingDate.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getBookingDate())
         );
-        setBackGroundColorString(BookingDate);
+     
         Price.setCellValueFactory(cellData -> 
             new SimpleDoubleProperty(cellData.getValue().getTourPrice()).asObject()
         );
-        setBackGroundColorDouble(Price);
+
         StartDate.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getStartDate())
         );
-        setBackGroundColorString(StartDate);
+       
         TourDesc.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getTourDescription())
         );
-        setBackGroundColorString(TourDesc);
+        
+        
+        deleteAction.setCellFactory(column -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                deleteButton.setStyle("-fx-background-color: #FF5C5C; -fx-text-fill: white; -fx-font-weight: bold;");
+
+                // Handle button click
+                deleteButton.setOnAction(event -> {
+                    MyBooking booking = getTableView().getItems().get(getIndex());
+                    if (booking != null) {
+                        // Print the tour name and user ID
+                        System.out.println("Tour Name: " + booking.getTourName());
+                        System.out.println("User ID: " + UserId);
+
+                        // Optional: Remove the booking from the table
+                        getTableView().getItems().remove(booking);
+
+                        // Optional: Implement actual delete logic (e.g., delete from database)
+//                        try {
+//                            //TMS.deleteBooking(booking.getBookingId());
+//                        } catch (SQLException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+        
 
         // Apply the data to the table
         myBookingsTable.setItems(data);
 
-        // Add alternating row colors
-        myBookingsTable.setRowFactory(tv -> {
-            TableRow<MyBooking> row = new TableRow<>();
-            row.setStyle("-fx-background-color: #f9f9f9;"); // Default background color for rows
-            row.setOnMouseEntered(event -> row.setStyle("-fx-background-color: #e2e2e2;")); // Hover effect
-            row.setOnMouseExited(event -> row.setStyle("-fx-background-color: #f9f9f9;")); // Reset on exit
-            return row;
-        });
-
-        // Style table headers
-        myBookingsTable.getColumns().forEach(column -> {
-            column.setStyle("-fx-font-weight: bold; -fx-background-color: #1F2937; -fx-text-fill: #F3F4F6;");
-        });
-
-        // Optional: Set padding and borders for cells
-        myBookingsTable.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1px;");
 
         // Set font styling for the whole table
         myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+        
+       
+        
+        
+        
     }
 
-
+   
 
     
     @FXML

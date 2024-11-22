@@ -10,6 +10,8 @@ select * from Booking
 
 select * from Tour
 
+select * from Users
+
 select * from TransportProvider
 
-select * from TourImages
+select * from TourImages	

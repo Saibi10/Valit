@@ -1,8 +1,48 @@
+/* Default button style */
+.hover-button {
+    -fx-background-color:  #1F2937; /* Base color */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-cursor: hand; /* Change cursor to pointer on hover */
+    -fx-effect: null; /* Remove shadow */
+}
+
+/* Hover effect */
+.hover-button:hover {
+    -fx-background-color: #5159e4; /* Highlighted color */
+    -fx-border-color: #ffffff; /* Border color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 10, 0.5, 0, 0); /* Add glow */
+}
+
+.hover-button:pressed {
+    -fx-background-color: #1a1a4b; /* Darker color when pressed */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 8, 0.7, 0, 0); /* Subtle shadow shrink */
+    -fx-translate-y: 2px; /* Simulates button press movement */
+}
+
+.transparent-button {
+    -fx-background-color: transparent; /* Remove button background */
+    -fx-border-color: transparent;    /* No borders */
+    -fx-padding: 10;                  /* Optional padding */
+}
+
+.background-match {
+    -fx-background-color: #02030A; /* Match parent background */
+    -fx-border-color: transparent;
+}
+
+
 .button
 {
 -fx-background-color : #05071F;
 -fx-text-fill : #e7e5e5;
 }
+
+
 .button:hover{
 -fx-background-color : #10165F;
 }
@@ -13,14 +53,19 @@
 
 .buttonRight
 {
--fx-background-color : #02030A;
+-fx-background-color :  #111827;
+
 }
 .buttonRight:hover{
--fx-background-color : #10165F;
+	-fx-background-color: #5159e4; /* Highlighted color */
+    -fx-border-color: #ffffff; /* Border color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 10, 0.5, 0, 0); /* Add glow */
 }
 .buttonRight:pressed
 {
--fx-background-color : #1620A1;
+	-fx-background-color: #1a1a4b; /* Darker color when pressed */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 8, 0.7, 0, 0); /* Subtle shadow shrink */
+    -fx-translate-y: 2px; /* Simulates button press movement */
 }
 
 .scroll-pane {
@@ -52,3 +97,105 @@
 .scroll-pane > .corner {
     -fx-background-color: black;
 }
+
+
+/* Set the background color for the entire table */
+.table-view {
+    -fx-background-color: #1F2937; /* Set background color */
+    -fx-border-radius: 10px; /* Optional: rounded corners */
+    -fx-padding: 10px; /* Optional: padding around the table */
+}
+
+/* Style the column header to ensure white text */
+.table-view .column-header,
+.table-view .column-header-background {
+    -fx-background-color: #1F2937; /* Set background color for the header */
+    -fx-text-fill: #FFFFFF; /* Set the text color for the header */
+    -fx-font-weight: bold; /* Make the header text bold */
+    -fx-font-size: 14px; /* Optional: Adjust font size */
+}
+
+/* Set the background color for each cell */
+.table-view .table-cell {
+    -fx-background-color: #1F2937; /* Background color for cells */
+    -fx-text-fill: #FFFFFF; /* White text */
+    -fx-border-color: transparent; /* Remove borders between cells */
+    -fx-padding: 10px; /* Add padding inside the cells */
+}
+
+/* Set the background color for each row */
+.table-view .table-row-cell {
+    -fx-background-color: #1F2937; /* Row background color */
+    -fx-text-fill: white; /* Text color for rows */
+    -fx-padding: 10px 0; /* Add vertical padding for more space between rows */
+    -fx-border-width: 0 0 1px 0; /* Border only on the bottom */
+    -fx-border-color: transparent; /* Default border is transparent */
+}
+
+
+.table-view .table-row-cell:nth-child(even) {
+    -fx-background-color: #2C3A47; /* Slightly different color for even rows */
+}
+/* Optional: Style alternating row colors */
+.table-view .table-row-cell:filled {
+    -fx-border-color: white; /* Add white border for rows with content */
+}
+
+/* Make horizontal scroll bar invisible */
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+}
+
+.rounded-pane {
+    -fx-background-color: #1F2937; /* Background color */
+    -fx-background-radius: 15; /* Rounded corners for the background */
+    -fx-border-color: white; /* White border */
+    -fx-border-width: 1; /* Thickness of the border */
+    -fx-border-radius: 15; /* Rounded corners for the border */
+    -fx-padding: 10; /* Optional: Padding inside the pane */
+
+}
+
+.text-area {
+    -fx-background-color: #374151;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-alignment: top-left;
+}
+
+/* Focus effect for input fields */
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #2563EB;
+}
+
+/* Label styling */
+.label {
+    -fx-text-fill: #E5E7EB;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Submit button styling */
+.button2 {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for the button */
+.button2:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+
+
