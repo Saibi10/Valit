@@ -41,4 +41,15 @@ public class TourismManagementSystem {
 		return allTransportProvider;
 	}
 	
+	public void updateTour(Tours tour) {
+		DB.updateTour(tour);
+	}
+	
+	public void addNewTour(Tours tour) {
+		DB.addNewTour(tour);
+	}
+	
+	public void deleteTour(String tour) {
+		DB.deleteTourByID(tour);
+	}
 }

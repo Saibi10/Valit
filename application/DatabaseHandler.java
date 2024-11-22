@@ -76,7 +76,7 @@ public class DatabaseHandler {
         ArrayList<Tours> toursList = new ArrayList<>();
 
         // Updated query to join with TourImages and aggregate images
-        String query = "SELECT " +
+        String query = "SELECT t.TourID, " +
                        "t.TourName, " +
                        "t.TourPrice, " +
                        "t.TransportID, " +
@@ -90,7 +90,7 @@ public class DatabaseHandler {
                        "FROM Tour t " +
                        "LEFT JOIN Booking b ON t.TourID = b.TourID " +
                        "LEFT JOIN TourImages ti ON t.TourID = ti.TourID " + // Join with TourImages
-                       "GROUP BY " +
+                       "GROUP BY t.TourID, " +
                        "t.TourName, " +
                        "t.TourPrice, " +
                        "t.TransportID, " +
@@ -102,6 +102,7 @@ public class DatabaseHandler {
         ResultSet rs = st.executeQuery(query);
 
         while (rs.next()) {
+        	String TourID = rs.getString("TourID");
             String tourName = rs.getString("TourName");
             String bookings = rs.getString("Bookings");
             String rating = rs.getString("AverageRating");
@@ -123,7 +124,7 @@ public class DatabaseHandler {
             }
 
             // Create a Tours object and add it to the list
-            Tours tour = new Tours(tourName, bookings, rating, tourDescription, tourPrice, transportID, startDate, duration, googleMapLink , imagesList);
+            Tours tour = new Tours(TourID,tourName, bookings, rating, tourDescription, tourPrice, transportID, startDate, duration, googleMapLink , imagesList);
             toursList.add(tour);
         }
 
@@ -161,10 +162,11 @@ public class DatabaseHandler {
     public ArrayList<TransportProvider> getAllTransportProviders() {
         ArrayList<TransportProvider> transportProvidersList = new ArrayList<>();
 
-        String query = "SELECT Name, Rating, FleetSize, Contact, VehicleTypes FROM TransportProvider";
+        String query = "SELECT ID ,Name, Rating, FleetSize, Contact, VehicleTypes FROM TransportProvider";
 
         try (ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
+            	String ID = rs.getString("ID");
                 String name = rs.getString("Name");
                 String rating = rs.getString("Rating");
                 String fleetSize = rs.getString("FleetSize");
@@ -172,7 +174,7 @@ public class DatabaseHandler {
                 String vehicleTypes = rs.getString("VehicleTypes");
 
                 // Create a TransportProvider object and add it to the list
-                TransportProvider transportProvider = new TransportProvider(name, rating, fleetSize, contact, vehicleTypes);
+                TransportProvider transportProvider = new TransportProvider(ID,name, rating, fleetSize, contact, vehicleTypes);
                 transportProvidersList.add(transportProvider);
             }
         } catch (SQLException e) {
@@ -181,4 +183,184 @@ public class DatabaseHandler {
 
         return transportProvidersList;
     }
+    
+    public boolean updateTour(Tours tour) {
+        String updateQuery = "UPDATE Tour SET " +
+                             "TourName = ?, " +
+                             "TourPrice = ?, " +
+                             "TransportID = ?, " +
+                             "StartDate = ?, " +
+                             "TourDescription = ?, " +
+                             "Duration = ?, " +
+                             "GoogleMapLink = ? " +
+                             "WHERE TourID = ?";
+
+        String deleteImagesQuery = "DELETE FROM TourImages WHERE TourID = ?";
+        String insertImagesQuery = "INSERT INTO TourImages (TourID, ImagePath) VALUES (?, ?)";
+        
+        System.out.println("Tour GoogleMapLink: " + tour.getGoogleMapLink());
+        
+        try {
+            // Start a transaction
+            con.setAutoCommit(false);
+
+            // Update the Tour table
+            try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+                updateStmt.setString(1, tour.getTourName());
+                updateStmt.setString(2, tour.getPrice());
+                updateStmt.setString(3, tour.getTransportID());
+                updateStmt.setString(4, tour.getStartDate());
+                updateStmt.setString(5, tour.getTourDescription());
+                updateStmt.setString(6, tour.getDuration());
+                updateStmt.setString(7, tour.getGoogleMapLink());
+                updateStmt.setString(8, tour.getTourID());
+
+                updateStmt.executeUpdate();
+            }
+            
+        
+            // Delete existing images for the tour
+            try (PreparedStatement deleteStmt = con.prepareStatement(deleteImagesQuery)) {
+                deleteStmt.setString(1, tour.getTourID());
+                deleteStmt.executeUpdate();
+            }
+
+            // Insert new images for the tour
+            try (PreparedStatement insertStmt = con.prepareStatement(insertImagesQuery)) {
+                for (String imagePath : tour.getTourImages()) {
+                    insertStmt.setString(1, tour.getTourID());
+                    insertStmt.setString(2, imagePath);
+                    insertStmt.addBatch();
+                }
+                insertStmt.executeBatch();
+            }
+
+            // Commit the transaction
+            con.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                con.rollback(); // Roll back the transaction in case of an error
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.setAutoCommit(true); // Restore auto-commit mode
+            } catch (SQLException autoCommitEx) {
+                autoCommitEx.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean addNewTour(Tours tour) {
+        String insertTourQuery = "INSERT INTO Tour (TourName, TourPrice, TransportID, StartDate, TourDescription, Duration, GoogleMapLink) " +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertImagesQuery = "INSERT INTO TourImages (TourID, ImagePath) VALUES (?, ?)";
+
+        try {
+            con.setAutoCommit(false);
+
+            // Step 1: Insert into Tour table
+            int generatedTourID;
+            try (PreparedStatement insertTourStmt = con.prepareStatement(insertTourQuery, Statement.RETURN_GENERATED_KEYS)) {
+                insertTourStmt.setString(1, tour.getTourName());
+                insertTourStmt.setString(2, tour.getPrice());
+                insertTourStmt.setString(3, tour.getTransportID());
+                insertTourStmt.setString(4, tour.getStartDate());
+                insertTourStmt.setString(5, tour.getTourDescription());
+                insertTourStmt.setString(6, tour.getDuration());
+                insertTourStmt.setString(7, tour.getGoogleMapLink());
+
+                int affectedRows = insertTourStmt.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new SQLException("Creating tour failed, no rows affected.");
+                }
+
+                // Get the generated TourID
+                try (ResultSet generatedKeys = insertTourStmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedTourID = generatedKeys.getInt(1);
+                    } else {
+                        throw new SQLException("Creating tour failed, no ID obtained.");
+                    }
+                }
+            }
+
+            // Step 2: Insert into TourImages table
+            try (PreparedStatement insertImagesStmt = con.prepareStatement(insertImagesQuery)) {
+                for (String imagePath : tour.getTourImages()) {
+                    insertImagesStmt.setInt(1, generatedTourID);
+                    insertImagesStmt.setString(2, imagePath);
+                    insertImagesStmt.addBatch();
+                }
+                insertImagesStmt.executeBatch();
+            }
+
+            // Commit the transaction
+            con.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                con.rollback(); // Roll back in case of error
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.setAutoCommit(true); // Restore auto-commit mode
+            } catch (SQLException autoCommitEx) {
+                autoCommitEx.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean deleteTourByID(String tourID) {
+        String deleteImagesQuery = "DELETE FROM TourImages WHERE TourID = ?";
+        String deleteTourQuery = "DELETE FROM Tour WHERE TourID = ?";
+
+        try {
+            con.setAutoCommit(false);
+
+            // Step 1: Delete associated images from TourImages
+            try (PreparedStatement deleteImagesStmt = con.prepareStatement(deleteImagesQuery)) {
+                deleteImagesStmt.setString(1, tourID);
+                deleteImagesStmt.executeUpdate();
+            }
+
+            // Step 2: Delete the tour from the Tour table
+            try (PreparedStatement deleteTourStmt = con.prepareStatement(deleteTourQuery)) {
+                deleteTourStmt.setString(1, tourID);
+                int rowsAffected = deleteTourStmt.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("No tour found with ID: " + tourID);
+                }
+            }
+
+            // Commit the transaction
+            con.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                con.rollback(); // Roll back in case of an error
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.setAutoCommit(true); // Restore auto-commit mode
+            } catch (SQLException autoCommitEx) {
+                autoCommitEx.printStackTrace();
+            }
+        }
+    }
+
+    
+
 }

@@ -21,6 +21,9 @@ CREATE TABLE Tour (
     GoogleMapLink VARCHAR(255)            -- Link to the tour's location on Google Maps
 );
 
+ALTER TABLE Tour
+ALTER COLUMN GoogleMapLink NVARCHAR(255);
+
 CREATE TABLE TransportProvider (
     ID INT IDENTITY(1,1) PRIMARY KEY,       -- Unique identifier for the transport provider
     Name VARCHAR(100) NOT NULL,             -- Name of the transport provider
