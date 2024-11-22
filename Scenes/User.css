@@ -197,5 +197,115 @@
     -fx-background-color: #1D4ED8;
 }
 
+.join-button {
+    /* Base styling */
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #2E8B57); /* Green gradient */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 25px; /* Adjusts button size */
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
 
+    /* Border */
+    -fx-border-color: #2E8B57;
+    -fx-border-width: 2px;
+
+    /* Shadow */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0.5, 0, 4);
+
+    /* Cursor */
+    -fx-cursor: hand;
+}
+
+/* Hover effect */
+.join-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #50C878, #3CB371); /* Lighter green */
+    -fx-border-color: #50C878;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.7, 0, 5);
+}
+
+/* Pressed effect */
+.join-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #3CB371, #2E8B57); /* Darker green */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 0, 2);
+    -fx-translate-y: 2px; /* Slight movement for a pressed look */
+}
+
+/* Common styling for both buttons */
+.scroll-button {
+    -fx-background-color: linear-gradient(to bottom, #3A3A3A, #1A1A1A); /* Dark gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #FFFFFF; /* Subtle border */
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 6, 0.5, 0, 3);
+    -fx-cursor: hand;
+}
+
+/* Hover effect for both buttons */
+.scroll-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #555555, #2D2D2D); /* Lighter dark gradient */
+    -fx-border-color: #AAAAAA;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 8, 0.7, 0, 4);
+}
+
+/* Pressed effect for both buttons */
+.scroll-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #2D2D2D, #1A1A1A); /* Darker pressed state */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 2);
+    -fx-translate-y: 2px; /* Slight movement for pressed look */
+}
+
+/* Additional styling for the Previous button */
+.previous-button {
+    -fx-shape: "M10 20 L20 10 L20 30 Z"; /* Arrow shape for previous */
+    -fx-padding: 10px;
+}
+
+/* Additional styling for the Next button */
+.next-button {
+    -fx-shape: "M20 10 L10 20 L20 30 Z"; /* Arrow shape for next */
+    -fx-padding: 10px;
+}
+
+/* Base styling for the Back button */
+.back-button {
+    -fx-background-color: linear-gradient(to bottom, #0078D7, #005BB5); /* Blue gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #003F87; /* Subtle darker border */
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 2);
+    -fx-cursor: hand;
+    -fx-alignment: center; /* Center-aligns the text or icon */
+}
+
+/* Hover effect for Back button */
+.back-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #0093FF, #0078D7); /* Lighter blue gradient */
+    -fx-border-color: #005BB5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.6, 0, 3);
+}
+
+/* Pressed effect for Back button */
+.back-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #005BB5, #003F87); /* Darker pressed state */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.4, 0, 1);
+    -fx-translate-y: 2px; /* Simulates button being pressed */
+}
+
+/* Optional: If you use an icon or arrow */
+.back-button-icon {
+    -fx-shape: "M10 20 L20 10 L20 30 Z"; /* Arrow pointing left */
+    -fx-padding: 8px;
+}
 
