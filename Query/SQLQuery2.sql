@@ -6,10 +6,16 @@ GROUP BY u.FullName
 ORDER BY NumberOfBookings DESC, TotalAmountPaid DESC;
 
 
-select * from Booking
+	
 
 select * from Tour
 
+select * from Users
+
 select * from TransportProvider
 
-select * from TourImages
+select * from TourImages	
+
+INSERT INTO Booking (UserID, TourID, TransportProviderID, BookingDate, Rating, Status)
+VALUES
+(1, 7, 4, '2024-12-11', 4, 'Pending')

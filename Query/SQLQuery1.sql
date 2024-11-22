@@ -124,18 +124,18 @@ VALUES
 450.00, 5, '2025-01-20', 6, 'https://goo.gl/maps/rainforest1');
 
 
-INSERT INTO TransportProvider (Name, TransportType, Rating)
+INSERT INTO TransportProvider (Name, Rating)
 VALUES
-('City Bus Co.', 'Bus', 4.5),
-('Express Rail', 'Train', 4.8),
-('Skyways', 'Flight', 4.9),
-('Luxury Limo Service', 'Taxi', 4.2),
-('Riverboat Rides', 'Boat', 4.7),
-('Adventure Rentals', 'Car', 4.3),
-('Cycle Adventures', 'Bike', 4.6),
-('Metro Rail Services', 'Train', 4.4),
-('Air Comforts', 'Flight', 4.8),
-('Eco Bus Tours', 'Bus', 4.3);
+('City Bus Co.',  4.5),
+('Express Rail',  4.8),
+('Skyways',  4.9),
+('Luxury Limo Service',  4.2),
+('Riverboat Rides',  4.7),
+('Adventure Rentals',  4.3),
+('Cycle Adventures',  4.6),
+('Metro Rail Services',  4.4),
+('Air Comforts',  4.8),
+('Eco Bus Tours', 4.3);
 
 INSERT INTO TourImages (TourID , ImagePath)
 VALUES
