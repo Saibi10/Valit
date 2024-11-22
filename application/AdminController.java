@@ -169,6 +169,8 @@ public class AdminController {
 	private TableColumn<TransportProvider, Void> actionTransportColumn;
 
 	private TourismManagementSystem TMS;
+	
+	private Tours editTourCurrent;
 
 	private boolean addTour;
 

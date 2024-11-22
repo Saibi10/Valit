@@ -57,4 +57,14 @@ public class TourismManagementSystem {
 		DB.confirmBooking(booking);
 	}
 	
+	public ArrayList<Tours> getTopTours2() throws SQLException {
+		ArrayList<Tours> topTours = DB.getTopTours2();
+		return topTours;
+	}
+	
+//	public ArrayList<MyBooking> getBookingsByUserId(int userId) throws SQLException {
+//	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
+//	    return userBookings;
+//	}
+	
 }
