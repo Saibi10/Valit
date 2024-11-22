@@ -46,6 +46,11 @@ public class TourismManagementSystem {
 	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
 	    return userBookings;
 	}
+	
+	public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) throws SQLException {
+	    ArrayList<MyBooking> userBookings = DB.getBookingsHistoryByUserId(userId);
+	    return userBookings;
+	}
 
 	
 	public ArrayList<TransportProvider> getAllTransportProviders() throws SQLException {

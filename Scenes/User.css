@@ -196,6 +196,14 @@
 .button2:hover {
     -fx-background-color: #1D4ED8;
 }
+.tooltip {
+    -fx-background-color: #333333;  /* Dark background for the tooltip */
+    -fx-text-fill: white;  /* White text color */
+    -fx-background-radius: 5;  /* Rounded corners */
+    -fx-padding: 10px;  /* Padding inside the tooltip */
+    -fx-font-size: 14px;  /* Adjust font size */
+    -fx-max-width: 300px;  /* Set max width for the tooltip */
+    -fx-wrap-text: true;  /* Enable text wrapping */
 
 .join-button {
     /* Base styling */
