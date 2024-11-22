@@ -74,6 +74,39 @@ public class DatabaseHandler {
         return topToursList;
     }
     
+    public ArrayList<Tours> getTopTours2() throws SQLException {
+        ArrayList<Tours> topToursList = new ArrayList<>();
+
+        String query = "SELECT TOP 5 " +
+                       "t.TourName, " +
+                       "t.TourPrice, " +
+                       "t.Duration, " +
+                       "tp.TransportType, " +
+                       "COUNT(b.ID) AS Bookings, " +
+                       "AVG(b.Rating) AS AverageRating " +
+                       "FROM Booking b " +
+                       "JOIN Tour t ON b.TourID = t.TourID " +
+                       "JOIN TransportProvider tp ON t.TransportID = tp.ID " +
+                       "WHERE b.Status = 'Completed' " +
+                       "GROUP BY t.TourName, t.TourPrice, t.Duration, tp.TransportType " +
+                       "ORDER BY Bookings DESC, AverageRating DESC";
+
+        ResultSet rs = st.executeQuery(query);
+
+        while (rs.next()) {
+            String tourName = rs.getString("TourName");
+            String price = rs.getString("TourPrice");
+            String duration = rs.getString("Duration");
+            String transportType = rs.getString("TransportType");
+
+            topToursList.add(new Tours(tourName, price, duration, transportType));
+        }
+
+        return topToursList;
+    }
+
+
+    
     public ArrayList<Tours> getAllTours() throws SQLException {
         ArrayList<Tours> toursList = new ArrayList<>();
 
