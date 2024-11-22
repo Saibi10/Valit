@@ -8,12 +8,15 @@ public class Booking {
 	String Date;
 
 	String Status;
+	
+	private String selectedAction = "Select Action";
 
 	public Booking(String Tour, String Customer, String Date, String Status) {
 		this.Tour = Tour;
 		this.Customer = Customer;
 		this.Date = Date;
 		this.Status = Status;
+		this.selectedAction = "Select Action";
 	}
 
 	public String getTour() {
@@ -30,6 +33,14 @@ public class Booking {
 	
 	public String getStatus() {
 		return Status;
+	}
+	
+	public String getSelectedAction() {
+	    return selectedAction;
+	}
+
+	public void setSelectedAction(String selectedAction) {
+	    this.selectedAction = selectedAction;
 	}
 
 }
