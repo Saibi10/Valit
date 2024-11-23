@@ -3,6 +3,7 @@ import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
+import Models.MyBooking;
 
 import java.lang.invoke.MethodHandle;
 import java.sql.*;
@@ -69,7 +70,7 @@ public class DatabaseHandler {
         }
         
         return topToursList;
-    }
+    }	
     
     public ArrayList<Tours> getAllTours() throws SQLException {
         ArrayList<Tours> toursList = new ArrayList<>();
@@ -386,34 +387,40 @@ public class DatabaseHandler {
 
     public ArrayList<Tours> getTopTours2() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();
-
+        
         String query = "SELECT TOP 5 " +
+                       "t.TourID, " +
                        "t.TourName, " +
                        "t.TourPrice, " +
                        "t.Duration, " +
-                       "tp.TransportType, " +
+                       "t.TourDescription, " +
+                       "t.StartDate, " +
                        "COUNT(b.ID) AS Bookings, " +
                        "AVG(b.Rating) AS AverageRating " +
                        "FROM Booking b " +
                        "JOIN Tour t ON b.TourID = t.TourID " +
-                       "JOIN TransportProvider tp ON t.TransportID = tp.ID " +
-                       "WHERE b.Status = 'Completed' " +
-                       "GROUP BY t.TourName, t.TourPrice, t.Duration, tp.TransportType " +
+                       "GROUP BY t.TourID, t.TourName, t.TourPrice, t.Duration, t.TourDescription, t.StartDate " +
                        "ORDER BY Bookings DESC, AverageRating DESC";
-
+        
         ResultSet rs = st.executeQuery(query);
-
+        
         while (rs.next()) {
-            String tourName = rs.getString("TourName");
-            String price = rs.getString("TourPrice");
-            String duration = rs.getString("Duration");
-            String transportType = rs.getString("TransportType");
+        	// Assuming you fetch data from ResultSet
+        	String tourID = Integer.toString(rs.getInt("TourID"));
+        	String tourPrice = Double.toString(rs.getDouble("TourPrice"));
+        	String duration = Integer.toString(rs.getInt("Duration"));
+        	String startDate = rs.getDate("StartDate").toString(); // Converts Date to String
+        	String tourName = rs.getString("TourName");
+        	String tourDescription = rs.getString("TourDescription");
 
-            topToursList.add(new Tours(tourName, price, duration, transportType));
+        	Tours tour = new Tours(tourID, tourName, tourPrice, duration, tourDescription, startDate);
+
+            topToursList.add(tour);
         }
-
+        
         return topToursList;
     }
+
     
     public boolean addNewTransportProvider(TransportProvider provider) {
         String insertQuery = "INSERT INTO TransportProvider (Name, Rating, FleetSize, Contact, VehicleTypes) " +
@@ -479,40 +486,79 @@ public class DatabaseHandler {
         }
     }
     
-//    public ArrayList<MyBooking> getMyBookingsByUserId(int userId) {
-//        ArrayList<MyBooking> myBookingsList = new ArrayList<>();
-//
-//        // Query to join Booking and Tour tables to get tour information based on UserID
-//        String query = "SELECT " +
-//                       "t.TourName, " +
-//                       "b.BookingDate, " +
-//                       "t.TourPrice, " +
-//                       "t.StartDate, " +
-//                       "t.TourDescription " +
-//                       "FROM Booking b " +
-//                       "JOIN Tour t ON b.TourID = t.TourID " +
-//                       "WHERE b.UserID = ?"; // Use the UserID to filter the bookings
-//
-//        try (PreparedStatement ps = con.prepareStatement(query)) {
-//            ps.setInt(1, userId); // Set the UserID parameter in the query
-//
-//            try (ResultSet rs = ps.executeQuery()) {
-//                while (rs.next()) {
-//                    String tourName = rs.getString("TourName");
-//                    String bookingDate = rs.getString("BookingDate");
-//                    double tourPrice = rs.getDouble("TourPrice");
-//                    String startDate = rs.getString("StartDate");
-//                    String tourDescription = rs.getString("TourDescription");
-//
-//                    // Create a MyBooking object and add it to the list
-//                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
-//                    myBookingsList.add(myBooking);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return myBookingsList;
-//    }
+    public ArrayList<MyBooking> getMyBookingsByUserId(int userId) {
+        ArrayList<MyBooking> myBookingsList = new ArrayList<>();
+
+        // Query to join Booking and Tour tables to get tour information based on UserID
+        String query = "SELECT " +
+                "t.TourName, " +
+                "b.BookingDate, " +
+                "t.TourPrice, " +
+                "t.StartDate, " +
+                "t.TourDescription " +
+                "FROM Booking b " +
+                "JOIN Tour t ON b.TourID = t.TourID " +
+                "WHERE b.UserID = ? AND b.status != 'Completed'"; // Add the status condition
+
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String tourName = rs.getString("TourName");
+                    String bookingDate = rs.getString("BookingDate");
+                    double tourPrice = rs.getDouble("TourPrice");
+                    String startDate = rs.getString("StartDate");
+                    String tourDescription = rs.getString("TourDescription");
+
+                    // Create a MyBooking object and add it to the list
+                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
+                    myBookingsList.add(myBooking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return myBookingsList;
+    }
+    
+    public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) {
+        ArrayList<MyBooking> myBookingsList = new ArrayList<>();
+
+        // Query to join Booking and Tour tables to get tour information based on UserID
+        String query = "SELECT " +
+                "t.TourName, " +
+                "b.BookingDate, " +
+                "t.TourPrice, " +
+                "t.StartDate, " +
+                "t.TourDescription " +
+                "FROM Booking b " +
+                "JOIN Tour t ON b.TourID = t.TourID " +
+                "WHERE b.UserID = ? AND b.status = 'Completed'"; // Add the status condition
+
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String tourName = rs.getString("TourName");
+                    String bookingDate = rs.getString("BookingDate");
+                    double tourPrice = rs.getDouble("TourPrice");
+                    String startDate = rs.getString("StartDate");
+                    String tourDescription = rs.getString("TourDescription");
+
+                    // Create a MyBooking object and add it to the list
+                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
+                    myBookingsList.add(myBooking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return myBookingsList;
+    }
 }

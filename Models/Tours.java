@@ -21,12 +21,15 @@ public class Tours {
 		this.Rating = Rating;
 	}
 	
-	public Tours(String TourName, String Price, String Duration, String TransportType) {
-		this.TourName  = TourName;
-		this.Price = Price;
-		this.Duration = Duration;
-		this.TransportType = TransportType;
+	public Tours(String tourID, String tourName, String tourPrice, String duration, String tourDescription, String startDate) {
+	    this.TourID = tourID;
+	    this.TourName = tourName;
+	    this.Price = tourPrice;
+	    this.Duration = duration;
+	    this.TourDescription = tourDescription;
+	    this.StartDate = startDate;
 	}
+
 	
 	public Tours(String TourID,String TourName, String Bookings, String Rating , String TourDescription , String TourPrice , String TransportID , String StartDate , String Duration , String GoogleMapLink , ArrayList<String> TourImages) {
 		this.TourID = TourID;

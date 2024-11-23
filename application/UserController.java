@@ -8,11 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -50,6 +52,10 @@ public class UserController implements Initializable {
     private Button supportTabBtn;
 	@FXML
 	private Button customTourSubmit;
+	@FXML
+	private Button closeRate;
+	@FXML
+	private Button viewTourBackBtn;
 	
 	
 	@FXML
@@ -58,6 +64,13 @@ public class UserController implements Initializable {
 	private Pane tourTablePane;
 	@FXML
 	private Pane myBookingsPane;
+	@FXML
+	private Pane ratePane;
+	@FXML
+	private Pane tourViewPane;
+	
+	@FXML
+	private Label ratelabel1;
 	
 	
 	@FXML
@@ -87,11 +100,19 @@ public class UserController implements Initializable {
 	private TableColumn<Tours, String> tourTransportCol;
 	@FXML
 	private TableColumn<Tours, Void> tourActionCol;
+	@FXML
+	private Label viewTourDesc;
+	@FXML
+	private Label viewTourDate;
+	@FXML
+	private Label viewTourId;
 
 	@FXML
 	private TextField locationBox;
 	@FXML
 	private TextField descriptionBox;
+	@FXML
+	private TextField rateTextField;
 	@FXML
 	private TourismManagementSystem TMS;
 	
@@ -106,6 +127,9 @@ public class UserController implements Initializable {
     	customTourPane.setVisible(false);
     	tourTablePane.setVisible(false);
     	myBookingsPane.setVisible(false);
+    	ratePane.setVisible(false);
+    	tourViewPane.setVisible(false);
+    	
     }
 
     @Override
@@ -198,7 +222,7 @@ public class UserController implements Initializable {
     		}
     }
 
-    public void feature2Click(ActionEvent actionEvent)
+    public void feature2Click(ActionEvent actionEvent) throws SQLException
     {
     	SetVisibilityFalse();
     	if(feature2Btn.getText() == "Popular Tours")
@@ -207,7 +231,8 @@ public class UserController implements Initializable {
 		}
 		else if(feature2Btn.getText() == "Booking History")
 		{
-			System.out.println("My Bookings");
+			myBookingsPane.setVisible(true);
+			setMyBookingsHistoryTable();
 		}
 		else if(feature2Btn.getText() == "Pending Requests")
 		{
@@ -219,7 +244,7 @@ public class UserController implements Initializable {
 		}
     }
     
-    public void feature3Click(ActionEvent actionEvent)
+    public void feature3Click(ActionEvent actionEvent) throws SQLException
     {
     	SetVisibilityFalse();
     	if(feature3Btn.getText() == "Tour Reviews")
@@ -228,7 +253,7 @@ public class UserController implements Initializable {
 		}
 		else if(feature3Btn.getText() == "Booking Reports")
 		{
-			System.out.println("My Bookings");
+			System.out.println("Booking Reports");
 		}
 		else if(feature3Btn.getText() == "Menu Issue")
 		{
@@ -247,10 +272,11 @@ public class UserController implements Initializable {
     
     private void setMyBookingsTable() throws SQLException {
         // Retrieve the list of bookings for the current user
-//        ArrayList<MyBooking> allMyBookings = TMS.getBookingsByUserId(UserId);
+    	
+        ArrayList<MyBooking> allMyBookings = TMS.getBookingsByUserId(UserId);
 
         // Convert the list of bookings to an ObservableList
-//        ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
+        ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
 
         // Set the value for each column to match the corresponding method in the MyBooking object
         TourName.setCellValueFactory(cellData -> 
@@ -278,7 +304,40 @@ public class UserController implements Initializable {
             private final Button deleteButton = new Button("Delete");
 
             {
-                deleteButton.setStyle("-fx-background-color: #FF5C5C; -fx-text-fill: white; -fx-font-weight: bold;");
+            	// Initial button style
+            	deleteButton.setStyle(
+            	    "-fx-background-color: #FF5C5C; " +
+            	    "-fx-text-fill: white; " +
+            	    "-fx-font-weight: bold; " +
+            	    "-fx-border-radius: 5px; " +
+            	    "-fx-background-radius: 5px; " +
+            	    "-fx-padding: 10px; " +
+            	    "-fx-cursor: hand;");
+
+            	// Hover effect: changes the background color when the mouse enters
+            	deleteButton.setOnMouseEntered(event -> {
+            	    deleteButton.setStyle(
+            	        "-fx-background-color: #FF2D2D; " +  // A darker red for hover effect
+            	        "-fx-text-fill: white; " +
+            	        "-fx-font-weight: bold; " +
+            	        "-fx-border-radius: 5px; " +
+            	        "-fx-background-radius: 5px; " +
+            	        "-fx-padding: 10px; " +
+            	        "-fx-cursor: hand;");
+            	});
+
+            	// Revert to the original style when the mouse exits
+            	deleteButton.setOnMouseExited(event -> {
+            	    deleteButton.setStyle(
+            	        "-fx-background-color: #FF5C5C; " +  // Original background color
+            	        "-fx-text-fill: white; " +
+            	        "-fx-font-weight: bold; " +
+            	        "-fx-border-radius: 5px; " +
+            	        "-fx-background-radius: 5px; " +
+            	        "-fx-padding: 10px; " +
+            	        "-fx-cursor: hand;");
+            	});
+
 
                 // Handle button click
                 deleteButton.setOnAction(event -> {
@@ -312,14 +371,177 @@ public class UserController implements Initializable {
             }
         });
         
+        TourDesc.setCellFactory(tc -> new TableCell<MyBooking, String>() {
+            private final Tooltip tooltip = new Tooltip();
+
+            {
+                // Set the delay to 0 milliseconds (immediate display)
+                tooltip.setShowDelay(javafx.util.Duration.millis(0));
+                tooltip.setHideDelay(javafx.util.Duration.millis(0));
+                tooltip.getStyleClass().add("tooltip");  // Apply the custom tooltip style
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);  // Clear tooltip if the cell is empty
+                } else {
+                    setText(item);  // Set the text for the table cell
+                    tooltip.setText(item);  // Set the full description as the tooltip text
+                    setTooltip(tooltip);  // Assign the tooltip to the table cell
+                }
+            }
+        });
 
         // Apply the data to the table
-//        myBookingsTable.setItems(data);
-
-
+        myBookingsTable.setItems(data);
         // Set font styling for the whole table
-        myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+        myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");   
+    }
+    
+    private void setMyBookingsHistoryTable() throws SQLException {
+        // Retrieve the list of bookings for the current user
+
+        ArrayList<MyBooking> allMyBookings = TMS.getBookingsHistoryByUserId(UserId);
+
+        // Convert the list of bookings to an ObservableList
+        ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
+
+        // Set the value for each column to match the corresponding method in the MyBooking object
+        TourName.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getTourName())
+        );
+     
+        BookingDate.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getBookingDate())
+        );
+     
+        Price.setCellValueFactory(cellData -> 
+            new SimpleDoubleProperty(cellData.getValue().getTourPrice()).asObject()
+        );
+
+        StartDate.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getStartDate())
+        );
+       
+        TourDesc.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getTourDescription())
+        );
         
+        deleteAction.setCellFactory(column -> new TableCell<>() {
+            private final Button rateButton = new Button("rate");
+
+            {
+            	rateButton.setStyle(
+            		    "-fx-background-color: #2563EB; " +
+            		    "-fx-text-fill: #FFFFFF; " +
+            		    "-fx-border-radius: 5px; " +
+            		    "-fx-background-radius: 5px; " +
+            		    "-fx-padding: 10px; " +
+            		    "-fx-font-size: 14px; " +
+            		    "-fx-font-weight: bold; " +
+            		    "-fx-cursor: hand;");
+
+            		rateButton.setOnMouseEntered(event -> {
+            		    // Hover effect for the button
+            		    rateButton.setStyle(
+            		        "-fx-background-color: #1D4ED8; " +
+            		        "-fx-text-fill: #FFFFFF; " +
+            		        "-fx-border-radius: 5px; " +
+            		        "-fx-background-radius: 5px; " +
+            		        "-fx-padding: 10px; " +
+            		        "-fx-font-size: 14px; " +
+            		        "-fx-font-weight: bold; " +
+            		        "-fx-cursor: hand;");
+            		});
+
+            		rateButton.setOnMouseExited(event -> {
+            		    // Revert back to normal styling after hover
+            		    rateButton.setStyle(
+            		        "-fx-background-color: #2563EB; " +
+            		        "-fx-text-fill: #FFFFFF; " +
+            		        "-fx-border-radius: 5px; " +
+            		        "-fx-background-radius: 5px; " +
+            		        "-fx-padding: 10px; " +
+            		        "-fx-font-size: 14px; " +
+            		        "-fx-font-weight: bold; " +
+            		        "-fx-cursor: hand;");
+            		});
+
+            		rateButton.setOnAction(event -> {
+            		    MyBooking booking = getTableView().getItems().get(getIndex());
+            		    if (booking != null) {
+            		        // Print the tour name and user ID
+            		        System.out.println("Tour Name: " + booking.getTourName());
+            		        System.out.println("User ID: " + UserId);
+
+            		        ratelabel1.setText(booking.getTourName());
+            		        ratelabel1.setStyle("-fx-text-fill: #83a4e8; -fx-font-size: 25;");
+
+            		        ratePane.setVisible(true);
+            		        
+            		        // Add listener to track input changes in the rateTextField
+            		        rateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            		            // Print the input value as the user types
+            		            System.out.println("Input in rateTextField: " + newValue);
+            		        });
+
+            		        // Optionally: add any additional logic here to handle rating or validation
+            		    }
+            		});
+            		
+            		closeRate.setOnAction(event -> {
+            		    ratePane.setVisible(false);  // Hide the ratePane
+            		});
+
+            		
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(rateButton);
+                }
+            }
+        });
+        
+        TourDesc.setCellFactory(tc -> new TableCell<MyBooking, String>() {
+            private final Tooltip tooltip = new Tooltip();
+
+            {
+                // Set the delay to 0 milliseconds (immediate display)
+                tooltip.setShowDelay(javafx.util.Duration.millis(0));
+                tooltip.setHideDelay(javafx.util.Duration.millis(0));
+                tooltip.getStyleClass().add("tooltip");  // Apply the custom tooltip style
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);  // Clear tooltip if the cell is empty
+                } else {
+                    setText(item);  // Set the text for the table cell
+                    tooltip.setText(item);  // Set the full description as the tooltip text
+                    setTooltip(tooltip);  // Assign the tooltip to the table cell
+                }
+            }
+        });
+        
+ 
+
+        // Apply the data to the table
+        myBookingsTable.setItems(data);
+        // Set font styling for the whole table
+        myBookingsTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");   
     }
     
 
@@ -382,7 +604,11 @@ public class UserController implements Initializable {
                         System.out.println("User ID: " + UserId);
 
                         // Optional: Remove the booking from the table
-                        getTableView().getItems().remove(tour);
+                        tourTablePane.setVisible(false);
+                        tourViewPane.setVisible(true);
+                        viewTourDesc.setText(tour.getTourDescription());
+                        viewTourDate.setText(tour.getStartDate());
+                        viewTourId.setText(tour.getTourID());
 
                         // Optional: Implement actual delete logic (e.g., delete from database)
 //                        try {
@@ -412,4 +638,11 @@ public class UserController implements Initializable {
         tourTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
         
     }
+    
+    public void backToTourTable()
+    {
+    	tourViewPane.setVisible(false);
+    	tourTablePane.setVisible(true);
+    }
+    
 }

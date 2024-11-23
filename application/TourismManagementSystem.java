@@ -1,5 +1,6 @@
 package application;
 import Models.Booking;
+import Models.MyBooking;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
@@ -70,9 +71,14 @@ public class TourismManagementSystem {
 		DB.updateTransportProvider(tp);
 	}
 	
-//	public ArrayList<MyBooking> getBookingsByUserId(int userId) throws SQLException {
-//	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
-//	    return userBookings;
-//	}
+	public ArrayList<MyBooking> getBookingsByUserId(int userId) throws SQLException {
+	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
+	    return userBookings;
+	}
+	
+	public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) throws SQLException {
+	    ArrayList<MyBooking> userBookings = DB.getBookingsHistoryByUserId(userId);
+	    return userBookings;
+	}
 	
 }
