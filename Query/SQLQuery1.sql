@@ -20,6 +20,8 @@ CREATE TABLE Tour (
     Duration INT NOT NULL,                -- Duration in days
     GoogleMapLink VARCHAR(255)            -- Link to the tour's location on Google Maps
 );
+ALTER TABLE Tour
+ALTER COLUMN TourDescription NVARCHAR(MAX);
 
 CREATE TABLE TransportProvider (
     ID INT IDENTITY(1,1) PRIMARY KEY,       -- Unique identifier for the transport provider
