@@ -10,6 +10,8 @@ public class Booking {
 	String Date;
 
 	String Status;
+	
+	private String selectedAction = "Select Action";
 
 	public Booking(String ID,String Tour, String Customer, String Date, String Status) {
 		this.ID = ID;
@@ -17,6 +19,7 @@ public class Booking {
 		this.Customer = Customer;
 		this.Date = Date;
 		this.Status = Status;
+		this.selectedAction = "Select Action";
 	}
 	
 	public String getID() {
@@ -37,6 +40,14 @@ public class Booking {
 	
 	public String getStatus() {
 		return Status;
+	}
+	
+	public String getSelectedAction() {
+	    return selectedAction;
+	}
+
+	public void setSelectedAction(String selectedAction) {
+	    this.selectedAction = selectedAction;
 	}
 
 }

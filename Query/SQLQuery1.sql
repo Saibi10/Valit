@@ -23,6 +23,8 @@ CREATE TABLE Tour (
 ALTER TABLE Tour
 ALTER COLUMN TourDescription NVARCHAR(MAX);
 
+ALTER TABLE Tour ALTER COLUMN TourDescription NVARCHAR(MAX);
+
 CREATE TABLE TransportProvider (
     ID INT IDENTITY(1,1) PRIMARY KEY,       -- Unique identifier for the transport provider
     Name VARCHAR(100) NOT NULL,             -- Name of the transport provider

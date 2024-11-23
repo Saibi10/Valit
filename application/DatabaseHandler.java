@@ -18,7 +18,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -421,6 +421,70 @@ public class DatabaseHandler {
         return topToursList;
     }
 
+    
+    public boolean addNewTransportProvider(TransportProvider provider) {
+        String insertQuery = "INSERT INTO TransportProvider (Name, Rating, FleetSize, Contact, VehicleTypes) " +
+                             "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
+            // Set the parameters using the TransportProvider object
+            insertStmt.setString(1, provider.getName());
+            insertStmt.setString(2, provider.getRating());
+            insertStmt.setString(3, provider.getFleetSize());
+            insertStmt.setString(4, provider.getContact());
+            insertStmt.setString(5, provider.getVehicleTypes());
+
+            // Execute the insert query
+            int rowsAffected = insertStmt.executeUpdate();
+
+            // Check if the insert was successful
+            if (rowsAffected > 0) {
+                System.out.println("Transport provider added successfully.");
+                return true;
+            }
+            System.out.println("Failed to add transport provider.");
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean updateTransportProvider(TransportProvider provider) {
+        String updateQuery = "UPDATE TransportProvider SET " +
+                             "Name = ?, " +
+                             "Rating = ?, " +
+                             "FleetSize = ?, " +
+                             "Contact = ?, " +
+                             "VehicleTypes = ? " +
+                             "WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the parameters using the TransportProvider object
+            updateStmt.setString(1, provider.getName());
+            updateStmt.setString(2, provider.getRating());
+            updateStmt.setString(3, provider.getFleetSize());
+            updateStmt.setString(4, provider.getContact());
+            updateStmt.setString(5, provider.getVehicleTypes());
+            updateStmt.setString(6, provider.getID()); // Use ID to locate the record
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                System.out.println("Transport provider updated successfully.");
+                return true;
+            } else {
+                System.out.println("No transport provider found with ID: " + provider.getID());
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     public ArrayList<MyBooking> getMyBookingsByUserId(int userId) {
         ArrayList<MyBooking> myBookingsList = new ArrayList<>();
