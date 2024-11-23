@@ -39,8 +39,6 @@ public class UserController implements Initializable {
     private Button feature2Btn;
 	@FXML
     private Button feature3Btn;
-	@FXML
-    private Button feature4Btn;
 	
 	@FXML
     private Button tourTabBtn;
@@ -68,6 +66,10 @@ public class UserController implements Initializable {
 	private Pane ratePane;
 	@FXML
 	private Pane tourViewPane;
+	@FXML
+	private Pane paymentPane;
+	@FXML
+	private Pane SupportPane;
 	
 	@FXML
 	private Label ratelabel1;
@@ -106,6 +108,22 @@ public class UserController implements Initializable {
 	private Label viewTourDate;
 	@FXML
 	private Label viewTourId;
+	@FXML
+	private Label viewTourName;
+	
+	@FXML
+	private TextField supportTitle;
+	@FXML
+	private TextField supportDetail;
+	
+	@FXML
+	private TextField namePayment;
+	@FXML
+	private TextField cardPayment;
+	@FXML
+	private TextField expPayment;
+	@FXML
+	private TextField cvvPayment;
 
 	@FXML
 	private TextField locationBox;
@@ -129,7 +147,7 @@ public class UserController implements Initializable {
     	myBookingsPane.setVisible(false);
     	ratePane.setVisible(false);
     	tourViewPane.setVisible(false);
-    	
+    	SupportPane.setVisible(false);
     }
 
     @Override
@@ -137,25 +155,21 @@ public class UserController implements Initializable {
     	
     	SetVisibilityFalse();
     	customTourSubmit.setOnAction(event -> onCustomTourSubmit(event));
-    	feature1Btn.setText("New Tours");
-		feature2Btn.setText("Popular Tours");
-		feature3Btn.setText("Tour Reviews");
-		feature4Btn.setText("My Tours");
+    	feature1Btn.setText("Popular Tours");
+		feature2Btn.setText("All Tours");
+		feature3Btn.setDisable(true);
+		feature3Btn.setOpacity(0);
     }
 
     
     public void TourButtonClicked(ActionEvent actionEvent)
 	{
     	SetVisibilityFalse();
-		feature1Btn.setText("New Tours");
-		feature2Btn.setText("Popular Tours");
-		feature3Btn.setText("Tour Reviews");
-		feature4Btn.setText("My Tours");
+		feature1Btn.setText("Popular Tours");
+		feature2Btn.setText("All Tours");
 		
-		feature3Btn.setDisable(false);
-		feature3Btn.setOpacity(1);
-		feature4Btn.setDisable(false);
-		feature4Btn.setOpacity(1);
+		feature3Btn.setDisable(true);
+		feature3Btn.setOpacity(0);
 	}
 
     public void BookingButtonClicked(ActionEvent actionEvent)
@@ -167,8 +181,6 @@ public class UserController implements Initializable {
 		
 		feature3Btn.setDisable(false);
 		feature3Btn.setOpacity(1);
-		feature4Btn.setDisable(true);
-		feature4Btn.setOpacity(0);
 	}
     
     public void CustomButtonClicked(ActionEvent actionEvent)
@@ -179,33 +191,26 @@ public class UserController implements Initializable {
 		
 		feature3Btn.setDisable(true);
 		feature3Btn.setOpacity(0);
-		feature4Btn.setDisable(true);
-		feature4Btn.setOpacity(0);
 	}
     
     public void SupportButtonClicked(ActionEvent actionEvent)
 	{
     	SetVisibilityFalse();
-    	feature1Btn.setText("Contact Admin");
-		feature2Btn.setText("Transport Issue");
-		feature3Btn.setText("Menu Issue");
+    	feature1Btn.setText("Report Issue");
+		feature2Btn.setText("Response");
 		
-		feature3Btn.setDisable(false);
-		feature3Btn.setOpacity(1);
+		feature3Btn.setDisable(true);
+		feature3Btn.setOpacity(0);
 		
-		feature4Btn.setDisable(true);
-		feature4Btn.setOpacity(0);
 	}
-    
-    
     
     public void feature1Click(ActionEvent actionEvent) throws SQLException
     {
     		SetVisibilityFalse();
-    		if(feature1Btn.getText() == "New Tours")
+    		if(feature1Btn.getText() == "Popular Tours")
     		{
     			tourTablePane.setVisible(true);
-    			setToursTable();
+    			setPopularToursTable();
     		}
     		else if(feature1Btn.getText() == "My Bookings")
     		{
@@ -216,8 +221,9 @@ public class UserController implements Initializable {
     		{
     			customTourPane.setVisible(true);
     		}
-    		else if(feature1Btn.getText() == "Contact Admin")
+    		else if(feature1Btn.getText() == "Report Issue")
     		{
+    			SupportPane.setVisible(true);
     			System.out.println("Contact Admin");
     		}
     }
@@ -225,9 +231,10 @@ public class UserController implements Initializable {
     public void feature2Click(ActionEvent actionEvent) throws SQLException
     {
     	SetVisibilityFalse();
-    	if(feature2Btn.getText() == "Popular Tours")
+    	if(feature2Btn.getText() == "All Tours")
 		{
-			System.out.println("New Tours");
+    		tourTablePane.setVisible(true);
+			setAllToursTable();
 		}
 		else if(feature2Btn.getText() == "Booking History")
 		{
@@ -238,7 +245,7 @@ public class UserController implements Initializable {
 		{
 			System.out.println("Create Request");
 		}
-		else if(feature2Btn.getText() == "Transport Issue")
+		else if(feature2Btn.getText() == "Response")
 		{
 			System.out.println("Contact Admin");
 		}
@@ -247,7 +254,7 @@ public class UserController implements Initializable {
     public void feature3Click(ActionEvent actionEvent) throws SQLException
     {
     	SetVisibilityFalse();
-    	if(feature3Btn.getText() == "Tour Reviews")
+    	if(feature3Btn.getText() == "My Tours")
 		{
 			System.out.println("New Tours");
 		}
@@ -258,15 +265,6 @@ public class UserController implements Initializable {
 		else if(feature3Btn.getText() == "Menu Issue")
 		{
 			System.out.println("Create Request");
-		}
-    }
-    
-    public void feature4Click(ActionEvent actionEvent)
-    {
-    	SetVisibilityFalse();
-    	if(feature4Btn.getText() == "My Tours")
-		{
-			System.out.println("New Tours");
 		}
     }
     
@@ -556,7 +554,7 @@ public class UserController implements Initializable {
         //SavetoDatabase()
     }
     
-    private void setToursTable() throws SQLException {
+    private void setPopularToursTable() throws SQLException {
         // Retrieve the list of bookings for the current user
         ArrayList<Tours> tours = TMS.getTopTours2();
 
@@ -577,7 +575,7 @@ public class UserController implements Initializable {
         );
 
         tourTransportCol.setCellValueFactory(cellData -> 
-        	new SimpleStringProperty(cellData.getValue().getTourName())
+        	new SimpleStringProperty(cellData.getValue().getStartDate())
         );
         
         tourActionCol.setCellFactory(column -> new TableCell<>() {
@@ -609,13 +607,8 @@ public class UserController implements Initializable {
                         viewTourDesc.setText(tour.getTourDescription());
                         viewTourDate.setText(tour.getStartDate());
                         viewTourId.setText(tour.getTourID());
-
-                        // Optional: Implement actual delete logic (e.g., delete from database)
-//                        try {
-//                            //TMS.deleteBooking(booking.getBookingId());
-//                        } catch (SQLException e) {
-//                            e.printStackTrace();
-//                        }
+                        viewTourName.setText(tour.getTourName());
+                        
                     }
                 });
             }
@@ -639,10 +632,127 @@ public class UserController implements Initializable {
         
     }
     
+    private void setAllToursTable() throws SQLException {
+        // Retrieve the list of bookings for the current user
+        ArrayList<Tours> tours = TMS.getAllTours2();
+
+        // Convert the list of bookings to an ObservableList
+        ObservableList<Tours> data = FXCollections.observableArrayList(tours);
+
+        // Set the value for each column to match the corresponding method in the MyBooking object
+        tourNameCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getTourName())
+        );
+     
+        tourPriceCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getPrice())
+        );
+     
+        tourDurationCol.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getDuration())
+        );
+
+        tourTransportCol.setCellValueFactory(cellData -> 
+        	new SimpleStringProperty(cellData.getValue().getStartDate())
+        );
+        
+        tourActionCol.setCellFactory(column -> new TableCell<>() {
+            private final Button tourActionButton = new Button("Join");
+
+            {
+            	tourActionButton.setStyle(
+            		    "-fx-background-color: linear-gradient(to bottom, #FF7F50, #FF4500);" +
+            		    "-fx-text-fill: white;" +
+            		    "-fx-font-weight: bold;" +
+            		    "-fx-font-size: 14px;" +
+            		    "-fx-padding: 5px 20px;" +  // Reduced vertical padding
+            		    "-fx-background-radius: 15px;" +
+            		    "-fx-border-radius: 15px;" +
+            		    "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.3, 0, 2);"
+            		);
+            	
+                // Handle button click
+                tourActionButton.setOnAction(event -> {
+                    Tours tour = getTableView().getItems().get(getIndex());
+                    if (tour != null) {
+                        // Print the tour name and user ID
+                        System.out.println("Tour Name: " + tour.getTourName());
+                        System.out.println("User ID: " + UserId);
+
+                        // Optional: Remove the booking from the table
+                        tourTablePane.setVisible(false);
+                        tourViewPane.setVisible(true);
+                        viewTourDesc.setText(tour.getTourDescription());
+                        viewTourDate.setText(tour.getStartDate());
+                        viewTourId.setText(tour.getTourID());
+                        viewTourName.setText(tour.getTourName());
+                        
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(tourActionButton);
+                }
+            }
+        });
+        
+
+        // Apply the data to the table
+        tourTable.setItems(data);
+        // Set font styling for the whole table
+        tourTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+        
+    }
+    
+    
     public void backToTourTable()
     {
     	tourViewPane.setVisible(false);
+    	paymentPane.setVisible(false);
     	tourTablePane.setVisible(true);
+    }
+    
+    public void joinTour()
+    {
+    	if((namePayment.getText() != null && namePayment.getText().trim().isEmpty() == false) && (cardPayment.getText() != null && cardPayment.getText().trim().isEmpty() == false) && (expPayment.getText() != null && expPayment.getText().trim().isEmpty() == false) && (cvvPayment.getText() != null && cvvPayment.getText().trim().isEmpty() == false))
+    	{
+    		TMS.joinTour(UserId, Integer.parseInt(viewTourId.getText()));
+    	}
+    	namePayment.clear();
+    	cardPayment.clear();
+    	expPayment.clear();
+    	cvvPayment.clear();
+    	
+    	tourViewPane.setVisible(false);
+    	paymentPane.setVisible(false);
+    	tourTablePane.setVisible(true);
+    }
+    
+    public void goToPaymentPage()
+    {
+    	tourViewPane.setVisible(false);
+    	paymentPane.setVisible(true);
+    	tourTablePane.setVisible(false);
+    }
+    
+    public void reportIssue()
+    {
+    	String title = supportTitle.getText();
+    	String detail = supportDetail.getText();
+    	
+    	if((supportTitle.getText() != null && supportTitle.getText().trim().isEmpty() == false) && (supportDetail.getText() != null && supportDetail.getText().trim().isEmpty() == false))
+    	{
+    		TMS.addSupportMessage(UserId, title, detail);
+    	}
+    	
+    	supportTitle.clear();
+    	supportDetail.clear();
     }
     
 }

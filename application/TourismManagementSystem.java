@@ -32,6 +32,11 @@ public class TourismManagementSystem {
 		return allTours;
 	}
 	
+	public ArrayList<Tours> getAllTours2() throws SQLException {
+		ArrayList<Tours> allTours = DB.getAllTours2();
+		return allTours;
+	}
+	
 	public ArrayList<Booking> getAllBookings() throws SQLException {
 		ArrayList<Booking> allBookings = DB.getAllBookings();
 		return allBookings;
@@ -79,6 +84,16 @@ public class TourismManagementSystem {
 	public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) throws SQLException {
 	    ArrayList<MyBooking> userBookings = DB.getBookingsHistoryByUserId(userId);
 	    return userBookings;
+	}
+	
+	public void addSupportMessage(int uId, String title, String detail)
+	{
+		DB.addSupportMessage(uId, title, detail);
+	}
+	
+	public void joinTour(int uId, int tId)
+	{
+		DB.joinTour(uId, tId);
 	}
 	
 }

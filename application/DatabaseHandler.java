@@ -18,7 +18,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -420,6 +420,41 @@ public class DatabaseHandler {
         
         return topToursList;
     }
+    
+    public ArrayList<Tours> getAllTours2() throws SQLException {
+        ArrayList<Tours> toursList = new ArrayList<>();
+        
+        String query = "SELECT " +
+                       "TourID, " +
+                       "TourName, " +
+                       "TourPrice, " +
+                       "Duration, " +
+                       "TourDescription, " +
+                       "StartDate " +
+                       "FROM Tour " +
+                       "ORDER BY TourID"; // Optional ordering by TourID
+
+        ResultSet rs = st.executeQuery(query);
+        
+        while (rs.next()) {
+            // Convert fetched data to Strings
+            String tourID = Integer.toString(rs.getInt("TourID"));
+            String tourPrice = Double.toString(rs.getDouble("TourPrice"));
+            String duration = Integer.toString(rs.getInt("Duration"));
+            String startDate = rs.getDate("StartDate").toString(); // Converts Date to String
+            String tourName = rs.getString("TourName");
+            String tourDescription = rs.getString("TourDescription");
+
+            // Create a Tours object
+            Tours tour = new Tours(tourID, tourName, tourPrice, duration, tourDescription, startDate);
+
+            // Add it to the list
+            toursList.add(tour);
+        }
+        
+        return toursList;
+    }
+
 
     
     public boolean addNewTransportProvider(TransportProvider provider) {
@@ -561,4 +596,54 @@ public class DatabaseHandler {
 
         return myBookingsList;
     }
+    
+    public void addSupportMessage(int uId, String title, String detail) {
+        String query = "INSERT INTO CustomerCareMessage (UserID, Title, Message, DateTime) VALUES (?, ?, ?, GETDATE())";
+        
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the values for the prepared statement
+            ps.setInt(1, uId);         // UserID
+            ps.setString(2, title);    // Title
+            ps.setString(3, detail);   // Message content
+            
+            // Execute the update
+            int rowsAffected = ps.executeUpdate();
+            
+            // Confirm success
+            if (rowsAffected > 0) {
+                System.out.println("Support message added successfully.");
+            } else {
+                System.out.println("Failed to add the support message.");
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exceptions
+            e.printStackTrace();
+        }
+    }
+    
+    public void joinTour(int userId, int tourId) {
+        String query = "INSERT INTO Booking (UserID, TourID, TransportProviderID, BookingDate, Rating, Status) VALUES (?, ?, 1, GETDATE(), NULL, 'Pending')";
+        
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the values for the prepared statement
+            ps.setInt(1, userId);    // UserID
+            ps.setInt(2, tourId);    // TourID
+            
+            // Execute the update
+            int rowsAffected = ps.executeUpdate();
+            
+            // Confirm success
+            if (rowsAffected > 0) {
+                System.out.println("Booking added successfully.");
+            } else {
+                System.out.println("Failed to add the booking.");
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exceptions
+            e.printStackTrace();
+        }
+    }
+
+
+    
 }
