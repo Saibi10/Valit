@@ -15,6 +15,8 @@ select * from TransportProvider
 
 select * from TourImages
 
+select * from Request
+
 SELECT TOP 5
 t.TourName,
 COUNT(b.ID) AS Bookings, 
@@ -23,3 +25,9 @@ FROM Booking b
 JOIN Tour t ON b.TourID = t.TourID 
 GROUP BY t.TourName 
 ORDER BY Bookings DESC, AverageRating DESC
+
+SELECT r.RequestID, u.FullName AS CustomerName, r.Location, r.Description, 
+                       r.Status, r.CreatedAt, r.Response
+                       FROM Request r
+                       JOIN Users u ON r.UserID = u.UserID
+

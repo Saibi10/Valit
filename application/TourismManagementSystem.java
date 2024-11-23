@@ -1,6 +1,8 @@
 package application;
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.MyBooking;
+import Models.Request;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
@@ -79,6 +81,28 @@ public class TourismManagementSystem {
 	public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) throws SQLException {
 	    ArrayList<MyBooking> userBookings = DB.getBookingsHistoryByUserId(userId);
 	    return userBookings;
+	}
+	
+	public void deleteTransportProvider(String ID) {
+		DB.deleteTransportProvider(ID);
+	}
+	
+	public ArrayList<Request> getAllRequests() {
+		ArrayList<Request>  req = DB.getAllRequests();
+		return req;
+	}
+	
+	public ArrayList<CustomerCareMessage> getAllCustomerCareMessage() {
+		ArrayList<CustomerCareMessage>  req = DB.getAllCustomerCareMessages();
+		return req;
+	}
+	
+	public void updateRequests(Request req) {
+		DB.updateRequest(req);
+	}
+	
+	public void updateCustomerCareMessage(CustomerCareMessage req) {
+		DB.updateCustomerCareMessage(req);
 	}
 	
 }

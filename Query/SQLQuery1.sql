@@ -67,6 +67,22 @@ CREATE TABLE TourImages (
     FOREIGN KEY (TourID) REFERENCES Tour(TourID) -- Foreign key relationship
 )
 
+CREATE TABLE Request (
+    RequestID INT IDENTITY(1,1) PRIMARY KEY,   -- Auto-incrementing primary key
+    UserID INT NOT NULL,                       -- Foreign key for the user who made the request
+    Location NVARCHAR(255) NOT NULL,          -- Location details of the request
+    Description NVARCHAR(MAX) NOT NULL,       -- Detailed description of the request
+    Status NVARCHAR(50) DEFAULT 'Pending',    -- Status of the request
+    CreatedAt DATETIME DEFAULT GETDATE()      -- Timestamp for when the request is created
+);
+ALTER TABLE Request
+ADD Response NVARCHAR(MAX) NULL;  -- Adding Response column, nullable
+
+insert into Request (UserID , Location , Description , Status)
+Values 
+(1 , 'Karachi' , 'Please set a tour karachi and visst popular places there' , 'Pending'),
+
+
 
 
 INSERT INTO Users (Email, FullName, Password, UserType)

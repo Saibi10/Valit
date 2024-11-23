@@ -1,6 +1,8 @@
 package application;
 
 import Models.Booking;
+import Models.CustomerCareMessage;
+import Models.Request;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -115,6 +118,30 @@ public class AdminController {
 	private Button addTransportProviderButton;
 	@FXML
 	private Label addTransportProviderHeader;
+	@FXML
+	private TextField searchTransportProviderText;
+	@FXML
+	private Button TourRequestsTab;
+	@FXML
+	private Pane requestMainDiv;
+	@FXML
+	private Label locationText;
+	@FXML
+	private TextArea requestDescriptionText;
+	@FXML
+	private TextArea reqResponseText;
+	@FXML
+	private ScrollPane reqResponseMainDiv;
+	@FXML
+	private ComboBox filterRequest;
+	@FXML
+	private Button customerCareTab;
+	@FXML
+	private Pane customerCareMainDiv;
+	@FXML
+	private ComboBox filterCare;
+	@FXML
+	private Label editMessageLocation;
 
 	// ----------------------------TABLE
 	@FXML
@@ -184,14 +211,41 @@ public class AdminController {
 	@FXML
 	private TableColumn<TransportProvider, Void> actionTransportColumn;
 
+	// ----------------------------TABLE
+	@FXML
+	private TableView<Request> requestTable;
+	@FXML
+	private TableColumn<Request, String> customerNameRequest;
+	@FXML
+	private TableColumn<Request, String> locationRequest;
+	@FXML
+	private TableColumn<Request, String> actionRequest;
+
+	// ----------------------------TABLE
+	@FXML
+	private TableView<CustomerCareMessage> careTable;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> customerNameCare;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> titleCustomerCare;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> actionCare;
+
 	private TourismManagementSystem TMS;
-	
+
 	private Tours editTourCurrent;
+
 	private TransportProvider editTourTransport;
 
+	private Request editRequestCurrent;
+
+	private CustomerCareMessage editCareCurrent;
+
 	private boolean addTour;
-	
+
 	private boolean addTranportProvider;
+
+	private boolean careResponse;
 
 	public AdminController() throws SQLException {
 		TMS = new TourismManagementSystem();
@@ -199,22 +253,30 @@ public class AdminController {
 
 	@FXML
 	public void initialize() throws SQLException {
-		
-		bookingStatusDropDown.getItems().addAll(
-		        "All Bookings",
-		        "Pending Bookings",
-		        "Confirmed Bookings",
-		        "Completed Bookings",
-		        "Cancelled Bookings"
-		    );
 
-		    // Optionally, set a default value
-		    bookingStatusDropDown.setValue("All Booking");
+		filterCare.getItems().addAll("Pending", "Replied");
+		filterCare.setValue("Pending");
 
-		    // Add style (if needed)
-		    bookingStatusDropDown.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; " +
-		                                   "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
-		
+		filterCare.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+				+ "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
+
+		careResponse = false;
+		filterRequest.getItems().addAll("Pending", "Replied");
+		filterRequest.setValue("Pending");
+
+		filterRequest.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+				+ "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
+
+		bookingStatusDropDown.getItems().addAll("All Bookings", "Pending Bookings", "Confirmed Bookings",
+				"Completed Bookings", "Cancelled Bookings");
+
+		// Optionally, set a default value
+		bookingStatusDropDown.setValue("All Booking");
+
+		// Add style (if needed)
+		bookingStatusDropDown.setStyle("-fx-background-color: #374151; -fx-text-fill: #9CA3AF; "
+				+ "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
+
 		addTour = false;
 		addTranportProvider = false;
 		descriptionEditTour.setWrapText(true);
@@ -305,6 +367,46 @@ public class AdminController {
 		});
 	}
 
+	private void setBackGroundColorRequest(TableColumn<Request, String> test) {
+		test.setCellFactory(column -> {
+			return new TableCell<Request, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setText(null);
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+					} else {
+						setText(item);
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+					}
+				}
+			};
+		});
+	}
+
+	private void setBackGroundColorCustomerCare(TableColumn<CustomerCareMessage, String> test) {
+		test.setCellFactory(column -> {
+			return new TableCell<CustomerCareMessage, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setText(null);
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+					} else {
+						setText(item);
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+					}
+				}
+			};
+		});
+	}
+
 	private void setBackGroundColorTransportProvider(TableColumn<TransportProvider, String> test) {
 		test.setCellFactory(column -> {
 			return new TableCell<TransportProvider, String>() {
@@ -313,7 +415,8 @@ public class AdminController {
 					super.updateItem(item, empty);
 					if (empty || item == null) {
 						setText(null);
-						setStyle(""); // Reset the style when the cell is empty
+						setStyle(
+								"-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
 					} else {
 						setText(item);
 						setStyle(
@@ -515,7 +618,7 @@ public class AdminController {
 		});
 	}
 
-	private void setAllBookingTable(ArrayList<Booking> allBookings ) throws SQLException {
+	private void setAllBookingTable(ArrayList<Booking> allBookings) throws SQLException {
 
 		ObservableList<Booking> data = FXCollections.observableArrayList(allBookings);
 
@@ -529,70 +632,66 @@ public class AdminController {
 		statusBookingColumn.setCellValueFactory(new PropertyValueFactory<Booking, String>("Status"));
 
 		statusBookingColumn.setCellFactory(column -> new TableCell<Booking, String>() {
-		    private final Button statusButton = new Button();
+			private final Button statusButton = new Button();
 
-		    {
-		        // Base styling for the button
-		        statusButton.setStyle("-fx-text-fill: white; " + 
-		                              "-fx-border-color: transparent; " + 
-		                              "-fx-font-size: 12px; " + 
-		                              "-fx-font-weight: bold; " + 
-		                              "-fx-padding: 3 8; " + 
-		                              "-fx-border-radius: 10; " + 
-		                              "-fx-background-radius: 4;");
-		        statusButton.setPrefHeight(20); // Adjust height
-		        this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
-		    }
+			{
+				// Base styling for the button
+				statusButton.setStyle("-fx-text-fill: white; " + "-fx-border-color: transparent; "
+						+ "-fx-font-size: 12px; " + "-fx-font-weight: bold; " + "-fx-padding: 3 8; "
+						+ "-fx-border-radius: 10; " + "-fx-background-radius: 4;");
+				statusButton.setPrefHeight(20); // Adjust height
+				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+			}
 
-		    @Override
-		    protected void updateItem(String item, boolean empty) {
-		        super.updateItem(item, empty);
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
 
-		        if (empty || item == null) {
-		            setGraphic(null);
-		        } else {
-		            // Set button text based on status
-		            statusButton.setText(item);
+				if (empty || item == null) {
+					setGraphic(null);
+				} else {
+					// Set button text based on status
+					statusButton.setText(item);
 
-		            // Change button color based on booking status
-		            switch (item.toLowerCase()) {
-		                case "pending":
-		                    statusButton.setStyle("-fx-background-color: #F59E0B; -fx-text-fill: white; " +
-		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
-		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
-		                                          "-fx-background-radius: 4;");
-		                    break;
-		                case "confirmed":
-		                    statusButton.setStyle("-fx-background-color: #16A34A; -fx-text-fill: white; " +
-		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
-		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
-		                                          "-fx-background-radius: 4;");
-		                    break;
-		                case "completed":
-		                    statusButton.setStyle("-fx-background-color: #9333EA; -fx-text-fill: white; " +
-		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
-		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
-		                                          "-fx-background-radius: 4;");
-		                    break;
-		                case "cancelled":
-		                    statusButton.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; " +
-		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
-		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
-		                                          "-fx-background-radius: 4;");
-		                    break;
-		                default:
-		                    // Default styling for unknown status
-		                    statusButton.setStyle("-fx-background-color: #6B7280; -fx-text-fill: white; " +
-		                                          "-fx-border-color: transparent; -fx-font-size: 12px; " +
-		                                          "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; " +
-		                                          "-fx-background-radius: 4;");
-		                    break;
-		            }
+					// Change button color based on booking status
+					switch (item.toLowerCase()) {
+					case "pending":
+						statusButton.setStyle("-fx-background-color: #F59E0B; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;");
+						break;
+					case "confirmed":
+						statusButton.setStyle("-fx-background-color: #16A34A; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;");
+						break;
+					case "completed":
+						statusButton.setStyle("-fx-background-color: #9333EA; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;");
+						break;
+					case "cancelled":
+						statusButton.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;");
+						break;
+					default:
+						// Default styling for unknown status
+						statusButton.setStyle("-fx-background-color: #6B7280; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 3 8; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;");
+						break;
+					}
 
-		            // Set the button as the cell's graphic
-		            setGraphic(statusButton);
-		        }
-		    }
+					// Set the button as the cell's graphic
+					setGraphic(statusButton);
+				}
+			}
 		});
 
 		bookingTable.setItems(data);
@@ -707,8 +806,8 @@ public class AdminController {
 
 	}
 
-	private void setAllTransportProvider(ArrayList<TransportProvider> allTransportProvider ) throws SQLException {
-		
+	private void setAllTransportProvider(ArrayList<TransportProvider> allTransportProvider) throws SQLException {
+
 		ObservableList<TransportProvider> data3 = FXCollections.observableArrayList(allTransportProvider);
 
 		nameTransportColumn.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("Name"));
@@ -769,7 +868,18 @@ public class AdminController {
 				deleteButton.setOnAction(event -> {
 					TransportProvider selectedProvider = getTableView().getItems().get(getIndex());
 					System.out.println("Delete button clicked for: " + selectedProvider.getName());
-					
+					TMS.deleteTransportProvider(selectedProvider.getID());
+					hideAllPane();
+					removeAllButtonClasses();
+					transportTab.getStyleClass().remove("tab-selected");
+					transportTab.getStyleClass().add("tab");
+					try {
+						transportSelected();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				});
 
 				// Add buttons to the HBox
@@ -787,14 +897,192 @@ public class AdminController {
 			}
 		});
 	}
-	
+
+	private void setAllTourRequest(ArrayList<Request> req) throws SQLException {
+		System.out.print("testing11");
+		ObservableList<Request> data3 = FXCollections.observableArrayList(req);
+
+		customerNameRequest
+				.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getcustomerName()));
+		setBackGroundColorRequest(customerNameRequest);
+		locationRequest.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+		setBackGroundColorRequest(locationRequest);
+		actionRequest.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+		setBackGroundColorRequest(actionRequest);
+
+		requestTable.setItems(data3);
+
+		actionRequest.setCellFactory(column -> new TableCell<Request, String>() {
+			private final Button viewButton = new Button("View");
+
+			{
+				// Set base styling for the button
+				viewButton.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; "
+						+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+						+ "-fx-font-weight: bold; -fx-padding: 5 20; " + // Increased padding for larger size
+						"-fx-border-radius: 10; -fx-background-radius: 4;");
+				viewButton.setPrefWidth(100); // Increased width
+				viewButton.setPrefHeight(30); // Increased height
+
+				// Add hover effect for the button
+				viewButton.setOnMouseEntered(
+						event -> viewButton.setStyle("-fx-background-color: #1E3A8A; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 5 20; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;"));
+				viewButton.setOnMouseExited(
+						event -> viewButton.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 5 20; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;"));
+				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+
+				// Set action for the button
+				viewButton.setOnAction(event -> {
+					Request request = getTableView().getItems().get(getIndex());
+					if (request != null) {
+						System.out.println("View button clicked for FleetSize: " + request.getStatus());
+						hideAllPane();
+						careResponse = false;
+						editRequestCurrent = request;
+						editMessageLocation.setText("Location : ");
+						reqResponseMainDiv.setVisible(true);
+						locationText.setText(request.getLocation());
+						requestDescriptionText.setText(request.getDescription());
+						reqResponseText.setText(request.getResponse());
+					}
+				});
+			}
+
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null) {
+					setGraphic(null);
+				} else {
+					setGraphic(viewButton); // Set the button as the graphic for the cell
+				}
+			}
+		});
+
+	}
+
+	public void setAllCustomerCareMessage(ArrayList<CustomerCareMessage> care) {
+		ObservableList<CustomerCareMessage> data3 = FXCollections.observableArrayList(care);
+
+		customerNameCare
+				.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCustomerName()));
+		setBackGroundColorCustomerCare(customerNameCare);
+		titleCustomerCare.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+		setBackGroundColorCustomerCare(titleCustomerCare);
+		actionCare.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+		setBackGroundColorCustomerCare(actionCare);
+
+		careTable.setItems(data3);
+
+		actionCare.setCellFactory(column -> new TableCell<CustomerCareMessage, String>() {
+			private final Button viewButton = new Button("View");
+
+			{
+				// Set base styling for the button
+				viewButton.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; "
+						+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+						+ "-fx-font-weight: bold; -fx-padding: 5 20; " + // Increased padding for larger size
+						"-fx-border-radius: 10; -fx-background-radius: 4;");
+				viewButton.setPrefWidth(100); // Increased width
+				viewButton.setPrefHeight(30); // Increased height
+
+				// Add hover effect for the button
+				viewButton.setOnMouseEntered(
+						event -> viewButton.setStyle("-fx-background-color: #1E3A8A; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 5 20; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;"));
+				viewButton.setOnMouseExited(
+						event -> viewButton.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; "
+								+ "-fx-border-color: transparent; -fx-font-size: 12px; "
+								+ "-fx-font-weight: bold; -fx-padding: 5 20; -fx-border-radius: 10; "
+								+ "-fx-background-radius: 4;"));
+				this.setStyle("-fx-background-color: #1F2937; -fx-text-fill: #F3F4F6; -fx-border-color: transparent;");
+
+				// Set action for the button
+				viewButton.setOnAction(event -> {
+					CustomerCareMessage request = getTableView().getItems().get(getIndex());
+					if (request != null) {
+						System.out.println("View button clicked for FleetSize: " + request.getStatus());
+						hideAllPane();
+						editCareCurrent = request;
+						careResponse = true;
+						reqResponseMainDiv.setVisible(true);
+						editMessageLocation.setText("Title :");
+						locationText.setText(request.getTitle());
+						requestDescriptionText.setText(request.getMessage());
+						reqResponseText.setText(request.getResponse());
+					}
+				});
+			}
+
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null) {
+					setGraphic(null);
+				} else {
+					setGraphic(viewButton); // Set the button as the graphic for the cell
+				}
+			}
+		});
+	}
+
+	public void submitResponse() {
+		if (careResponse == false) {
+			if (reqResponseText.getText().equals("")) {
+				return;
+			}
+			
+			editRequestCurrent.setStatus("Replied");
+			editRequestCurrent.setResponse(reqResponseText.getText());
+			TMS.updateRequests(editRequestCurrent);
+			hideAllPane();
+			removeAllButtonClasses();
+			requestMainDiv.getStyleClass().remove("tab-selected");
+			requestMainDiv.getStyleClass().add("tab");
+			try {
+				TourRequestsSelected();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (careResponse) {
+			if (reqResponseText.getText().equals("")) {
+				return;
+			}
+			System.out.print("Empty");
+			editCareCurrent.setStatus("Replied");
+			editCareCurrent.setresponse(reqResponseText.getText());
+			TMS.updateCustomerCareMessage(editCareCurrent);
+			hideAllPane();
+			removeAllButtonClasses();
+			customerCareTab.getStyleClass().remove("tab-selected");
+			customerCareTab.getStyleClass().add("tab");
+			try {
+				CustomerCareSelected();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void setTransportTabEmpty() {
 		providerNameBooking.setText("");
 		fleetSizeBooking.setText("");
 		contactInfoBooking.setText("");
 		vehicleTypeBooking.setText("");
 	}
-	
+
 	private void setEditTourTabEmpty() {
 		headerEditTour.setText("");
 		bookingEditTour.setText("");
@@ -803,7 +1091,7 @@ public class AdminController {
 		priceEditTour.setText("");
 		duarationEditTour.setText("");
 		googleMapEditTour.setText("");
-		
+
 		textImage1EditTour.setText("");
 		image1.setImage(new Image(getClass().getResourceAsStream("")));
 		textImage2EditTour.setText("");
@@ -812,7 +1100,6 @@ public class AdminController {
 		image3.setImage(new Image(getClass().getResourceAsStream("")));
 
 		tourDateEditTour.setValue(null);
-
 
 		transportProviderEditTour.setValue("");
 
@@ -868,8 +1155,8 @@ public class AdminController {
 			}
 			Tours updatedTour = null;
 
-			updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration, googleMapLink,
-					startDate.toString(), transportProviderID, tourImages);
+			updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration,
+					googleMapLink, startDate.toString(), transportProviderID, tourImages);
 
 			// Print the updated tour details for debugging
 			System.out.println("Updated Tour: " + updatedTour);
@@ -977,7 +1264,7 @@ public class AdminController {
 			}
 		}
 	}
-	
+
 	public void showCompetedTours() throws SQLException {
 		if (showCompletedButton.getText().equals("Show Completed")) {
 			showCompletedButton.setText("Showing Completed");
@@ -1015,48 +1302,81 @@ public class AdminController {
 
 	}
 
-	public void bookingDropDown()  throws SQLException {
+	public void bookingDropDown() throws SQLException {
 		ArrayList<Booking> allBookings = TMS.getAllBookings();
-		if(bookingStatusDropDown.getValue().equals("All Bookings")) {
+		if (bookingStatusDropDown.getValue().equals("All Bookings")) {
 			setAllBookingTable(allBookings);
 		} else if (bookingStatusDropDown.getValue().equals("Pending Bookings")) {
 
 			ArrayList<Booking> filteredBookings = allBookings.stream()
-			    .filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
-			    .collect(Collectors.toCollection(ArrayList::new));
+					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
 
 			setAllBookingTable(filteredBookings);
 		} else if (bookingStatusDropDown.getValue().equals("Confirmed Bookings")) {
 
 			ArrayList<Booking> filteredBookings = allBookings.stream()
-			    .filter(booking -> "Confirmed".equalsIgnoreCase(booking.getStatus()))
-			    .collect(Collectors.toCollection(ArrayList::new));
+					.filter(booking -> "Confirmed".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
 
 			setAllBookingTable(filteredBookings);
 		} else if (bookingStatusDropDown.getValue().equals("Completed Bookings")) {
 
 			ArrayList<Booking> filteredBookings = allBookings.stream()
-			    .filter(booking -> "Completed".equalsIgnoreCase(booking.getStatus()))
-			    .collect(Collectors.toCollection(ArrayList::new));
+					.filter(booking -> "Completed".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
 
 			setAllBookingTable(filteredBookings);
 		} else if (bookingStatusDropDown.getValue().equals("Cancelled Bookings")) {
 
 			ArrayList<Booking> filteredBookings = allBookings.stream()
-			    .filter(booking -> "Cancelled".equalsIgnoreCase(booking.getStatus()))
-			    .collect(Collectors.toCollection(ArrayList::new));
+					.filter(booking -> "Cancelled".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
 
 			setAllBookingTable(filteredBookings);
 		}
-		
+
 	}
-	
+
+	public void requestDropDown() throws SQLException {
+		ArrayList<Request> req = TMS.getAllRequests();
+		if (filterRequest.getValue().equals("Pending")) {
+			ArrayList<Request> filteredreq = req.stream()
+					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+			setAllTourRequest(filteredreq);
+		} else if (filterRequest.getValue().equals("Replied")) {
+			ArrayList<Request> filteredreq = req.stream()
+					.filter(booking -> "Replied".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+			setAllTourRequest(filteredreq);
+		}
+	}
+
+	public void careDropDown() throws SQLException {
+		ArrayList<CustomerCareMessage> req = TMS.getAllCustomerCareMessage();
+		if (filterCare.getValue().equals("Pending")) {
+			ArrayList<CustomerCareMessage> filteredreq = req.stream()
+					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+			setAllCustomerCareMessage(filteredreq);
+		} else if (filterCare.getValue().equals("Replied")) {
+			ArrayList<CustomerCareMessage> filteredreq = req.stream()
+					.filter(booking -> "Replied".equalsIgnoreCase(booking.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+			setAllCustomerCareMessage(filteredreq);
+		}
+	}
+
 	public void AddTransportProvider() throws SQLException {
-		if(addTranportProvider == true) {
-			TransportProvider tranportProvider = new TransportProvider("",providerNameBooking.getText(),"0", fleetSizeBooking.getText() , contactInfoBooking.getText() , vehicleTypeBooking.getText()  );
+		if (addTranportProvider == true) {
+			TransportProvider tranportProvider = new TransportProvider("", providerNameBooking.getText(), "0",
+					fleetSizeBooking.getText(), contactInfoBooking.getText(), vehicleTypeBooking.getText());
 			TMS.addNewTransportProvider(tranportProvider);
 		} else {
-			TransportProvider tranportProvider = new TransportProvider(editTourTransport.getID(),providerNameBooking.getText(),"0", fleetSizeBooking.getText() , contactInfoBooking.getText() , vehicleTypeBooking.getText()  );
+			TransportProvider tranportProvider = new TransportProvider(editTourTransport.getID(),
+					providerNameBooking.getText(), "0", fleetSizeBooking.getText(), contactInfoBooking.getText(),
+					vehicleTypeBooking.getText());
 			TMS.updateTransportProvider(tranportProvider);
 		}
 		hideAllPane();
@@ -1065,6 +1385,7 @@ public class AdminController {
 		transportTab.getStyleClass().add("tab");
 		transportSelected();
 	}
+
 	public void addNewTransport() {
 		addTranportProvider = true;
 		addTransportProviderHeader.setText("Add New Transport Provider");
@@ -1073,7 +1394,43 @@ public class AdminController {
 		setTransportTabEmpty();
 		editTransportProviderMainDiV.setVisible(true);
 	}
-	
+
+	public void searchTransportProvider(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) { // Check if the Enter key is pressed
+			String searchText = searchTransportProviderText.getText().trim(); // Get and trim the search text
+			System.out.print("hello");
+			try {
+				// Get all tours from TMS
+				ArrayList<TransportProvider> allTours = TMS.getAllTransportProviders();
+
+				if (searchText.isEmpty()) {
+					// If the search text is empty, restore all tours
+					setAllTransportProvider(allTours);
+					System.out.println("Search text is empty. Restoring all tours.");
+					return;
+				}
+
+				// Create a new list to store matching tours
+				ArrayList<TransportProvider> matchingTours = new ArrayList<>();
+
+				// Filter tours based on the search text (best match based on startsWith)
+				for (TransportProvider tour : allTours) {
+					if (tour.getName().toLowerCase().startsWith(searchText.toLowerCase())) {
+						matchingTours.add(tour);
+					}
+				}
+
+				// Pass the filtered tours to the setAllToursTable function
+				setAllTransportProvider(matchingTours);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.err.println("Error fetching tours: " + e.getMessage());
+			}
+		}
+
+	}
+
 	private void removeAllButtonClasses() {
 		if (dashboardTab.getStyleClass().contains("tab-selected")) {
 			dashboardTab.getStyleClass().remove("tab-selected");
@@ -1090,10 +1447,15 @@ public class AdminController {
 		} else if (settingsTab.getStyleClass().contains("tab-selected")) {
 			settingsTab.getStyleClass().remove("tab-selected");
 			settingsTab.getStyleClass().add("tab");
-		} 
+		} else if (TourRequestsTab.getStyleClass().contains("tab-selected")) {
+			TourRequestsTab.getStyleClass().remove("tab-selected");
+			TourRequestsTab.getStyleClass().add("tab");
+		} else if (customerCareTab.getStyleClass().contains("tab-selected")) {
+			customerCareTab.getStyleClass().remove("tab-selected");
+			customerCareTab.getStyleClass().add("tab");
+		}
 	}
 
-	
 	private void hideAllPane() {
 		dashboardMainDiv.setVisible(false);
 		toursMainDiv.setVisible(false);
@@ -1101,6 +1463,9 @@ public class AdminController {
 		transportMainDiv.setVisible(false);
 		editTourMainDiv.setVisible(false);
 		editTransportProviderMainDiV.setVisible(false);
+		requestMainDiv.setVisible(false);
+		reqResponseMainDiv.setVisible(false);
+		customerCareMainDiv.setVisible(false);
 	}
 
 	public void dashboardSelected() throws SQLException {
@@ -1181,12 +1546,56 @@ public class AdminController {
 		}
 	}
 
+	public void TourRequestsSelected() throws SQLException {
+
+		if (TourRequestsTab.getStyleClass().contains("tab")) {
+			removeAllButtonClasses();
+			hideAllPane();
+
+			TourRequestsTab.getStyleClass().remove("tab");
+			TourRequestsTab.getStyleClass().add("tab-selected");
+			transportMainDiv.setVisible(true);
+			requestMainDiv.setVisible(true);
+			ArrayList<Request> req = TMS.getAllRequests();
+
+			ArrayList<Request> filteredRequests = req.stream()
+					.filter(request -> "Pending".equalsIgnoreCase(request.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			// Print filtered requests for verification (optional)
+			filteredRequests.forEach(request -> System.out.println(request.getStatus()));
+			setAllTourRequest(filteredRequests);
+
+		}
+	}
+
+	public void CustomerCareSelected() throws SQLException {
+		if (customerCareTab.getStyleClass().contains("tab")) {
+			removeAllButtonClasses();
+			hideAllPane();
+			customerCareTab.getStyleClass().remove("tab");
+			customerCareTab.getStyleClass().add("tab-selected");
+			customerCareMainDiv.setVisible(true);
+			ArrayList<CustomerCareMessage> care = TMS.getAllCustomerCareMessage();
+			
+			ArrayList<CustomerCareMessage> filteredRequests = care.stream()
+					.filter(request -> "Pending".equalsIgnoreCase(request.getStatus()))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			// Print filtered requests for verification (optional)
+			filteredRequests.forEach(request -> System.out.println(request.getStatus()));
+			
+			setAllCustomerCareMessage(filteredRequests);
+		}
+	}
+
 	public void settingSelected() {
 		if (settingsTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
 			hideAllPane();
 			settingsTab.getStyleClass().remove("tab");
 			settingsTab.getStyleClass().add("tab-selected");
+
 		}
 	}
 

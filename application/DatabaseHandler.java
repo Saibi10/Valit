@@ -3,7 +3,9 @@ import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.MyBooking;
+import Models.Request;
 
 import java.lang.invoke.MethodHandle;
 import java.sql.*;
@@ -421,7 +423,6 @@ public class DatabaseHandler {
         return topToursList;
     }
 
-    
     public boolean addNewTransportProvider(TransportProvider provider) {
         String insertQuery = "INSERT INTO TransportProvider (Name, Rating, FleetSize, Contact, VehicleTypes) " +
                              "VALUES (?, ?, ?, ?, ?)";
@@ -561,4 +562,162 @@ public class DatabaseHandler {
 
         return myBookingsList;
     }
+
+    public boolean deleteTransportProvider(String id) {
+        String deleteQuery = "DELETE FROM TransportProvider WHERE ID = ?";
+
+        try (PreparedStatement deleteStmt = con.prepareStatement(deleteQuery)) {
+            // Set the ID parameter
+            deleteStmt.setString(1, id);
+
+            // Execute the delete query
+            int rowsAffected = deleteStmt.executeUpdate();
+
+            // Check if the deletion was successful
+            if (rowsAffected > 0) {
+                System.out.println("Transport provider deleted successfully for ID: " + id);
+                return true;
+            } else {
+                System.out.println("No transport provider found with ID: " + id);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<Request> getAllRequests() {
+        ArrayList<Request> requestsList = new ArrayList<>();
+        String query = "SELECT r.RequestID, u.FullName AS CustomerName, r.Location, r.Description, " +
+                       "r.Status, r.CreatedAt, r.Response " +
+                       "FROM Request r " +
+                       "JOIN Users u ON r.UserID = u.UserID";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                // Extract data from the result set
+                String requestID = rs.getString("RequestID");
+                String customerName = rs.getString("CustomerName");
+                String location = rs.getString("Location");
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String createdAt = rs.getString("CreatedAt");
+                String response = rs.getString("Response");
+
+                // Create a Request object
+                Request request = new Request(customerName,requestID, location, description, status, createdAt, response);
+
+                // Add it to the list
+                requestsList.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requestsList;
+    }
+
+    public boolean updateRequest(Request request) {
+        String updateQuery = "UPDATE Request SET " +
+                             "Location = ?, " +
+                             "Description = ?, " +
+                             "Status = ?, " +
+                             "Response = ? " +
+                             "WHERE RequestID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the parameters using the Request object
+            updateStmt.setString(1, request.getLocation());
+            updateStmt.setString(2, request.getDescription());
+            updateStmt.setString(3, request.getStatus());
+            updateStmt.setString(4, request.getResponse());
+            updateStmt.setString(5, request.getRequestID());
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                System.out.println("Request updated successfully for ID: " + request.getRequestID());
+                return true;
+            } else {
+                System.out.println("No request found with ID: " + request.getRequestID());
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+ 	
+    public ArrayList<CustomerCareMessage> getAllCustomerCareMessages() {
+        ArrayList<CustomerCareMessage> messagesList = new ArrayList<>();
+        String query = "SELECT c.ID, u.FullName AS CustomerName, c.Title, c.Message, " +
+                       "c.Response, c.Status, c.DateTime " +
+                       "FROM CustomerCareMessage c " +
+                       "JOIN Users u ON c.UserID = u.UserID";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                // Extract data from the result set
+                String id = rs.getString("ID"); // Retrieve ID as a String
+                String customerName = rs.getString("CustomerName");
+                String title = rs.getString("Title");
+                String message = rs.getString("Message");
+                String response = rs.getString("Response");
+                String status = rs.getString("Status");
+                String dateTime = rs.getString("DateTime");
+
+                // Create a CustomerCareMessage object
+                CustomerCareMessage customerCareMessage = new CustomerCareMessage(id, customerName, status, title, message,  response);
+
+                // Add it to the list
+                messagesList.add(customerCareMessage);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return messagesList;
+    }
+    
+    public boolean updateCustomerCareMessage(CustomerCareMessage message) {
+        String updateQuery = "UPDATE CustomerCareMessage SET " +
+                             "Title = ?, " +
+                             "Message = ?, " +
+                             "Response = ?, " +
+                             "Status = ? " +
+                             "WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the parameters using the CustomerCareMessage object
+            updateStmt.setString(1, message.getTitle());
+            updateStmt.setString(2, message.getMessage());
+            updateStmt.setString(3, message.getResponse());
+            updateStmt.setString(4, message.getStatus());
+            updateStmt.setString(5, message.getID()); // Use the ID from the message object
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                System.out.println("Customer care message updated successfully for ID: " + message.getID());
+                return true;
+            } else {
+                System.out.println("No customer care message found with ID: " + message.getID());
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
