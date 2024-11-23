@@ -151,21 +151,6 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="feature4Btn" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#feature4Click" prefHeight="42.0" prefWidth="259.0" style="-fx-background-color: #1F2937;" styleClass="hover-button" stylesheets="@User.css" text="Loading...">
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/BulletPoint.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
             <AnchorPane prefHeight="298.0" prefWidth="256.0" />
             <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="168.0" style="-fx-background-color: #FFFFFF; -fx-text-fill: #000000;" stylesheets="@User.css" text="Sign out">
                <padding>
@@ -179,19 +164,86 @@
       </VBox>
       <Pane layoutX="320.0" layoutY="275.0" prefHeight="500.0" prefWidth="830.0" style="-fx-background-color: #111827;">
          <children>
-            <Pane fx:id="tourViewPane" layoutX="13.0" layoutY="2.0" prefHeight="503.0" prefWidth="834.0">
+            <Pane fx:id="SupportPane" prefHeight="503.0" prefWidth="834.0" visible="false">
+               <children>
+                  <Label layoutX="87.0" layoutY="51.0" text="Title:" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="90.0" layoutY="127.0" text="Detail:" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="supportTitle" layoutX="277.0" layoutY="43.0" prefHeight="47.0" prefWidth="241.0" />
+                  <TextField fx:id="supportDetail" layoutX="279.0" layoutY="126.0" prefHeight="47.0" prefWidth="526.0" />
+                  <Button fx:id="submitSupportBtn" layoutX="375.0" layoutY="386.0" mnemonicParsing="false" onAction="#reportIssue" prefHeight="47.0" prefWidth="104.0" styleClass="join-button" stylesheets="@User.css" text="Submit" />
+               </children>
+            </Pane>
+            <Pane fx:id="paymentPane" prefHeight="503.0" prefWidth="834.0">
+               <children>
+                  <Label layoutX="98.0" layoutY="57.0" prefHeight="47.0" prefWidth="170.0" text="Full Name" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="98.0" layoutY="119.0" prefHeight="47.0" prefWidth="170.0" text="Card No." textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="97.0" layoutY="180.0" prefHeight="47.0" prefWidth="170.0" text="Exp. Date" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="453.0" layoutY="178.0" prefHeight="47.0" prefWidth="170.0" text="CVV" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Black" size="30.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="proceedPaymentBtn" layoutX="358.0" layoutY="301.0" mnemonicParsing="false" onAction="#joinTour" prefHeight="45.0" prefWidth="117.0" styleClass="join-button" stylesheets="@User.css" text="Proceed">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="namePayment" layoutX="309.0" layoutY="66.0" prefHeight="34.0" prefWidth="382.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="cardPayment" layoutX="309.0" layoutY="128.0" prefHeight="34.0" prefWidth="383.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="expPayment" layoutX="311.0" layoutY="187.0" prefHeight="34.0" prefWidth="121.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="cvvPayment" layoutX="572.0" layoutY="187.0" prefHeight="34.0" prefWidth="121.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <Button layoutX="9.0" layoutY="8.0" mnemonicParsing="false" onAction="#backToTourTable" styleClass="back-button" stylesheets="@User.css" />
+               </children>
+            </Pane>
+            <Pane fx:id="tourViewPane" layoutX="13.0" layoutY="2.0" prefHeight="503.0" prefWidth="834.0" visible="false">
                <children>
                   <ImageView fitHeight="147.0" fitWidth="209.0" layoutX="319.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../tour%20images/skardu-image1.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="36.0" layoutY="43.0" prefHeight="47.0" prefWidth="209.0" text="Tour Name" textFill="WHITE">
+                  <Label fx:id="viewTourName" layoutX="36.0" layoutY="43.0" prefHeight="47.0" prefWidth="209.0" text="Tour Name" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="30.0" />
                      </font>
                   </Label>
-                  <Button fx:id="joinTourBtn" layoutX="707.0" layoutY="40.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="100.0" styleClass="join-button" stylesheets="@User.css" text="Join" />
+                  <Button fx:id="joinTourBtn" layoutX="707.0" layoutY="40.0" mnemonicParsing="false" onAction="#goToPaymentPage" prefHeight="47.0" prefWidth="100.0" styleClass="join-button" stylesheets="@User.css" text="Join" />
                   <Button layoutX="553.0" layoutY="149.0" mnemonicParsing="false" rotate="180.0" stylesheets="@User.css">
                      <styleClass>
                         <String fx:value="scroll-button" />
@@ -204,33 +256,28 @@
                         <String fx:value="previous-button" />
                      </styleClass>
                   </Button>
-                  <Label layoutX="48.0" layoutY="337.0" prefHeight="45.0" prefWidth="161.0" text="Description:" textFill="WHITE">
+                  <Label layoutX="50.0" layoutY="280.0" prefHeight="45.0" prefWidth="161.0" text="Description:" textFill="WHITE" underline="true">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label fx:id="viewTourDesc" layoutX="267.0" layoutY="335.0" prefHeight="47.0" prefWidth="565.0" text="Description" textFill="WHITE">
+                  <Label fx:id="viewTourDesc" layoutX="51.0" layoutY="318.0" prefHeight="47.0" prefWidth="772.0" text="Description" textFill="WHITE" wrapText="true">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label layoutX="49.0" layoutY="392.0" prefHeight="45.0" prefWidth="161.0" text="Start Date:" textFill="WHITE">
+                  <Label layoutX="49.0" layoutY="367.0" prefHeight="45.0" prefWidth="161.0" text="Start Date:" textFill="WHITE" underline="true">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label fx:id="viewTourDate" layoutX="269.0" layoutY="397.0" prefHeight="45.0" prefWidth="352.0" text="Date" textFill="WHITE">
+                  <Label fx:id="viewTourDate" layoutX="231.0" layoutY="371.0" prefHeight="45.0" prefWidth="352.0" text="Date" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
                   </Label>
                   <Button fx:id="viewTourBackBtn" layoutY="3.0" mnemonicParsing="false" onAction="#backToTourTable" prefHeight="25.0" prefWidth="52.0" styleClass="back-button" stylesheets="@User.css" text="Back" />
-                  <Label layoutX="48.0" layoutY="277.0" prefHeight="45.0" prefWidth="161.0" text="ID:" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="viewTourId" layoutX="266.0" layoutY="277.0" prefHeight="45.0" prefWidth="221.0" text="id" textFill="WHITE">
+                  <Label fx:id="viewTourId" layoutX="266.0" layoutY="277.0" opacity="0.0" prefHeight="45.0" prefWidth="22.0" text="id" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
@@ -244,7 +291,7 @@
                       <TableColumn fx:id="tourNameCol" prefWidth="214.933349609375" text="Name" />
                       <TableColumn fx:id="tourPriceCol" minWidth="0.0" prefWidth="129.06671142578125" text="Price" />
                         <TableColumn fx:id="tourDurationCol" minWidth="0.0" prefWidth="130.93328857421875" text="Duration (Days)" />
-                        <TableColumn fx:id="tourTransportCol" prefWidth="181.066650390625" text="Transport" />
+                        <TableColumn fx:id="tourTransportCol" prefWidth="181.066650390625" text="Start Date" />
                         <TableColumn fx:id="tourActionCol" prefWidth="190.93341064453125" text="Action" />
                     </columns>
                   </TableView>
