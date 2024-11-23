@@ -191,7 +191,7 @@
                         <Font name="Arial" size="30.0" />
                      </font>
                   </Label>
-                  <Button layoutX="707.0" layoutY="40.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="100.0" styleClass="join-button" stylesheets="@User.css" text="Join" />
+                  <Button fx:id="joinTourBtn" layoutX="707.0" layoutY="40.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="100.0" styleClass="join-button" stylesheets="@User.css" text="Join" />
                   <Button layoutX="553.0" layoutY="149.0" mnemonicParsing="false" rotate="180.0" stylesheets="@User.css">
                      <styleClass>
                         <String fx:value="scroll-button" />
@@ -204,37 +204,37 @@
                         <String fx:value="previous-button" />
                      </styleClass>
                   </Button>
-                  <Label layoutX="48.0" layoutY="284.0" prefHeight="45.0" prefWidth="161.0" text="Description:" textFill="WHITE">
+                  <Label layoutX="48.0" layoutY="337.0" prefHeight="45.0" prefWidth="161.0" text="Description:" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label layoutX="267.0" layoutY="282.0" prefHeight="47.0" prefWidth="565.0" text="Description" textFill="WHITE">
+                  <Label fx:id="viewTourDesc" layoutX="267.0" layoutY="335.0" prefHeight="47.0" prefWidth="565.0" text="Description" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label layoutX="49.0" layoutY="339.0" prefHeight="45.0" prefWidth="161.0" text="Start Date:" textFill="WHITE">
+                  <Label layoutX="49.0" layoutY="392.0" prefHeight="45.0" prefWidth="161.0" text="Start Date:" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label layoutX="269.0" layoutY="344.0" prefHeight="45.0" prefWidth="352.0" text="Date" textFill="WHITE">
+                  <Label fx:id="viewTourDate" layoutX="269.0" layoutY="397.0" prefHeight="45.0" prefWidth="352.0" text="Date" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="48.0" layoutY="391.0" prefHeight="45.0" prefWidth="161.0" text="Bookings" textFill="WHITE">
+                  <Button fx:id="viewTourBackBtn" layoutY="3.0" mnemonicParsing="false" onAction="#backToTourTable" prefHeight="25.0" prefWidth="52.0" styleClass="back-button" stylesheets="@User.css" text="Back" />
+                  <Label layoutX="48.0" layoutY="277.0" prefHeight="45.0" prefWidth="161.0" text="ID:" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="27.0" />
                      </font>
                   </Label>
-                  <Label layoutX="269.0" layoutY="390.0" prefHeight="45.0" prefWidth="352.0" text="Bookings" textFill="WHITE">
+                  <Label fx:id="viewTourId" layoutX="266.0" layoutY="277.0" prefHeight="45.0" prefWidth="221.0" text="id" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
                   </Label>
-                  <Button layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" styleClass="back-button" stylesheets="@User.css" text="Back" />
                </children>
             </Pane>
             <Pane fx:id="tourTablePane" prefHeight="503.0" prefWidth="856.0" visible="false">
@@ -279,6 +279,30 @@
                   </Label>
                   <TextField fx:id="descriptionBox" layoutX="51.0" layoutY="229.0" prefHeight="131.0" prefWidth="654.0" styleClass="text-area" stylesheets="@User.css" />
                   <Button fx:id="customTourSubmit" layoutX="55.0" layoutY="406.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="195.0" styleClass="button2" stylesheets="@User.css" text="Submit" />
+               </children>
+            </Pane>
+            <Pane fx:id="ratePane" layoutX="387.0" layoutY="-33.0" prefHeight="279.0" prefWidth="479.0" styleClass="rounded-pane" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css" visible="false">
+               <children>
+                  <Label layoutX="48.0" layoutY="130.0" prefHeight="86.0" prefWidth="114.0" style="-fx-font-size: 25;" text="Rate:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="rateTextField" layoutX="151.0" layoutY="158.0" prefHeight="31.0" prefWidth="71.0" styleClass="text-area" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css" />
+                  <Label fx:id="ratelabel1" layoutX="48.0" layoutY="22.0" prefHeight="86.0" prefWidth="321.0" style="-fx-font-size: 25;" text="Tour">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="closeRate" layoutX="407.0" layoutY="13.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="49.0" style="-fx-background-color: #1F2937;" styleClass="buttonRight" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css">
+                     <graphic>
+                        <ImageView fitHeight="43.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/icons/icons8_Xbox_Menu_32px.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </Pane>
          </children></Pane>
