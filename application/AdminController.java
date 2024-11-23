@@ -99,6 +99,22 @@ public class AdminController {
 	private ComboBox bookingStatusDropDown;
 	@FXML
 	private TextField searchBooking;
+	@FXML
+	private ScrollPane editTransportProviderMainDiV;
+	@FXML
+	private TextField providerNameBooking;
+	@FXML
+	private TextField vehicleTypeBooking;
+	@FXML
+	private TextField contactInfoBooking;
+	@FXML
+	private TextField fleetSizeBooking;
+	@FXML
+	private Button transportProviderButton;
+	@FXML
+	private Button addTransportProviderButton;
+	@FXML
+	private Label addTransportProviderHeader;
 
 	// ----------------------------TABLE
 	@FXML
@@ -171,8 +187,11 @@ public class AdminController {
 	private TourismManagementSystem TMS;
 	
 	private Tours editTourCurrent;
+	private TransportProvider editTourTransport;
 
 	private boolean addTour;
+	
+	private boolean addTranportProvider;
 
 	public AdminController() throws SQLException {
 		TMS = new TourismManagementSystem();
@@ -197,6 +216,7 @@ public class AdminController {
 		                                   "-fx-border-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold;");
 		
 		addTour = false;
+		addTranportProvider = false;
 		descriptionEditTour.setWrapText(true);
 		ArrayList<TopCustomers> topCustomers = TMS.getTop3Customers();
 		ObservableList<TopCustomers> data = FXCollections.observableArrayList(topCustomers);
@@ -416,6 +436,7 @@ public class AdminController {
 						Tours selectedTour = getTableView().getItems().get(getIndex());
 						editTourCurrent = selectedTour;
 						System.out.println("Edit button clicked for: " + selectedTour.getTourImages());
+						setEditTourTabEmpty();
 						hideAllPane();
 						editTourButton.setText("Save Changes");
 						addTour = false;
@@ -686,9 +707,8 @@ public class AdminController {
 
 	}
 
-	private void setAllTransportProvider() throws SQLException {
-		ArrayList<TransportProvider> allTransportProvider = TMS.getAllTransportProviders();
-
+	private void setAllTransportProvider(ArrayList<TransportProvider> allTransportProvider ) throws SQLException {
+		
 		ObservableList<TransportProvider> data3 = FXCollections.observableArrayList(allTransportProvider);
 
 		nameTransportColumn.setCellValueFactory(new PropertyValueFactory<TransportProvider, String>("Name"));
@@ -732,13 +752,24 @@ public class AdminController {
 				editButton.setOnAction(event -> {
 					TransportProvider selectedProvider = getTableView().getItems().get(getIndex());
 					System.out.println("Edit button clicked for: " + selectedProvider.getName());
-					// Add your edit logic here
+					addTranportProvider = false;
+					hideAllPane();
+					setTransportTabEmpty();
+					editTourTransport = selectedProvider;
+					addTransportProviderHeader.setText("Edit Transport Provider");
+					transportProviderButton.setText("Save Changes");
+					editTransportProviderMainDiV.setVisible(true);
+					providerNameBooking.setText(selectedProvider.getName());
+					fleetSizeBooking.setText(selectedProvider.getFleetSize());
+					contactInfoBooking.setText(selectedProvider.getContact());
+					vehicleTypeBooking.setText(selectedProvider.getVehicleTypes());
+
 				});
 
 				deleteButton.setOnAction(event -> {
 					TransportProvider selectedProvider = getTableView().getItems().get(getIndex());
 					System.out.println("Delete button clicked for: " + selectedProvider.getName());
-					// Add your delete logic here
+					
 				});
 
 				// Add buttons to the HBox
@@ -755,6 +786,36 @@ public class AdminController {
 				}
 			}
 		});
+	}
+	
+	private void setTransportTabEmpty() {
+		providerNameBooking.setText("");
+		fleetSizeBooking.setText("");
+		contactInfoBooking.setText("");
+		vehicleTypeBooking.setText("");
+	}
+	
+	private void setEditTourTabEmpty() {
+		headerEditTour.setText("");
+		bookingEditTour.setText("");
+		tourNameEditTour.setText("");
+		descriptionEditTour.setText("");
+		priceEditTour.setText("");
+		duarationEditTour.setText("");
+		googleMapEditTour.setText("");
+		
+		textImage1EditTour.setText("");
+		image1.setImage(new Image(getClass().getResourceAsStream("")));
+		textImage2EditTour.setText("");
+		image2.setImage(new Image(getClass().getResourceAsStream("")));
+		textImage3EditTour.setText("");
+		image3.setImage(new Image(getClass().getResourceAsStream("")));
+
+		tourDateEditTour.setValue(null);
+
+
+		transportProviderEditTour.setValue("");
+
 	}
 
 	public void editTour() {
@@ -807,7 +868,7 @@ public class AdminController {
 			}
 			Tours updatedTour = null;
 
-			updatedTour = new Tours("0", tourName, bookings, description, price, duration, googleMapLink,
+			updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration, googleMapLink,
 					startDate.toString(), transportProviderID, tourImages);
 
 			// Print the updated tour details for debugging
@@ -990,6 +1051,29 @@ public class AdminController {
 		
 	}
 	
+	public void AddTransportProvider() throws SQLException {
+		if(addTranportProvider == true) {
+			TransportProvider tranportProvider = new TransportProvider("",providerNameBooking.getText(),"0", fleetSizeBooking.getText() , contactInfoBooking.getText() , vehicleTypeBooking.getText()  );
+			TMS.addNewTransportProvider(tranportProvider);
+		} else {
+			TransportProvider tranportProvider = new TransportProvider(editTourTransport.getID(),providerNameBooking.getText(),"0", fleetSizeBooking.getText() , contactInfoBooking.getText() , vehicleTypeBooking.getText()  );
+			TMS.updateTransportProvider(tranportProvider);
+		}
+		hideAllPane();
+		removeAllButtonClasses();
+		transportTab.getStyleClass().remove("tab-selected");
+		transportTab.getStyleClass().add("tab");
+		transportSelected();
+	}
+	public void addNewTransport() {
+		addTranportProvider = true;
+		addTransportProviderHeader.setText("Add New Transport Provider");
+		transportProviderButton.setText("Add Transport Provider");
+		hideAllPane();
+		setTransportTabEmpty();
+		editTransportProviderMainDiV.setVisible(true);
+	}
+	
 	private void removeAllButtonClasses() {
 		if (dashboardTab.getStyleClass().contains("tab-selected")) {
 			dashboardTab.getStyleClass().remove("tab-selected");
@@ -1006,17 +1090,17 @@ public class AdminController {
 		} else if (settingsTab.getStyleClass().contains("tab-selected")) {
 			settingsTab.getStyleClass().remove("tab-selected");
 			settingsTab.getStyleClass().add("tab");
-		} else {
-			return;
-		}
+		} 
 	}
 
+	
 	private void hideAllPane() {
 		dashboardMainDiv.setVisible(false);
 		toursMainDiv.setVisible(false);
 		BookingMainDiv.setVisible(false);
 		transportMainDiv.setVisible(false);
 		editTourMainDiv.setVisible(false);
+		editTransportProviderMainDiV.setVisible(false);
 	}
 
 	public void dashboardSelected() throws SQLException {
@@ -1092,7 +1176,8 @@ public class AdminController {
 			transportTab.getStyleClass().remove("tab");
 			transportTab.getStyleClass().add("tab-selected");
 			transportMainDiv.setVisible(true);
-			setAllTransportProvider();
+			ArrayList<TransportProvider> allTransportProvider = TMS.getAllTransportProviders();
+			setAllTransportProvider(allTransportProvider);
 		}
 	}
 

@@ -250,7 +250,7 @@ public class UserController implements Initializable {
 //        ArrayList<MyBooking> allMyBookings = TMS.getBookingsByUserId(UserId);
 
         // Convert the list of bookings to an ObservableList
-        ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
+//        ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
 
         // Set the value for each column to match the corresponding method in the MyBooking object
         TourName.setCellValueFactory(cellData -> 
@@ -314,7 +314,7 @@ public class UserController implements Initializable {
         
 
         // Apply the data to the table
-        myBookingsTable.setItems(data);
+//        myBookingsTable.setItems(data);
 
 
         // Set font styling for the whole table

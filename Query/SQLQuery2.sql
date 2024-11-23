@@ -16,10 +16,10 @@ select * from TransportProvider
 select * from TourImages
 
 SELECT TOP 5
-                       t.TourName,
-                       COUNT(b.ID) AS Bookings, 
-                       AVG(b.Rating) AS AverageRating 
-                       FROM Booking b 
-                       JOIN Tour t ON b.TourID = t.TourID 
-                       GROUP BY t.TourName 
-                       ORDER BY Bookings DESC, AverageRating DESC
+t.TourName,
+COUNT(b.ID) AS Bookings, 
+AVG(b.Rating) AS AverageRating 
+FROM Booking b 
+JOIN Tour t ON b.TourID = t.TourID 
+GROUP BY t.TourName 
+ORDER BY Bookings DESC, AverageRating DESC

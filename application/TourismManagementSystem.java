@@ -62,6 +62,14 @@ public class TourismManagementSystem {
 		return topTours;
 	}
 	
+	public void addNewTransportProvider(TransportProvider tp) {
+		DB.addNewTransportProvider(tp);
+	}
+	
+	public void updateTransportProvider(TransportProvider tp) {
+		DB.updateTransportProvider(tp);
+	}
+	
 //	public ArrayList<MyBooking> getBookingsByUserId(int userId) throws SQLException {
 //	    ArrayList<MyBooking> userBookings = DB.getMyBookingsByUserId(userId);
 //	    return userBookings;

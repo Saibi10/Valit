@@ -126,7 +126,7 @@
             <Image url="@../icons/traveleaseLowPXL.png" />
          </image>
       </ImageView>
-      <Pane fx:id="toursMainDiv" layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
+      <Pane fx:id="toursMainDiv" layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
          <children>
             <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                <children>
@@ -165,7 +165,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="BookingMainDiv" layoutX="228.0" layoutY="42.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
+      <Pane fx:id="BookingMainDiv" layoutX="228.0" layoutY="42.0" prefHeight="758.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
          <children>
             <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                <children>
@@ -216,6 +216,12 @@
                   </TableView>
                </children>
             </Pane>
+            <Button fx:id="addTransportProviderButton" layoutX="678.0" layoutY="111.0" mnemonicParsing="false" onMouseClicked="#addNewTransport" prefHeight="47.0" prefWidth="247.0" styleClass="edit-main-button" stylesheets="@Admin.css" text="Add New Transport" />
+            <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="681.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/icons8-add-64.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <ScrollPane fx:id="editTourMainDiv" layoutX="228.0" layoutY="50.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;" visible="false">
@@ -304,6 +310,64 @@
                </children>
             </AnchorPane>
         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="editTransportProviderMainDiV" layoutX="238.0" layoutY="60.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;" visible="false">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="956.0" style="-fx-background-color: #111827;">
+               <children>
+                  <Pane layoutX="10.0" layoutY="17.0" prefHeight="712.0" prefWidth="941.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
+                     <children>
+                        <Label fx:id="addTransportProviderHeader" layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="447.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Add New Transport Provider" />
+                        <Label layoutX="25.0" layoutY="55.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 14px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Enter the details of the transport provider" />
+                        <TextField fx:id="providerNameBooking" layoutX="62.0" layoutY="138.0" prefHeight="47.0" prefWidth="803.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <Label layoutX="28.0" layoutY="105.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Provider Name" />
+                        <Label layoutX="27.0" layoutY="745.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Price ($)" />
+                        <TextField layoutX="25.0" layoutY="861.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                        <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="31.0" layoutY="872.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8-location-50.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="transportProviderButton" layoutX="34.0" layoutY="624.0" mnemonicParsing="false" onMouseClicked="#AddTransportProvider" prefHeight="38.0" prefWidth="834.0" styleClass="edit-main-button" stylesheets="@Admin.css" text="Add Transport Provider" />
+                        <Label layoutX="29.0" layoutY="188.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 13px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="The official name of the transport provider." />
+                        <Label layoutX="28.0" layoutY="225.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Fleet Size" />
+                        <Label layoutX="26.0" layoutY="346.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Contact Information" />
+                        <Label layoutX="26.0" layoutY="463.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Vehicle Type" />
+                     </children>
+                  </Pane>
+                  <TextField layoutX="36.0" layoutY="156.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <ImageView fitHeight="23.0" fitWidth="27.0" layoutX="41.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/icons8-truck-48.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="fleetSizeBooking" layoutX="72.0" layoutY="280.0" prefHeight="47.0" prefWidth="803.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <Label layoutX="39.0" layoutY="328.0" prefHeight="30.0" prefWidth="429.0" style="-fx-font-size: 13px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="The total number of vehicles in the provider's fleet." />
+                  <TextField layoutX="36.0" layoutY="281.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <ImageView fitHeight="31.0" fitWidth="27.0" layoutX="40.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/icons8-car-64.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="contactInfoBooking" layoutX="72.0" layoutY="400.0" prefHeight="47.0" prefWidth="803.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <Label layoutX="39.0" layoutY="448.0" prefHeight="30.0" prefWidth="429.0" style="-fx-font-size: 13px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Phone number or email address for the provider." />
+                  <TextField layoutX="36.0" layoutY="401.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <ImageView fitHeight="31.0" fitWidth="27.0" layoutX="40.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/icons8-phone-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="vehicleTypeBooking" layoutX="74.0" layoutY="517.0" prefHeight="47.0" prefWidth="803.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <Label layoutX="41.0" layoutY="565.0" prefHeight="30.0" prefWidth="429.0" style="-fx-font-size: 13px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="The primary type of vehicle used by the provider." />
+                  <TextField layoutX="38.0" layoutY="518.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
+                  <ImageView fitHeight="31.0" fitWidth="27.0" layoutX="42.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/icons8-cars-50.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </content>
       </ScrollPane>
    </children>
 </Pane>
