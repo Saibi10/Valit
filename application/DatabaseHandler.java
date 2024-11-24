@@ -386,6 +386,30 @@ public class DatabaseHandler {
             return false;
         }
     }
+    
+    public boolean cancelBooking(String bookingID) {
+        String updateQuery = "UPDATE Booking SET Status = 'Cancelled' WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the booking ID parameter
+            updateStmt.setString(1, bookingID);
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if any rows were updated
+            if (rowsAffected > 0) {
+                System.out.println("Booking confirmed successfully for ID: " + bookingID);
+                return true;
+            } else {
+                System.out.println("No booking found with ID: " + bookingID);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public ArrayList<Tours> getTopTours2() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();
@@ -718,6 +742,58 @@ public class DatabaseHandler {
             return false;
         }
     }
+    
+    public boolean markCompletedBookings() {
+        String updateQuery = "UPDATE Booking " +
+                             "SET Status = 'Completed' " +
+                             "FROM Booking b " +
+                             "JOIN Tour t ON b.TourID = t.TourID " +
+                             "WHERE DATEADD(DAY, t.Duration, t.StartDate) < GETDATE() " +
+                             "AND b.Status != 'Completed'";
 
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if any rows were updated
+            if (rowsAffected > 0) {
+                System.out.println("Bookings marked as completed successfully. Rows updated: " + rowsAffected);
+                return true;
+            } else {
+                System.out.println("No bookings found that need to be marked as completed.");
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String[] getDashboardStatistics() {
+        String[] stats = new String[4]; // Array to hold the results
+        String query = "SELECT " +
+                       "(SELECT COUNT(*) FROM Users) AS TotalUsers, " +
+                       "(SELECT COUNT(*) FROM Booking) AS TotalBookings, " +
+                       "(SELECT SUM(t.TourPrice) FROM Booking b " +
+                       " JOIN Tour t ON b.TourID = t.TourID) AS TotalAmount, " +
+                       "(SELECT COUNT(*) FROM Tour WHERE StartDate > GETDATE()) AS ActiveTours";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                // Fetch the results and populate the array
+                stats[0] = rs.getString("TotalUsers");    // Total number of users
+                stats[1] = rs.getString("TotalBookings"); // Total number of bookings
+                stats[2] = rs.getString("TotalAmount");   // Total amount from bookings
+                stats[3] = rs.getString("ActiveTours");   // Total number of active tours
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
 
 }
+

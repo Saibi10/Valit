@@ -82,6 +82,24 @@ insert into Request (UserID , Location , Description , Status)
 Values 
 (1 , 'Karachi' , 'Please set a tour karachi and visst popular places there' , 'Pending'),
 
+CREATE TABLE CustomerCareMessage (
+    ID INT IDENTITY(1,1) PRIMARY KEY,         -- Auto-incrementing primary key
+    UserID INT NOT NULL,                      -- Foreign key for the user sending the message
+    Title NVARCHAR(255) NOT NULL,             -- Title of the message
+    Message NVARCHAR(MAX) NOT NULL,           -- Content of the message
+    Response NVARCHAR(MAX) NULL,              -- Response to the message
+    Status NVARCHAR(50) DEFAULT 'Pending',    -- Status of the message (default to 'Pending')
+    DateTime DATETIME DEFAULT GETDATE()       -- Auto-set to current date and time
+);
+
+INSERT INTO CustomerCareMessage (UserID, Title, Message, Status, Response)
+VALUES
+(1, 'Issue with Booking', 'I am unable to confirm my recent booking. Please assist.', 'Pending', NULL),
+(2, 'Payment Failure', 'My payment failed during the booking process. Kindly help me resolve this.', 'Pending', NULL),
+(3, 'Change in Travel Dates', 'I need to change the travel dates for my booking. Let me know the process.', 'Pending', NULL),
+(4, 'Refund Request', 'I would like to request a refund for my canceled booking. Please guide.', 'Pending', NULL),
+(5, 'Website Bug', 'I encountered a bug while browsing the website. The payment page is not loading.', 'Pending', NULL);
+
 
 
 

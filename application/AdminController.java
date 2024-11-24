@@ -142,6 +142,14 @@ public class AdminController {
 	private ComboBox filterCare;
 	@FXML
 	private Label editMessageLocation;
+	@FXML
+	private Label totalBookingsText;
+	@FXML
+	private Label totalRevenuText;
+	@FXML
+	private Label activeTourText;
+	@FXML
+	private Label activeUsersText;
 
 	// ----------------------------TABLE
 	@FXML
@@ -246,14 +254,28 @@ public class AdminController {
 	private boolean addTranportProvider;
 
 	private boolean careResponse;
-
+	
+	private int userID;
+	
 	public AdminController() throws SQLException {
 		TMS = new TourismManagementSystem();
+	}
+	
+	public void setUserId(int id)
+	{
+		userID = id;
 	}
 
 	@FXML
 	public void initialize() throws SQLException {
-
+		String[] stats = TMS.getStats();
+		totalBookingsText.setText(stats[1]);
+		totalRevenuText.setText(stats[2]);
+		activeTourText.setText(stats[3]);
+		activeUsersText.setText(stats[0]);
+		
+		TMS.markCompletedBookings();
+		
 		filterCare.getItems().addAll("Pending", "Replied");
 		filterCare.setValue("Pending");
 
@@ -794,7 +816,17 @@ public class AdminController {
 									e.printStackTrace();
 								}
 							} else if ("Cancel Booking".equals(selectedActionValue)) {
-								// Add logic to cancel the booking
+								TMS.cancelTourBooking(booking.getID());
+								hideAllPane();
+								removeAllButtonClasses();
+								bookingTab.getStyleClass().remove("tab-selected");
+								bookingTab.getStyleClass().add("tab");
+								try {
+									bookingsSelected();
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
 					});
@@ -1200,28 +1232,14 @@ public class AdminController {
 			String searchText = searchTourText.getText().trim(); // Get and trim the search text
 
 			try {
-				// Get all tours from TMS
-				ArrayList<Tours> allTours = TMS.getAllTours();
-
 				if (searchText.isEmpty()) {
 					// If the search text is empty, restore all tours
+					ArrayList<Tours> allTours = TMS.getAllTours();
 					setAllToursTable(allTours);
-					System.out.println("Search text is empty. Restoring all tours.");
 					return;
 				}
-
-				// Create a new list to store matching tours
-				ArrayList<Tours> matchingTours = new ArrayList<>();
-
-				// Filter tours based on the search text (best match based on startsWith)
-				for (Tours tour : allTours) {
-					if (tour.getTourName().toLowerCase().startsWith(searchText.toLowerCase())) {
-						matchingTours.add(tour);
-					}
-				}
-
-				// Pass the filtered tours to the setAllToursTable function
-				setAllToursTable(matchingTours);
+				ArrayList<Tours> allTours = TMS.getAllToursSearch(searchText);
+				setAllToursTable(allTours);
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -1235,28 +1253,18 @@ public class AdminController {
 			String searchText = searchBooking.getText().trim(); // Get and trim the search text
 			System.out.print("hello");
 			try {
-				// Get all tours from TMS
-				ArrayList<Booking> allTours = TMS.getAllBookings();
 
 				if (searchText.isEmpty()) {
 					// If the search text is empty, restore all tours
+					ArrayList<Booking> allTours = TMS.getAllBookings();
 					setAllBookingTable(allTours);
 					System.out.println("Search text is empty. Restoring all tours.");
 					return;
 				}
 
-				// Create a new list to store matching tours
-				ArrayList<Booking> matchingTours = new ArrayList<>();
-
-				// Filter tours based on the search text (best match based on startsWith)
-				for (Booking tour : allTours) {
-					if (tour.getCustomer().toLowerCase().startsWith(searchText.toLowerCase())) {
-						matchingTours.add(tour);
-					}
-				}
-
+				ArrayList<Booking> allTours = TMS.getAllBookingsSearch(searchText);
 				// Pass the filtered tours to the setAllToursTable function
-				setAllBookingTable(matchingTours);
+				setAllBookingTable(allTours);
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -1270,26 +1278,9 @@ public class AdminController {
 			showCompletedButton.setText("Showing Completed");
 
 			// Get all tours
-			ArrayList<Tours> allTours = TMS.getAllTours();
+			ArrayList<Tours> allTours = TMS.getAllCompleted();
 
-			// Filter completed tours
-			LocalDate today = LocalDate.now();
-			ArrayList<Tours> completedTours = new ArrayList<>();
-
-			for (Tours tour : allTours) {
-				LocalDate startDate = LocalDate.parse(tour.getStartDate()); // Assuming startDate is in ISO format
-																			// (yyyy-MM-dd)
-				int durationDays = Integer.parseInt(tour.getDuration());
-				LocalDate endDate = startDate.plusDays(durationDays);
-
-				// Add to completed tours if the end date is before today
-				if (endDate.isBefore(today)) {
-					completedTours.add(tour);
-				}
-			}
-
-			// Pass the completed tours to the table
-			setAllToursTable(completedTours);
+			setAllToursTable(allTours);
 
 		} else {
 			showCompletedButton.setText("Show Completed");
@@ -1303,68 +1294,54 @@ public class AdminController {
 	}
 
 	public void bookingDropDown() throws SQLException {
-		ArrayList<Booking> allBookings = TMS.getAllBookings();
+		
 		if (bookingStatusDropDown.getValue().equals("All Bookings")) {
+			
+			ArrayList<Booking> allBookings = TMS.getAllBookings();
 			setAllBookingTable(allBookings);
+			
 		} else if (bookingStatusDropDown.getValue().equals("Pending Bookings")) {
-
-			ArrayList<Booking> filteredBookings = allBookings.stream()
-					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-
-			setAllBookingTable(filteredBookings);
+			
+			ArrayList<Booking> allBookings = TMS.getAllBookingsStatus("Pending");
+			setAllBookingTable(allBookings);
+			
 		} else if (bookingStatusDropDown.getValue().equals("Confirmed Bookings")) {
-
-			ArrayList<Booking> filteredBookings = allBookings.stream()
-					.filter(booking -> "Confirmed".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-
-			setAllBookingTable(filteredBookings);
+			
+			ArrayList<Booking> allBookings = TMS.getAllBookingsStatus("Confirmed");
+			setAllBookingTable(allBookings);
+			
 		} else if (bookingStatusDropDown.getValue().equals("Completed Bookings")) {
-
-			ArrayList<Booking> filteredBookings = allBookings.stream()
-					.filter(booking -> "Completed".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-
-			setAllBookingTable(filteredBookings);
+			
+			ArrayList<Booking> allBookings = TMS.getAllBookingsStatus("Completed");
+			setAllBookingTable(allBookings);
+			
 		} else if (bookingStatusDropDown.getValue().equals("Cancelled Bookings")) {
-
-			ArrayList<Booking> filteredBookings = allBookings.stream()
-					.filter(booking -> "Cancelled".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-
-			setAllBookingTable(filteredBookings);
+			
+			ArrayList<Booking> allBookings = TMS.getAllBookingsStatus("Cancelled");
+			setAllBookingTable(allBookings);
+			
 		}
 
 	}
 
 	public void requestDropDown() throws SQLException {
-		ArrayList<Request> req = TMS.getAllRequests();
 		if (filterRequest.getValue().equals("Pending")) {
-			ArrayList<Request> filteredreq = req.stream()
-					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-			setAllTourRequest(filteredreq);
+			ArrayList<Request> req = TMS.getAllRequestsStatus("Pending");
+			setAllTourRequest(req);
 		} else if (filterRequest.getValue().equals("Replied")) {
-			ArrayList<Request> filteredreq = req.stream()
-					.filter(booking -> "Replied".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-			setAllTourRequest(filteredreq);
+			ArrayList<Request> req = TMS.getAllRequestsStatus("Replied");
+			setAllTourRequest(req);
 		}
 	}
 
 	public void careDropDown() throws SQLException {
-		ArrayList<CustomerCareMessage> req = TMS.getAllCustomerCareMessage();
+		
 		if (filterCare.getValue().equals("Pending")) {
-			ArrayList<CustomerCareMessage> filteredreq = req.stream()
-					.filter(booking -> "Pending".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-			setAllCustomerCareMessage(filteredreq);
+			ArrayList<CustomerCareMessage> req = TMS.getAllCustomerCareMessageStatus("Pending");
+			setAllCustomerCareMessage(req);
 		} else if (filterCare.getValue().equals("Replied")) {
-			ArrayList<CustomerCareMessage> filteredreq = req.stream()
-					.filter(booking -> "Replied".equalsIgnoreCase(booking.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-			setAllCustomerCareMessage(filteredreq);
+			ArrayList<CustomerCareMessage> req = TMS.getAllCustomerCareMessageStatus("Replied");
+			setAllCustomerCareMessage(req);
 		}
 	}
 
@@ -1398,30 +1375,16 @@ public class AdminController {
 	public void searchTransportProvider(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) { // Check if the Enter key is pressed
 			String searchText = searchTransportProviderText.getText().trim(); // Get and trim the search text
-			System.out.print("hello");
 			try {
-				// Get all tours from TMS
-				ArrayList<TransportProvider> allTours = TMS.getAllTransportProviders();
-
 				if (searchText.isEmpty()) {
 					// If the search text is empty, restore all tours
+					ArrayList<TransportProvider> allTours = TMS.getAllTransportProviders();
 					setAllTransportProvider(allTours);
 					System.out.println("Search text is empty. Restoring all tours.");
 					return;
 				}
-
-				// Create a new list to store matching tours
-				ArrayList<TransportProvider> matchingTours = new ArrayList<>();
-
-				// Filter tours based on the search text (best match based on startsWith)
-				for (TransportProvider tour : allTours) {
-					if (tour.getName().toLowerCase().startsWith(searchText.toLowerCase())) {
-						matchingTours.add(tour);
-					}
-				}
-
-				// Pass the filtered tours to the setAllToursTable function
-				setAllTransportProvider(matchingTours);
+				ArrayList<TransportProvider> allTours = TMS.getAllTransportProvidersSearch(searchText);
+				setAllTransportProvider(allTours);
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -1456,6 +1419,7 @@ public class AdminController {
 		}
 	}
 
+	
 	private void hideAllPane() {
 		dashboardMainDiv.setVisible(false);
 		toursMainDiv.setVisible(false);
@@ -1468,6 +1432,7 @@ public class AdminController {
 		customerCareMainDiv.setVisible(false);
 	}
 
+	
 	public void dashboardSelected() throws SQLException {
 		if (dashboardTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1475,10 +1440,16 @@ public class AdminController {
 			dashboardTab.getStyleClass().remove("tab");
 			dashboardTab.getStyleClass().add("tab-selected");
 			dashboardMainDiv.setVisible(true);
+			String[] stats = TMS.getStats();
+			totalBookingsText.setText(stats[1]);
+			totalRevenuText.setText(stats[2]);
+			activeTourText.setText(stats[3]);
+			activeUsersText.setText(stats[0]);
 
 		}
 	}
 
+	
 	public void toursSelected() throws SQLException {
 		if (toursTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1487,23 +1458,10 @@ public class AdminController {
 			toursTab.getStyleClass().add("tab-selected");
 
 			try {
-				ArrayList<Tours> allTours = TMS.getAllTours();
-
-				// Get the current date
-				LocalDate today = LocalDate.now();
-
-				// Filter tours with start dates in the future
-				ArrayList<Tours> futureTours = new ArrayList<>();
-				for (Tours tour : allTours) {
-					LocalDate startDate = LocalDate.parse(tour.getStartDate()); // Assuming startDate is in ISO format
-																				// (yyyy-MM-dd)
-					if (startDate.isAfter(today)) { // Check if the start date is after today
-						futureTours.add(tour);
-					}
-				}
+				ArrayList<Tours> allTours = TMS.getAllToursActive();
 
 				// Send future tours to the table
-				this.setAllToursTable(futureTours);
+				this.setAllToursTable(allTours);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("Error while fetching or filtering tours: " + e.getMessage());
@@ -1513,6 +1471,7 @@ public class AdminController {
 		}
 	}
 
+	
 	public void bookingsSelected() throws SQLException {
 		if (bookingTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1534,6 +1493,7 @@ public class AdminController {
 		}
 	}
 
+	
 	public void transportSelected() throws SQLException {
 		if (transportTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1546,25 +1506,18 @@ public class AdminController {
 		}
 	}
 
+	
 	public void TourRequestsSelected() throws SQLException {
 
 		if (TourRequestsTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
 			hideAllPane();
-
 			TourRequestsTab.getStyleClass().remove("tab");
 			TourRequestsTab.getStyleClass().add("tab-selected");
 			transportMainDiv.setVisible(true);
 			requestMainDiv.setVisible(true);
-			ArrayList<Request> req = TMS.getAllRequests();
-
-			ArrayList<Request> filteredRequests = req.stream()
-					.filter(request -> "Pending".equalsIgnoreCase(request.getStatus()))
-					.collect(Collectors.toCollection(ArrayList::new));
-
-			// Print filtered requests for verification (optional)
-			filteredRequests.forEach(request -> System.out.println(request.getStatus()));
-			setAllTourRequest(filteredRequests);
+			ArrayList<Request> req = TMS.getAllRequestsStatus("Pending");
+			setAllTourRequest(req);
 
 		}
 	}
@@ -1589,6 +1542,7 @@ public class AdminController {
 		}
 	}
 
+	
 	public void settingSelected() {
 		if (settingsTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
