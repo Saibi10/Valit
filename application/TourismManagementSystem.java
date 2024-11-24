@@ -96,4 +96,14 @@ public class TourismManagementSystem {
 		DB.joinTour(uId, tId);
 	}
 	
+	public int authenticateUser(String email, String pass, int[] userId)
+	{
+		return DB.authenticateUser(email, pass, userId);
+	}
+	
+	public void addNewUser(String email, String pass, String fullName)
+	{
+		DB.addNewUser(email, pass, fullName);
+	}
+	
 }

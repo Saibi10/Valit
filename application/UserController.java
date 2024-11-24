@@ -134,10 +134,15 @@ public class UserController implements Initializable {
 	@FXML
 	private TourismManagementSystem TMS;
 	
-	private int UserId = 1; // Assuming Userid = 1 is logged in right now
+	private int UserId = 0; // Assuming Userid = 1 is logged in right now
 	
 	public UserController() throws SQLException {
 		TMS = new TourismManagementSystem();
+	}
+	
+	public void setUserId(int id)
+	{
+		UserId = id;
 	}
 	
 	public void SetVisibilityFalse()
@@ -148,6 +153,7 @@ public class UserController implements Initializable {
     	ratePane.setVisible(false);
     	tourViewPane.setVisible(false);
     	SupportPane.setVisible(false);
+    	paymentPane.setVisible(false);
     }
 
     @Override
@@ -159,6 +165,7 @@ public class UserController implements Initializable {
 		feature2Btn.setText("All Tours");
 		feature3Btn.setDisable(true);
 		feature3Btn.setOpacity(0);
+		tourTablePane.setVisible(true);
     }
 
     
