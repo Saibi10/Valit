@@ -3,7 +3,9 @@ import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.MyBooking;
+import Models.Request;
 
 import java.lang.invoke.MethodHandle;
 import java.sql.*;
@@ -18,7 +20,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -384,6 +386,30 @@ public class DatabaseHandler {
             return false;
         }
     }
+    
+    public boolean cancelBooking(String bookingID) {
+        String updateQuery = "UPDATE Booking SET Status = 'Cancelled' WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the booking ID parameter
+            updateStmt.setString(1, bookingID);
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if any rows were updated
+            if (rowsAffected > 0) {
+                System.out.println("Booking confirmed successfully for ID: " + bookingID);
+                return true;
+            } else {
+                System.out.println("No booking found with ID: " + bookingID);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public ArrayList<Tours> getTopTours2() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();
@@ -455,8 +481,6 @@ public class DatabaseHandler {
         return toursList;
     }
 
-
-    
     public boolean addNewTransportProvider(TransportProvider provider) {
         String insertQuery = "INSERT INTO TransportProvider (Name, Rating, FleetSize, Contact, VehicleTypes) " +
                              "VALUES (?, ?, ?, ?, ?)";
@@ -596,31 +620,215 @@ public class DatabaseHandler {
 
         return myBookingsList;
     }
-    
-    public void addSupportMessage(int uId, String title, String detail) {
-        String query = "INSERT INTO CustomerCareMessage (UserID, Title, Message, DateTime) VALUES (?, ?, ?, GETDATE())";
-        
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            // Set the values for the prepared statement
-            ps.setInt(1, uId);         // UserID
-            ps.setString(2, title);    // Title
-            ps.setString(3, detail);   // Message content
-            
-            // Execute the update
-            int rowsAffected = ps.executeUpdate();
-            
-            // Confirm success
+
+    public boolean deleteTransportProvider(String id) {
+        String deleteQuery = "DELETE FROM TransportProvider WHERE ID = ?";
+
+        try (PreparedStatement deleteStmt = con.prepareStatement(deleteQuery)) {
+            // Set the ID parameter
+            deleteStmt.setString(1, id);
+
+            // Execute the delete query
+            int rowsAffected = deleteStmt.executeUpdate();
+
+            // Check if the deletion was successful
             if (rowsAffected > 0) {
-                System.out.println("Support message added successfully.");
+                System.out.println("Transport provider deleted successfully for ID: " + id);
+                return true;
             } else {
-                System.out.println("Failed to add the support message.");
+                System.out.println("No transport provider found with ID: " + id);
+                return false;
             }
         } catch (SQLException e) {
-            // Handle any SQL exceptions
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<Request> getAllRequests() {
+        ArrayList<Request> requestsList = new ArrayList<>();
+        String query = "SELECT r.RequestID, u.FullName AS CustomerName, r.Location, r.Description, " +
+                       "r.Status, r.CreatedAt, r.Response " +
+                       "FROM Request r " +
+                       "JOIN Users u ON r.UserID = u.UserID";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                // Extract data from the result set
+                String requestID = rs.getString("RequestID");
+                String customerName = rs.getString("CustomerName");
+                String location = rs.getString("Location");
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String createdAt = rs.getString("CreatedAt");
+                String response = rs.getString("Response");
+
+                // Create a Request object
+                Request request = new Request(customerName,requestID, location, description, status, createdAt, response);
+
+                // Add it to the list
+                requestsList.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requestsList;
+    }
+
+    public boolean updateRequest(Request request) {
+        String updateQuery = "UPDATE Request SET " +
+                             "Location = ?, " +
+                             "Description = ?, " +
+                             "Status = ?, " +
+                             "Response = ? " +
+                             "WHERE RequestID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the parameters using the Request object
+            updateStmt.setString(1, request.getLocation());
+            updateStmt.setString(2, request.getDescription());
+            updateStmt.setString(3, request.getStatus());
+            updateStmt.setString(4, request.getResponse());
+            updateStmt.setString(5, request.getRequestID());
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                System.out.println("Request updated successfully for ID: " + request.getRequestID());
+                return true;
+            } else {
+                System.out.println("No request found with ID: " + request.getRequestID());
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+ 	
+    public ArrayList<CustomerCareMessage> getAllCustomerCareMessages() {
+        ArrayList<CustomerCareMessage> messagesList = new ArrayList<>();
+        String query = "SELECT c.ID, u.FullName AS CustomerName, c.Title, c.Message, " +
+                       "c.Response, c.Status, c.DateTime " +
+                       "FROM CustomerCareMessage c " +
+                       "JOIN Users u ON c.UserID = u.UserID";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                // Extract data from the result set
+                String id = rs.getString("ID"); // Retrieve ID as a String
+                String customerName = rs.getString("CustomerName");
+                String title = rs.getString("Title");
+                String message = rs.getString("Message");
+                String response = rs.getString("Response");
+                String status = rs.getString("Status");
+                String dateTime = rs.getString("DateTime");
+
+                // Create a CustomerCareMessage object
+                CustomerCareMessage customerCareMessage = new CustomerCareMessage(id, customerName, status, title, message,  response);
+
+                // Add it to the list
+                messagesList.add(customerCareMessage);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return messagesList;
+    }
+    
+    public boolean updateCustomerCareMessage(CustomerCareMessage message) {
+        String updateQuery = "UPDATE CustomerCareMessage SET " +
+                             "Title = ?, " +
+                             "Message = ?, " +
+                             "Response = ?, " +
+                             "Status = ? " +
+                             "WHERE ID = ?";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Set the parameters using the CustomerCareMessage object
+            updateStmt.setString(1, message.getTitle());
+            updateStmt.setString(2, message.getMessage());
+            updateStmt.setString(3, message.getResponse());
+            updateStmt.setString(4, message.getStatus());
+            updateStmt.setString(5, message.getID()); // Use the ID from the message object
+
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                System.out.println("Customer care message updated successfully for ID: " + message.getID());
+                return true;
+            } else {
+                System.out.println("No customer care message found with ID: " + message.getID());
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
     
+    public boolean markCompletedBookings() {
+        String updateQuery = "UPDATE Booking " +
+                             "SET Status = 'Completed' " +
+                             "FROM Booking b " +
+                             "JOIN Tour t ON b.TourID = t.TourID " +
+                             "WHERE DATEADD(DAY, t.Duration, t.StartDate) < GETDATE() " +
+                             "AND b.Status != 'Completed'";
+
+        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
+            // Execute the update query
+            int rowsAffected = updateStmt.executeUpdate();
+
+            // Check if any rows were updated
+            if (rowsAffected > 0) {
+                System.out.println("Bookings marked as completed successfully. Rows updated: " + rowsAffected);
+                return true;
+            } else {
+                System.out.println("No bookings found that need to be marked as completed.");
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String[] getDashboardStatistics() {
+        String[] stats = new String[4]; // Array to hold the results
+        String query = "SELECT " +
+                       "(SELECT COUNT(*) FROM Users) AS TotalUsers, " +
+                       "(SELECT COUNT(*) FROM Booking) AS TotalBookings, " +
+                       "(SELECT SUM(t.TourPrice) FROM Booking b " +
+                       " JOIN Tour t ON b.TourID = t.TourID) AS TotalAmount, " +
+                       "(SELECT COUNT(*) FROM Tour WHERE StartDate > GETDATE()) AS ActiveTours";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                // Fetch the results and populate the array
+                stats[0] = rs.getString("TotalUsers");    // Total number of users
+                stats[1] = rs.getString("TotalBookings"); // Total number of bookings
+                stats[2] = rs.getString("TotalAmount");   // Total amount from bookings
+                stats[3] = rs.getString("ActiveTours");   // Total number of active tours
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
+
     public void joinTour(int userId, int tourId) {
         String query = "INSERT INTO Booking (UserID, TourID, TransportProviderID, BookingDate, Rating, Status) VALUES (?, ?, 1, GETDATE(), NULL, 'Pending')";
         
@@ -694,7 +902,30 @@ public class DatabaseHandler {
             return false;
         }
     }
-
-
     
+    
+    public void addSupportMessage(int uId, String title, String detail) {
+        String query = "INSERT INTO CustomerCareMessage (UserID, Title, Message, DateTime) VALUES (?, ?, ?, GETDATE())";
+        
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the values for the prepared statement
+            ps.setInt(1, uId);         // UserID
+            ps.setString(2, title);    // Title
+            ps.setString(3, detail);   // Message content
+            
+            // Execute the update
+            int rowsAffected = ps.executeUpdate();
+            
+            // Confirm success
+            if (rowsAffected > 0) {
+                System.out.println("Support message added successfully.");
+            } else {
+                System.out.println("Failed to add the support message.");
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exceptions
+            e.printStackTrace();
+        }
+    }
 }
+
