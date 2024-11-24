@@ -44,12 +44,17 @@
                         <Image url="@../icons/icons8-location-50.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="34.0" layoutY="221.0" prefHeight="45.0" prefWidth="385.0" promptText="jhon@example.com" styleClass="text-field-input" stylesheets="@Home.css" />
+                  <TextField fx:id="emailS" layoutX="34.0" layoutY="221.0" prefHeight="45.0" prefWidth="385.0" promptText="jhon@example.com" styleClass="text-field-input" stylesheets="@Home.css" />
                   <Label fx:id="emailText" layoutX="34.0" layoutY="194.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Email" textAlignment="CENTER" />
-                  <TextField layoutX="34.0" layoutY="302.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" />
+                  <TextField fx:id="passS" layoutX="34.0" layoutY="302.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" />
                   <Label fx:id="passwordText" layoutX="34.0" layoutY="275.0" prefHeight="21.0" prefWidth="302.0" styleClass="small-text" stylesheets="@Home.css" text="Password" textAlignment="CENTER" />
-                  <Button fx:id="signinButton" layoutX="34.0" layoutY="387.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="385.0" styleClass="login-button" stylesheets="@Home.css" text="Sign In" />
+                  <Button fx:id="signinButton" layoutX="34.0" layoutY="387.0" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="37.0" prefWidth="385.0" styleClass="login-button" stylesheets="@Home.css" text="Sign In" />
                   <Label fx:id="servicePolicyLabel" layoutX="42.0" layoutY="464.0" prefHeight="52.0" prefWidth="370.0" style="-fx-font-size: 16px;" styleClass="normal-text" stylesheets="@Home.css" text="By continuing, you agree to TravelEase's Terms of Service and Privacy Policy." textAlignment="CENTER" wrapText="true" />
+                  <Label fx:id="invalidLabel" layoutX="150.0" layoutY="353.0" prefHeight="34.0" prefWidth="139.0" text="Invalid Information" textFill="RED" visible="false">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <TextField fx:id="passwordTextField" layoutX="395.0" layoutY="421.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" visible="false" />

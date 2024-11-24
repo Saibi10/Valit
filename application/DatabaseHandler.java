@@ -643,6 +643,57 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+    
+    public int authenticateUser(String email, String pass, int[] userId) {
+        String query = "SELECT UserID, UserType FROM Users WHERE Email = ? AND Password = ?";
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setString(2, pass);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Extract UserID and set it in the userId array
+                    userId[0] = rs.getInt("UserID");
+                    String userType = rs.getString("UserType");
+
+                    if ("Admin".equalsIgnoreCase(userType)) {
+                        return 1; // Admin
+                    } else if ("Customer".equalsIgnoreCase(userType)) {
+                        return 2; // Customer
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // User does not exist
+    }
+
+
+    public boolean addNewUser(String email, String pass, String fullName) {
+        String insertQuery = "INSERT INTO Users (Email, Password, FullName, UserType) VALUES (?, ?, ?, 'Customer')";
+
+        try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
+            // Set the parameters for the query
+            stmt.setString(1, email);
+            stmt.setString(2, pass);
+            stmt.setString(3, fullName);
+
+            // Execute the insert query
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("New user added successfully.");
+                return true;
+            } else {
+                System.out.println("Failed to add new user.");
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     
