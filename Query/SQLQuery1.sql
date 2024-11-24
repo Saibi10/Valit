@@ -377,9 +377,9 @@ Select * from Request
 
 Delete from Request where RequestID = 15
 INSERT INTO Request (UserID, Location, Description, Status, Response)
-VALUES (1, 'Skardu', 'i will marry u and have ur kids', 'Responded', 'I will look into it. Dont worry.');
+VALUES (1, 'Papa', 'i will marry u and have ur kids', 'Responded', 'I will look into it. Dont worry.');
 
-Select * from CustomerCareMessage
+Select * from CustomerCareMessage where UserID = 1
 
 INSERT INTO CustomerCareMessage (UserID, Title, Message, Status, Response)
 VALUES
@@ -391,7 +391,10 @@ VALUES
 
 INSERT INTO CustomerCareMessage (UserID, Title, Message, Status, Response)
 VALUES
-(1, 'Issue with Booking', 'I am unable to confirm my recent booking. Please assist.', 'Responded', 'Helo sir u are gay')
+(1, 'Issue with Booking', 'I am unable to confirm my recent booking. Please assist.', 'Responded', 'Helo sir u are gay'),
+(1, 'Idadadada Booking', 'I am unable to confirmdadada booking. Please assist.', 'Responded', 'Hdadadasdad'),
+(1, 'Isdadadadadadadh Booking', 'I am unable toadaent booking. Please assist.', 'Responded', 'dadadadadadadadadaday')
+
 
 SELECT 
     ID, 
