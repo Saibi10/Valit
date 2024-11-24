@@ -1187,15 +1187,20 @@ public class AdminController {
 			}
 			Tours updatedTour = null;
 
-			updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration,
-					googleMapLink, startDate.toString(), transportProviderID, tourImages);
-
+			
 			// Print the updated tour details for debugging
 			System.out.println("Updated Tour: " + updatedTour);
-			if (addTour == false)
-				TMS.updateTour(updatedTour);
-			else
-				TMS.addNewTour(updatedTour);
+			if (addTour == false) {
+                updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration,
+                        googleMapLink, startDate.toString(), transportProviderID, tourImages);
+
+                TMS.updateTour(updatedTour);
+            }
+            else {
+                updatedTour = new Tours("", tourName, bookings, description, price, duration,
+                        googleMapLink, startDate.toString(), transportProviderID, tourImages);
+                TMS.addNewTour(updatedTour);
+            }
 			hideAllPane();
 			removeAllButtonClasses();
 			toursTab.getStyleClass().remove("tab-selected");

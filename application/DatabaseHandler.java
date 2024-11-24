@@ -2,6 +2,7 @@ package application;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
+import Models.User;
 import Models.Booking;
 import Models.CustomerCareMessage;
 import Models.MyBooking;
@@ -20,7 +21,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -550,29 +551,32 @@ public class DatabaseHandler {
 
         // Query to join Booking and Tour tables to get tour information based on UserID
         String query = "SELECT " +
+                "b.ID, " +
                 "t.TourName, " +
                 "b.BookingDate, " +
                 "t.TourPrice, " +
                 "t.StartDate, " +
-                "t.TourDescription " +
+                "t.TourDescription, " +
+                "b.Rating " + // Include Rating in the query
                 "FROM Booking b " +
                 "JOIN Tour t ON b.TourID = t.TourID " +
-                "WHERE b.UserID = ? AND b.status != 'Completed'"; // Add the status condition
-
+                "WHERE b.UserID = ? AND b.status = 'Pending' OR b.status = 'Confirmed'";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, userId); // Set the UserID parameter in the query
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    int bookingId = rs.getInt("ID");
                     String tourName = rs.getString("TourName");
                     String bookingDate = rs.getString("BookingDate");
                     double tourPrice = rs.getDouble("TourPrice");
                     String startDate = rs.getString("StartDate");
                     String tourDescription = rs.getString("TourDescription");
+                    int rating = rs.getInt("Rating"); // Get the Rating
 
                     // Create a MyBooking object and add it to the list
-                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
+                    MyBooking myBooking = new MyBooking(bookingId, tourName, bookingDate, tourPrice, startDate, tourDescription, rating);
                     myBookingsList.add(myBooking);
                 }
             }
@@ -582,35 +586,39 @@ public class DatabaseHandler {
 
         return myBookingsList;
     }
-    
+
+
     public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) {
         ArrayList<MyBooking> myBookingsList = new ArrayList<>();
 
         // Query to join Booking and Tour tables to get tour information based on UserID
         String query = "SELECT " +
+                "b.ID, " +
                 "t.TourName, " +
                 "b.BookingDate, " +
                 "t.TourPrice, " +
                 "t.StartDate, " +
-                "t.TourDescription " +
+                "t.TourDescription, " +
+                "b.Rating " + // Include Rating in the query
                 "FROM Booking b " +
                 "JOIN Tour t ON b.TourID = t.TourID " +
-                "WHERE b.UserID = ? AND b.status = 'Completed'"; // Add the status condition
-
+                "WHERE b.UserID = ? AND b.status = 'Completed'";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, userId); // Set the UserID parameter in the query
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    int bookingId = rs.getInt("ID");
                     String tourName = rs.getString("TourName");
                     String bookingDate = rs.getString("BookingDate");
                     double tourPrice = rs.getDouble("TourPrice");
                     String startDate = rs.getString("StartDate");
                     String tourDescription = rs.getString("TourDescription");
+                    int rating = rs.getInt("Rating"); // Get the Rating
 
                     // Create a MyBooking object and add it to the list
-                    MyBooking myBooking = new MyBooking(tourName, bookingDate, tourPrice, startDate, tourDescription);
+                    MyBooking myBooking = new MyBooking(bookingId, tourName, bookingDate, tourPrice, startDate, tourDescription, rating);
                     myBookingsList.add(myBooking);
                 }
             }
@@ -927,5 +935,255 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+    
+    public void deleteBooking(int id) {
+        String query = "DELETE FROM Booking WHERE ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the BookingId parameter in the query
+            ps.setInt(1, id);
+
+            // Execute the delete operation
+            int rowsAffected = ps.executeUpdate();
+
+            // Optionally, confirm deletion
+            if (rowsAffected > 0) {
+                System.out.println("Booking with ID " + id + " was successfully deleted.");
+            } else {
+                System.out.println("No booking found with ID " + id + ".");
+            }
+        } catch (SQLException e) {
+            // Handle exceptions
+            e.printStackTrace();
+            System.out.println("Error deleting booking with ID " + id + ": " + e.getMessage());
+        }
+    }
+    
+    public void changeRating(int id, int rating) {
+        String query = "UPDATE Booking SET Rating = ? WHERE ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Validate the rating input
+            if (rating < 1 || rating > 5) {
+                System.out.println("Invalid rating. Please provide a value between 1 and 5.");
+                return;
+            }
+
+            // Set parameters in the query
+            ps.setInt(1, rating); // Set the new rating
+            ps.setInt(2, id);     // Set the BookingId
+
+            // Execute the update
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Rating " + rating + "updated successfully for Booking ID " + id + ".");
+            } else {
+                System.out.println("No booking found with Booking ID " + id + ".");
+            }
+        } catch (SQLException e) {
+            // Handle SQL exceptions
+            e.printStackTrace();
+            System.out.println("Error updating rating for Booking ID " + id + ": " + e.getMessage());
+        }
+    }
+    
+    public ArrayList<Request> getMyRequestsByUserId(int userId) {
+        ArrayList<Request> myRequestsList = new ArrayList<>();
+
+        // Query to get request information based on UserID and include Response
+        String query = "SELECT " +
+                "r.RequestID, " +
+                "r.Location, " +
+                "r.Description, " +
+                "r.Status, " +
+                "r.CreatedAt, " +
+                "r.Response " + // Include Response in the query
+                "FROM Request r " +
+                "WHERE r.UserID = ? AND r.Status != 'Completed'"; // Filter out completed requests
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String requestID = rs.getString("RequestID");
+                    String location = rs.getString("Location");
+                    String description = rs.getString("Description");
+                    String status = rs.getString("Status");
+                    String createdAt = rs.getString("CreatedAt");
+                    String response = rs.getString("Response"); // Fetch the Response from the ResultSet
+
+                    // Create a Request object with the response and add it to the list
+                    Request request = new Request(requestID, location, description, status, createdAt, response);
+                    myRequestsList.add(request);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return myRequestsList;
+    }
+
+
+    
+    public boolean insertRequest(int userId, String location, String description) {
+        // SQL query to insert a new request into the Request table
+        String query = "INSERT INTO Request (UserID, Location, Description, Status) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the parameters for the query
+            ps.setInt(1, userId);       // Set the UserID
+            ps.setString(2, location);  // Set the Location
+            ps.setString(3, description); // Set the Description
+            ps.setString(4, "Pending");    // Set the Status to 'Pending'
+
+            // Execute the insert query
+            int rowsAffected = ps.executeUpdate();
+            
+            // Return true if the insert was successful
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    
+    public boolean deleteRequest(String requestId) {
+        // SQL query to delete a request from the Request table where RequestID matches
+        String query = "DELETE FROM Request WHERE RequestID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the parameter for the query as a string
+            ps.setString(1, requestId);  // Set the RequestID
+
+            // Execute the delete query
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if the delete was successful (at least one row affected)
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+        }
+
+        return false; // Return false if the operation failed
+    }
+
+    
+    public boolean deleteCustomerCareMessage(String messageId) {
+        // SQL query to delete a message from the CustomerCareMessage table where ID matches
+        String query = "DELETE FROM CustomerCareMessage WHERE ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the parameter for the query as a string
+            ps.setString(1, messageId);  // Set the ID
+
+            // Execute the delete query
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if the delete was successful (at least one row affected)
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+        }
+
+        return false; // Return false if the operation failed
+    }
+
+
+    
+    public ArrayList<CustomerCareMessage> getCustomerCareMessagesByUserId(int userId) {
+        ArrayList<CustomerCareMessage> messagesList = new ArrayList<>();
+
+        // Query to fetch customer care messages based on UserID and exclude completed messages
+        String query = "SELECT " +
+                "ID, " +
+                "UserID, " +
+                "Title, " +
+                "Message, " +
+                "Response, " +
+                "Status, " +
+                "DateTime " +
+                "FROM CustomerCareMessage " +
+                "WHERE UserID = ? AND Status != 'Completed'"; // Filter out completed messages
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("ID");
+                    int retrievedUserId = rs.getInt("UserID");
+                    String title = rs.getString("Title");
+                    String message = rs.getString("Message");
+                    String response = rs.getString("Response");
+                    String status = rs.getString("Status");
+                    String dateTime = rs.getString("DateTime");
+
+                    // Create a CustomerCareMessage object and add it to the list
+                    CustomerCareMessage customerCareMessage = new CustomerCareMessage(
+                            id, retrievedUserId, title, message, response, status, dateTime
+                    );
+                    messagesList.add(customerCareMessage);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception for debugging
+        }
+
+        return messagesList;
+    }
+    
+    public User getUserById(int userId) {
+        // SQL query to fetch user details by UserID
+        String query = "SELECT UserID, Email, FullName, Password FROM Users WHERE UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the UserID parameter for the query
+            ps.setInt(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                // Check if a record is found
+                if (rs.next()) {
+                    // Extract user details from the ResultSet
+                    int id = rs.getInt("UserID");
+                    String email = rs.getString("Email");
+                    String fullName = rs.getString("FullName");
+                    String password = rs.getString("Password");
+
+                    // Create and return a User object
+                    return new User(id, email, fullName, password);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+        }
+
+        return null; // Return null if the user is not found or an error occurs
+    }
+    
+    public boolean updateUser(User user) {
+        String query = "UPDATE Users SET Email = ?, FullName = ?, Password = ? WHERE UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getUserID());
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0; // Return true if update is successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false if the operation fails
+    }
+
+
+
+
 }
 

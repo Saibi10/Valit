@@ -6,6 +6,7 @@ import Models.Request;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
+import Models.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -267,4 +268,47 @@ public class TourismManagementSystem {
 		return stats;
 	}
 	
+	public void deleteBooking(int id) {
+		DB.deleteBooking(id);
+	}
+	
+	 public void changeRating(int id, int rating) {
+		 DB.changeRating(id, rating);
+	 }
+	 
+	 public ArrayList<Request> getRequestsByUserId(int userId) throws SQLException {
+		    ArrayList<Request> userRequests = DB.getMyRequestsByUserId(userId);
+		    return userRequests;
+	}
+	 
+	 public ArrayList<CustomerCareMessage> getCustomerCareMessagesByUserId(int userId) throws SQLException {
+		    // Delegate the retrieval to the database handler method
+		    ArrayList<CustomerCareMessage> userMessages = DB.getCustomerCareMessagesByUserId(userId);
+		    return userMessages;
+		}
+
+	 public boolean insertRequest(int userId, String location, String description) throws SQLException {
+		    boolean isInserted = DB.insertRequest(userId, location, description);
+		    return isInserted;
+		}
+
+	 public boolean deleteRequest(String reqID) throws SQLException {
+		    boolean isDeleted = DB.deleteRequest(reqID);
+		    return isDeleted;
+		}
+
+	 public boolean deleteCustomerCareMessage(String messageId) throws SQLException {
+		    // Delegate the deletion to the database handler method
+		    boolean isDeleted = DB.deleteCustomerCareMessage(messageId);
+		    return isDeleted;
+		}
+	
+	 public User getUser(int userId) {
+		    return DB.getUserById(userId);
+		}
+	 
+	 public boolean updateUser(User user) {
+		    return DB.updateUser(user);
+		}
+
 }

@@ -102,8 +102,10 @@
 /* Set the background color for the entire table */
 .table-view {
     -fx-background-color: #1F2937; /* Set background color */
-    -fx-border-radius: 10px; /* Optional: rounded corners */
+    -fx-border-radius: 10px; /* Set rounded corners for the table */
     -fx-padding: 10px; /* Optional: padding around the table */
+    -fx-border-color: white; /* Set white border around the entire table */
+    -fx-border-width: 1px; /* 1px border width for the table */
 }
 
 /* Style the column header to ensure white text */
@@ -132,10 +134,11 @@
     -fx-border-color: transparent; /* Default border is transparent */
 }
 
-
+/* Alternate row colors */
 .table-view .table-row-cell:nth-child(even) {
     -fx-background-color: #2C3A47; /* Slightly different color for even rows */
 }
+
 /* Optional: Style alternating row colors */
 .table-view .table-row-cell:filled {
     -fx-border-color: white; /* Add white border for rows with content */
@@ -146,6 +149,7 @@
     -fx-opacity: 0;
     -fx-background-color: transparent;
 }
+
 
 .rounded-pane {
     -fx-background-color: #1F2937; /* Background color */
@@ -165,6 +169,7 @@
     -fx-background-radius: 5px;
     -fx-padding: 5px;
     -fx-font-size: 14px;
+    -fx-alignment: top-left;
 }
 
 /* Focus effect for input fields */

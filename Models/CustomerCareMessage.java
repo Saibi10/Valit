@@ -2,11 +2,13 @@ package Models;
 
 public class CustomerCareMessage {
 	String ID;
+	int userId;
 	String customerName;
 	String status;
 	String title;
 	String message;
 	String response;
+	String dateTime;
 	
 	public CustomerCareMessage(String ID,String customerName,String status,String title ,String message,String response) {
 		this.ID = ID;
@@ -16,6 +18,16 @@ public class CustomerCareMessage {
 		this.message = message;
 		this.response = response;
 	}
+	
+	 public CustomerCareMessage(String ID, int userId, String title, String message, String response, String status, String dateTime) {
+	        this.ID = ID;
+	        this.userId = userId;
+	        this.title = title;
+	        this.message = message;
+	        this.response = response;
+	        this.status = status;
+	        this.dateTime = dateTime;
+	 }
 	
 	public String getID() {
 		return ID;
@@ -39,6 +51,12 @@ public class CustomerCareMessage {
 	public String getResponse() {
 		return response;
 	}
+	
+
+	
+	    public String getDateTime() {
+	        return dateTime;
+	    }
 	
 	public void setStatus(String status) {
 		this.status = status;
