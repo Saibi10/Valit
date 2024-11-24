@@ -21,7 +21,6 @@
       <Pane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #111827;" />
       <Pane fx:id="pnlOverview" layoutX="325.0" layoutY="14.0" prefHeight="224.0" prefWidth="875.0" style="-fx-background-color: #111827;">
          <children>
-            <TextField layoutX="578.0" layoutY="43.0" prefHeight="42.0" prefWidth="195.0" promptText="Search..." style="-fx-background-color: #111827; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
             <Label layoutX="57.0" layoutY="25.0" prefHeight="60.0" prefWidth="336.0" textFill="#e7e5e5">
                <font>
                   <Font name="System Bold" size="35.0" />
@@ -315,6 +314,18 @@
                         <TableColumn fx:id="tourTransportCol" prefWidth="181.066650390625" text="Transport" />
                         <TableColumn fx:id="tourActionCol" prefWidth="190.93341064453125" text="Action" />
                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+            <Pane fx:id="myRequestPane1" layoutX="-18.0" layoutY="-33.0" prefHeight="549.0" prefWidth="901.0">
+               <children>
+                  <TableView fx:id="myRequestTable1" layoutX="1.0" prefHeight="543.0" prefWidth="890.0" stylesheets="@User.css">
+                     <columns>
+                        <TableColumn fx:id="LocationRequst1" prefWidth="160.0" text="Location" />
+                        <TableColumn fx:id="DescriptionRequest1" prefWidth="358.0" text="Desciption" />
+                        <TableColumn fx:id="DateRequest1" minWidth="0.0" prefWidth="180.0" text="Date Issued" />
+                        <TableColumn fx:id="RequestStatus1" minWidth="0.0" prefWidth="190.0" text="Status" />
+                     </columns>
                   </TableView>
                </children>
             </Pane>

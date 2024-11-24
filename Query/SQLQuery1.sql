@@ -354,6 +354,16 @@ CREATE TABLE Request (
 );
 
 
+CREATE TABLE CustomerCareMessage (
+    ID INT IDENTITY(1,1) PRIMARY KEY,         -- Auto-incrementing primary key
+    UserID INT NOT NULL,                      -- Foreign key for the user sending the message
+    Title NVARCHAR(255) NOT NULL,             -- Title of the message
+    Message NVARCHAR(MAX) NOT NULL,           -- Content of the message
+    Response NVARCHAR(MAX) NULL,              -- Response to the message
+    Status NVARCHAR(50) DEFAULT 'Pending',    -- Status of the message (default to 'Pending')
+    DateTime DATETIME DEFAULT GETDATE()       -- Auto-set to current date and time
+);
+
 INSERT INTO Request (UserID, Location, Description, Status)
 VALUES 
 (1, 'New York', 'Water supply issue', 'Pending'),
@@ -361,8 +371,37 @@ VALUES
 (3, 'Chicago', 'Road maintenance request', 'Pending'),
 (4, 'Houston', 'Tree removal request', 'Completed');
 
+
+
 Select * from Request
 
-Delete from Request where RequestID = 4 
+Delete from Request where RequestID = 15
 INSERT INTO Request (UserID, Location, Description, Status, Response)
 VALUES (1, 'Skardu', 'i will marry u and have ur kids', 'Responded', 'I will look into it. Dont worry.');
+
+Select * from CustomerCareMessage
+
+INSERT INTO CustomerCareMessage (UserID, Title, Message, Status, Response)
+VALUES
+(1, 'Issue with Booking', 'I am unable to confirm my recent booking. Please assist.', 'Pending', NULL),
+(2, 'Payment Failure', 'My payment failed during the booking process. Kindly help me resolve this.', 'Pending', NULL),
+(3, 'Change in Travel Dates', 'I need to change the travel dates for my booking. Let me know the process.', 'Pending', NULL),
+(4, 'Refund Request', 'I would like to request a refund for my canceled booking. Please guide.', 'Pending', NULL),
+(5, 'Website Bug', 'I encountered a bug while browsing the website. The payment page is not loading.', 'Pending', NULL);
+
+INSERT INTO CustomerCareMessage (UserID, Title, Message, Status, Response)
+VALUES
+(1, 'Issue with Booking', 'I am unable to confirm my recent booking. Please assist.', 'Responded', 'Helo sir u are gay')
+
+SELECT 
+    ID, 
+    UserID, 
+    Title, 
+    Message, 
+    Response, 
+    Status, 
+    DateTime
+FROM 
+    CustomerCareMessage
+WHERE 
+    UserID = 1 AND Status != 'Completed';

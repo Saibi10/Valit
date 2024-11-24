@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
@@ -75,6 +76,8 @@ public class UserController implements Initializable {
 	@FXML
 	private Pane myRequestPane;
 	@FXML
+	private Pane myRequestPane1;
+	@FXML
 	private Pane responsePane;
 	
 	@FXML
@@ -119,6 +122,17 @@ public class UserController implements Initializable {
 	private TableColumn<Request, String> DateRequest;
 	@FXML
 	private TableColumn<Request, String> RequestStatus;
+	
+	@FXML
+	private TableView<CustomerCareMessage> myRequestTable1;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> LocationRequst1;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> DescriptionRequest1;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> DateRequest1;
+	@FXML
+	private TableColumn<CustomerCareMessage, String> RequestStatus1;
 
 
 	@FXML
@@ -146,6 +160,7 @@ public class UserController implements Initializable {
     	ratePane.setVisible(false);
     	myRequestPane.setVisible(false);
     	responsePane.setVisible(false);
+    	myRequestPane1.setVisible(false);
     	
     }
 
@@ -258,7 +273,8 @@ public class UserController implements Initializable {
 		}
 		else if(feature2Btn.getText() == "Transport Issue")
 		{
-			System.out.println("Contact Admin");
+			myRequestPane1.setVisible(true);
+			setMyCustomerCareTable();
 		}
     }
     
@@ -295,7 +311,7 @@ public class UserController implements Initializable {
 
         // Convert the list of bookings to an ObservableList
         ObservableList<MyBooking> data = FXCollections.observableArrayList(allMyBookings);
-
+        
         // Set the value for each column to match the corresponding method in the MyBooking object
         TourName.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getTourName())
@@ -495,10 +511,9 @@ public class UserController implements Initializable {
                     		    responsePane.setVisible(false);
                     		    try {
 									TMS.deleteRequest(req.getRequestID());
-									myRequestPane.setVisible(false);
+									setMyRequestTable();
 										
 								} catch (SQLException e1) {
-									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
                     		});
@@ -567,6 +582,155 @@ public class UserController implements Initializable {
         myRequestTable.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
     }
 
+    
+    private void setMyCustomerCareTable() throws SQLException {
+        // Retrieve the list of requests for the current user
+        ArrayList<CustomerCareMessage> allMyRequests = TMS.getCustomerCareMessagesByUserId(UserId);
+
+ 
+        // Convert the list of requests to an ObservableList
+        ObservableList<CustomerCareMessage> data = FXCollections.observableArrayList(allMyRequests);
+        
+         LocationRequst1.setCellValueFactory(cell -> 
+            new SimpleStringProperty(cell.getValue().getTitle()) 
+        );
+
+         DescriptionRequest1.setCellValueFactory(cell -> 
+         new SimpleStringProperty(cell.getValue().getMessage()) 
+        );
+
+        DateRequest1.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getDateTime()) 
+        );
+        
+        RequestStatus1.setCellValueFactory(cell -> 
+        new SimpleStringProperty(cell.getValue().getStatus())  // Make sure this line is present
+    );
+
+        
+        RequestStatus1.setCellFactory(column -> new TableCell<CustomerCareMessage, String>() {
+            private final Button statusButton = new Button();
+
+            {
+                // Initial button style
+                statusButton.setStyle(
+                    "-fx-background-color: #FF5C5C; " +
+                    "-fx-text-fill: white; " +
+                    "-fx-font-weight: bold; " +
+                    "-fx-border-radius: 5px; " +
+                    "-fx-background-radius: 5px; " +
+                    "-fx-padding: 10px; " +
+                    "-fx-cursor: hand;");
+                
+                // Hover effect
+                statusButton.setOnMouseEntered(event -> {
+                    statusButton.setStyle(
+                        "-fx-background-color: #FF2D2D; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-border-radius: 5px; " +
+                        "-fx-background-radius: 5px; " +
+                        "-fx-padding: 10px; " +
+                        "-fx-cursor: hand;");
+                });
+
+                statusButton.setOnMouseExited(event -> {
+                    statusButton.setStyle(
+                        "-fx-background-color: #FF5C5C; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-border-radius: 5px; " +
+                        "-fx-background-radius: 5px; " +
+                        "-fx-padding: 10px; " +
+                        "-fx-cursor: hand;");
+                });
+
+                // Action event when button is clicked
+                statusButton.setOnAction(event -> {
+                    CustomerCareMessage req = getTableView().getItems().get(getIndex());
+                    if (req != null) {
+                        System.out.println("User ID: " + UserId);
+                        System.out.println("Booking Id: " + req.getStatus());
+                        
+                        if ("Responded".equals(req.getStatus())) {
+                            responsePane.setVisible(true);
+                            responseTextField.setText(req.getResponse());
+                            
+                            deleteRequest.setOnAction(e -> {
+                            	responseTextField.clear();
+                    		    responsePane.setVisible(false);
+                    		    try {
+									TMS.deleteCustomerCareMessage(req.getID());
+									setMyCustomerCareTable();
+										
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+								}
+                    		});
+                        }
+
+                    }
+                });
+                
+                
+                
+                closeResponse.setOnAction(event -> {
+                	responseTextField.clear();
+        		    responsePane.setVisible(false);  // Hide the ratePane
+        		});
+            }
+
+            @Override
+            protected void updateItem(String Status, boolean empty) {
+                super.updateItem(Status, empty);
+
+             
+
+                if (empty || Status == null || Status.isEmpty()) {
+                    setGraphic(null);  // Clear graphic if the status is empty or null
+                } else {
+                    statusButton.setText(Status);  // Set the button text to the status
+                    setGraphic(statusButton);  // Add the button to the table cell
+                }
+
+                // Ensure the cell is properly redrawn
+                requestLayout();
+            }
+        });
+
+
+
+        
+        DescriptionRequest1.setCellFactory(tc -> new TableCell<CustomerCareMessage, String>() {
+            private final Tooltip tooltip = new Tooltip();
+
+            {
+                // Set the delay to 0 milliseconds (immediate display)
+                tooltip.setShowDelay(javafx.util.Duration.millis(0));
+                tooltip.setHideDelay(javafx.util.Duration.millis(0));
+                tooltip.getStyleClass().add("tooltip");  // Apply the custom tooltip style
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);  // Clear tooltip if the cell is empty
+                } else {
+                    setText(item);  // Set the text for the table cell
+                    tooltip.setText(item);  // Set the full description as the tooltip text
+                    setTooltip(tooltip);  // Assign the tooltip to the table cell
+                }
+            }
+        });
+        
+        
+        myRequestTable1.setItems(data);
+        
+        myRequestTable1.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 14px;");
+    }
     
     private void setMyBookingsHistoryTable() throws SQLException {
         // Retrieve the list of bookings for the current user

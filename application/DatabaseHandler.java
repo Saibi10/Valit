@@ -3,6 +3,7 @@ import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.MyBooking;
 import Models.Request;
 
@@ -634,6 +635,70 @@ public class DatabaseHandler {
         }
 
         return false; // Return false if the operation failed
+    }
+
+    
+    public boolean deleteCustomerCareMessage(int messageId) {
+        // SQL query to delete a message from the CustomerCareMessage table where ID matches
+        String query = "DELETE FROM CustomerCareMessage WHERE ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            // Set the parameter for the query as an integer
+            ps.setInt(1, messageId);  // Set the ID
+
+            // Execute the delete query
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if the delete was successful (at least one row affected)
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+        }
+
+        return false; // Return false if the operation failed
+    }
+
+    
+    public ArrayList<CustomerCareMessage> getCustomerCareMessagesByUserId(int userId) {
+        ArrayList<CustomerCareMessage> messagesList = new ArrayList<>();
+
+        // Query to fetch customer care messages based on UserID and exclude completed messages
+        String query = "SELECT " +
+                "ID, " +
+                "UserID, " +
+                "Title, " +
+                "Message, " +
+                "Response, " +
+                "Status, " +
+                "DateTime " + // Include DateTime in the query
+                "FROM CustomerCareMessage " +
+                "WHERE UserID = ? AND Status != 'Completed'"; // Filter out completed messages
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId); // Set the UserID parameter in the query
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("ID");
+                    int retrievedUserId = rs.getInt("UserID");
+                    String title = rs.getString("Title");
+                    String message = rs.getString("Message");
+                    String response = rs.getString("Response");
+                    String status = rs.getString("Status");
+                    String dateTime = rs.getString("DateTime");
+
+                    // Create a CustomerCareMessage object and add it to the list
+                    CustomerCareMessage customerCareMessage = new CustomerCareMessage(
+                            id, retrievedUserId, title, message, response, status, dateTime
+                    );
+                    messagesList.add(customerCareMessage);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return messagesList;
     }
 
 

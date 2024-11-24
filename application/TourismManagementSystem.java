@@ -1,5 +1,6 @@
 package application;
 import Models.Booking;
+import Models.CustomerCareMessage;
 import Models.MyBooking;
 import Models.Request;
 import Models.TopCustomers;
@@ -87,6 +88,12 @@ public class TourismManagementSystem {
 		    return userRequests;
 	}
 	 
+	 public ArrayList<CustomerCareMessage> getCustomerCareMessagesByUserId(int userId) throws SQLException {
+		    // Delegate the retrieval to the database handler method
+		    ArrayList<CustomerCareMessage> userMessages = DB.getCustomerCareMessagesByUserId(userId);
+		    return userMessages;
+		}
+
 	 public boolean insertRequest(int userId, String location, String description) throws SQLException {
 		    boolean isInserted = DB.insertRequest(userId, location, description);
 		    return isInserted;
@@ -94,6 +101,12 @@ public class TourismManagementSystem {
 
 	 public boolean deleteRequest(String reqID) throws SQLException {
 		    boolean isDeleted = DB.deleteRequest(reqID);
+		    return isDeleted;
+		}
+
+	 public boolean deleteCustomerCareMessage(int messageId) throws SQLException {
+		    // Delegate the deletion to the database handler method
+		    boolean isDeleted = DB.deleteCustomerCareMessage(messageId);
 		    return isDeleted;
 		}
 
