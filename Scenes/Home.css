@@ -1,0 +1,80 @@
+
+
+.main-pane {
+    -fx-background-color: linear-gradient(to bottom right, skyblue, lightgreen);
+}
+
+.login-main-div {
+    -fx-background-color: white;       
+}
+
+.tab-div {
+	-fx-background-color: 	rgb(231, 228, 228); /* Background of the small strip behind tabs */
+}
+
+.heading {
+	-fx-font-size: 21px; /* Optional: Adjust font size */
+	-fx-font-weight : bolder;
+	-fx-font-family: Verdana;
+}
+
+.normal-text {
+	-fx-font-size: 15px; /* Optional: Adjust font size */
+	-fx-font-family: Host-Grotesk;
+	-fx-text-fill: grey;
+}
+
+.small-text {
+	-fx-font-size: 15px;
+	-fx-font-family: Host-Grotesk;
+	-fx-font-weight : bold;
+}
+
+.text-field-input {
+    -fx-font-family: Verdana;   /* Change font family */
+    -fx-font-size: 16px;        /* Change font size */
+    -fx-padding: 5px;           /* Optional: Add padding */
+    -fx-text-fill: #333333;     /* Text color */
+}
+
+
+.button-nonselected {
+    -fx-background-color: rgb(231, 228, 228); /* Optional: Set the button background color */
+    -fx-border-color: transparent; /* Removes the border line */
+    -fx-border-width: 0; /* Ensures no border width */
+    -fx-focus-color: transparent; /* Removes focus outline */
+    -fx-faint-focus-color: transparent; /* Removes faint focus outline */
+    -fx-padding: 10px; /* Optional: Adjust padding for size */
+    -fx-font-size: 15px; /* Optional: Adjust font size */
+	-fx-font-family : Sans-serif;
+}
+
+button-nonselected {
+	-fx-cursor: hand;  
+}
+
+.button-selected {
+	-fx-background-color: white; /* Optional: Set the button background color */
+	-fx-border-color: transparent; /* Removes the border line */
+	-fx-border-width: 0; /* Ensures no border width */
+	-fx-focus-color: transparent; /* Removes focus outline */
+	-fx-faint-focus-color: transparent; /* Removes faint focus outline */
+	-fx-padding: 10px; /* Optional: Adjust padding for size */
+	-fx-font-size: 15px; /* Optional: Adjust font size */
+	-fx-font-weight : bolder;
+	-fx-font-family : sans-serif;
+}
+
+.login-button {
+	-fx-background-color : black;
+	-fx-text-fill : white;
+	-fx-font-size : 15px;
+	-fx-font-weight : bold;
+}
+
+
+.login-button:hover {
+	-fx-background-color: #242624;  
+	-fx-cursor: hand;               
+	-fx-text-fill: white; 
+}

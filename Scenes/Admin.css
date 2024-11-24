@@ -1,0 +1,284 @@
+.main-background {
+	-fx-background-color: #111827; 
+}
+
+.header-background {
+	-fx-text-fill :  #0096FF;
+	-fx-font-size :  25px;
+	-fx-font-family : "Lucida Console";
+	-fx-font-weight : border;
+}
+
+.node {
+	-fx-background-color:  white; 
+    -fx-border-color: white;
+    -fx-border-width: 1px;  
+    -fx-border-style: solid; 
+	-fx-border-radius: 10px; 
+	-fx-font-weight : 700;
+	-fx-font-size: 14px;
+}
+
+.node:hover {
+	-fx-background-color: #E5E7EB;
+	-fx-border-radius: 10px; 
+	-fx-cursor: hand;  
+}
+
+.tab {
+    -fx-background-color:  #1F2937; 
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent; 
+    -fx-faint-focus-color: transparent; 
+    -fx-background-radius: 10px; 
+    -fx-border-radius: 10px; 
+    -fx-padding: 10px; 
+	-fx-font-family: Helvetica;
+	-fx-font-size: 15px;
+	-fx-font-weight : 700;
+	-fx-cursor: hand;  
+	-fx-text-fill: #9CA3AF; 
+}
+
+.tab:hover {
+	-fx-background-color: #374151;
+}
+
+.tab-selected {
+    -fx-background-color:  #374151; 
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent; 
+    -fx-faint-focus-color: transparent;
+    -fx-background-radius: 10px; 
+    -fx-border-radius: 10px; 
+    -fx-padding: 10px; 
+	-fx-font-size: 15px;
+	-fx-font-family: Helvetica;
+	-fx-font-weight : bolder;
+	-fx-text-fill: #9CA3AF; 
+}
+
+.main-div {
+	-fx-background-color: #111827 ;
+}
+
+
+
+.header-main-div {
+	-fx-font-size: 27px;
+	-fx-font-family: Verdana;
+	-fx-font-weight : bolder;
+	-fx-text-fill : white;
+}
+
+.small-div-main-div {
+	-fx-background-color: #1F2937; 
+	-fx-border-radius: 15px; 
+	-fx-border-color: white;
+	-fx-background-radius: 15px; 
+	-fx-font-size: 13px;
+	-fx-font-family: "Andale Mono", monospace;
+	-fx-font-weight : bold;
+	
+}
+
+.small-div-main-div-text {
+	-fx-text-fill : white;
+}
+
+
+/* Table Style */
+.table-view {
+    -fx-background-color: #1F2937; /* Dark background color for the table */
+    -fx-border-color: transparent; /* Remove border around the table */   
+}
+
+/* Row Line Style */
+.table-row-cell {
+    -fx-border-color: #9CA3AF; /* Light gray border for rows */
+    -fx-border-width: 0 0 1 0; /* Bottom border only */
+    -fx-background-color: #F3F4F6; /* Light background color for rows */
+    -fx-pref-height: 51px; /* Row height */
+    -fx-font-weight: normal;
+}
+
+/* Header Style */
+.table-view .column-header {
+    -fx-background-color: #1F2937; /* Header background color */
+    -fx-border-color: #1F2937; /* Optional: border for the header */
+    -fx-border-width: 0 0 1 0; /* Bottom border only for header */
+}
+
+/* Header Text Style */
+.table-view .column-header .label {
+    -fx-text-fill: #9CA3AF; /* Dark text color for the header */
+    -fx-font-weight: bolder; /* Bold font weight */
+    -fx-font-size: 14px; /* Slightly larger font size for prominence */
+    -fx-opacity: 0.9; /* Slight opacity to make it slightly prominent */
+}
+
+/* Cell Content Style */
+.table-cell {
+    -fx-background-color: #F3F4F6; /* Light background color for cell content */
+    -fx-text-fill: black; /* Text color */
+    -fx-alignment: center; /* Center-align text in cells */
+    -fx-font-size: 16px;
+    -fx-font-weight: Verdana; /* Normal font weight */
+}
+
+/* Adjust text alignment for header */
+.table-view .column-header .label {
+    -fx-alignment: center; /* Center-align text in header */
+}
+
+
+/* Style for the button in the table */
+.table-button {
+    -fx-background-color: #1F2937; /* Transparent background */
+    -fx-border-color: transparent; /* No border */
+    -fx-cursor: hand; /* Change the cursor to a hand when hovering over the button */
+    -fx-padding: 5px 10px; /* Adjust padding if needed */
+    -fx-text-fill: #F3F4F6;
+}
+
+/* Hover effect for the button */
+.table-button:hover {
+    -fx-background-color: gray; /* Change background color to gray on hover */
+    -fx-border-color: transparent; /* Ensure the border remains transparent on hover */
+}
+
+.edit-main-header {
+	-fx-text-fill: #60A5FA;
+	-fx-font-size: 30px;
+}
+
+.edit-main-label {
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 15px;
+}
+
+.edit-main-text-fields {
+	-fx-background-color: #374151;
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 14px;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
+	-fx-padding: 8px 12px; /* Light background color for rows */
+}
+
+.edit-main-button {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-font-weight: bolder; /* Normal font weight */
+    -fx-padding: 0px 0px; /* Light background color for rows */
+}
+
+.edit-main-button:hover {
+    -fx-background-color: #1D4ED8;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-border-radius: 14px; /* Rounded corners */
+    -fx-font-weight: bolder; /* Normal font weight */
+    -fx-padding: 0px 0px; /* Light background color for rows */
+    -fx-cursor: hand;
+}
+
+.edit-main-image {
+	-fx-border-radius: 5px; /* Rounded corners */
+}
+
+.edit-small-div {
+	-fx-background-color: #374151;
+	-fx-border-radius: 5px; /* Rounded corners */
+	-fx-border-color: gray; /* Light background color for rows */
+}
+
+.edit-combo-box {
+    -fx-background-color: #374151; /* Background color */
+    -fx-text-fill: #f3f4f6; /* Text color */
+    -fx-border-color: gray; /* Border color */
+    -fx-border-radius: 5px; /* Rounded border */
+}
+
+.edit-combo-box .text-field {
+    -fx-background-color: #374151; /* Background color for text field */
+    -fx-text-fill: #f3f4f6; /* Text color */
+    -fx-border-color: transparent; /* No additional border inside */
+}
+
+.edit-combo-box:focused .text-field {
+    -fx-background-color: #374151; /* Keep background color on focus */
+    -fx-text-fill: #f3f4f6; /* Keep text color on focus */
+}
+
+.edit-combo-box .list-cell {
+    -fx-background-color: #374151; /* Background color for dropdown items */
+    -fx-text-fill: #f3f4f6; /* Text color for dropdown items */
+}
+
+.edit-combo-box .list-cell:hover {
+    -fx-background-color: #4B5563; /* Slightly lighter color on hover */
+    -fx-text-fill: #f3f4f6; /* Text color on hover */
+}
+
+.edit-text-area {
+    -fx-control-inner-background: #374151; /* Background color */
+    -fx-text-fill: #f3f4f6; /* Text color */
+    -fx-border-color: gray; /* Optional: Border color */
+    -fx-font-size: 14px; /* Optional: Font size */
+    -fx-border-radius: 5px; /* Light background color for rows */
+    -fx-border-width: 0px; /* Optional: Border width */
+}
+
+.date-picker {
+    -fx-background-color: #374151; /* Background color of the DatePicker */
+    -fx-text-fill: white;        /* Text color */
+}
+
+.date-picker .text-field {
+    -fx-background-color: #374151; /* Background color of the text field */
+    -fx-text-fill: #f3f4f6;        /* Text color of the text field */
+    -fx-border-color: gray;     /* Optional: Add a border color */
+    -fx-border-radius: 5px;      /* Optional: Round border corners */
+}
+
+.date-picker:hover {
+    -fx-background-color: #1D4ED8; /* Slightly lighter color on hover */
+    -fx-cursor: hand;
+}
+
+.date-picker .arrow {
+    -fx-background-color: black; /* Background color of the arrow button */
+    -fx-border-color: white;     /* Optional: Border for the arrow button */
+}
+
+.date-picker .arrow:hover {
+    -fx-background-color: #1F1F1F; /* Slightly lighter color on hover */
+}
+
+
+.search-text-field {
+	
+}
+
+.completed-button {
+	-fx-background-color: #374151;
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 15px;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
+	-fx-padding: 8px 12px; /* Light background color for rows */
+}
+
+.completed-button:hover {
+	-fx-background-color: #1F1F1F;
+	-fx-text-fill: #f3f4f6;
+	-fx-font-size: 15px;
+	-fx-border-color: gray; /* Light background color for rows */
+	-fx-border-radius: 5px; /* Light background color for rows */
+	-fx-padding: 8px 12px; /* Light background color for rows */
+	-fx-cursor: hand;
+}
+
