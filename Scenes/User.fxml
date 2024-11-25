@@ -369,9 +369,11 @@
                   <Label layoutX="54.0" layoutY="157.0" prefHeight="31.0" prefWidth="49.0" style="-fx-font-size: 18;" text="Email" />
                   <Label layoutX="54.0" layoutY="263.0" style="-fx-font-size: 18;" text="Password" />
                   <Button fx:id="SaveProfile" layoutX="53.0" layoutY="453.0" mnemonicParsing="false" styleClass="button2" stylesheets="@User.css" text="Save Changes" />
+                  <Label layoutX="515.0" layoutY="53.0" prefHeight="47.0" prefWidth="98.0" style="-fx-font-size: 18;" text="Wallet : " />
+                  <Label fx:id="WalletLabel" layoutX="638.0" layoutY="53.0" prefHeight="47.0" prefWidth="98.0" style="-fx-font-size: 18;" text="ya" />
                </children>
             </Pane>
-            <Pane fx:id="responsePane" layoutX="202.0" layoutY="-23.0" prefHeight="378.0" prefWidth="674.0" styleClass="rounded-pane" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css">
+            <Pane fx:id="responsePane" layoutX="202.0" layoutY="-23.0" prefHeight="378.0" prefWidth="674.0" styleClass="rounded-pane" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css" visible="false">
                <children>
                   <TextField fx:id="responseTextField" layoutX="18.0" layoutY="69.0" prefHeight="285.0" prefWidth="631.0" styleClass="text-area" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css" />
                   <Label fx:id="ResponeLabel" layoutX="18.0" layoutY="14.0" prefHeight="51.0" prefWidth="156.0" style="-fx-font-size: 24;" text="Response">
@@ -391,7 +393,7 @@
                   <Button fx:id="deleteRequest" layoutX="518.0" layoutY="15.0" mnemonicParsing="false" styleClass="button2" text="Delete" />
                </children>
             </Pane>
-            <Pane fx:id="ratePane" layoutX="387.0" layoutY="-33.0" prefHeight="279.0" prefWidth="479.0" styleClass="rounded-pane" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css">
+            <Pane fx:id="ratePane" layoutX="387.0" layoutY="-33.0" prefHeight="279.0" prefWidth="479.0" styleClass="rounded-pane" stylesheets="@../../../../TourismManagementApp%20-%20Copy/TourismManagementApp1/src/Scenes/User.css" visible="false">
                <children>
                   <Label layoutX="48.0" layoutY="130.0" prefHeight="86.0" prefWidth="114.0" style="-fx-font-size: 25;" text="Rate:">
                      <font>

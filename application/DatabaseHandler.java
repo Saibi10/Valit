@@ -21,7 +21,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -1128,7 +1128,7 @@ public class DatabaseHandler {
     
     public User getUserById(int userId) {
         // SQL query to fetch user details by UserID
-        String query = "SELECT UserID, Email, FullName, Password FROM Users WHERE UserID = ?";
+        String query = "SELECT UserID, Email, FullName, Password, WalletBalance FROM Users WHERE UserID = ?";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
             // Set the UserID parameter for the query
@@ -1142,9 +1142,11 @@ public class DatabaseHandler {
                     String email = rs.getString("Email");
                     String fullName = rs.getString("FullName");
                     String password = rs.getString("Password");
+                    Double wallet = rs.getDouble("WalletBalance");
+                  
 
                     // Create and return a User object
-                    return new User(id, email, fullName, password);
+                    return new User(id, email, fullName, password, wallet);
                 }
             }
         } catch (SQLException e) {
@@ -1171,6 +1173,43 @@ public class DatabaseHandler {
 
         return false; // Return false if the operation fails
     }
+    
+    public double getWalletBalance(int userID) {
+        String query = "SELECT WalletBalance FROM Users WHERE UserID = ?";
+        double walletBalance = -1.0; // Default value if user is not found or an error occurs
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userID); // Set the UserID parameter
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    walletBalance = rs.getDouble("WalletBalance"); // Retrieve the wallet balance
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return walletBalance; // Return the retrieved balance or the default value
+    }
+
+    
+    public boolean setWalletBalance(int userID, double money) {
+        String query = "UPDATE Users SET WalletBalance = ? WHERE UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setDouble(1, money); // Set the new wallet balance
+            ps.setInt(2, userID);   // Set the UserID
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false if the operation fails
+    }
+
 
 
 

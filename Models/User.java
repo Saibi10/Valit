@@ -5,13 +5,20 @@ public class User {
     private String email;         // User's email
     private String fullName;      // User's full name
     private String password;      // User's password
-
+    private double walletBalance; // User's wallet balance
+    
     // Constructor
-    public User(int userID, String email, String fullName, String password) {
+    public User(int userID, String email, String fullName, String password, double walletBalance) {
         this.userID = userID;
         this.email = email;
         this.fullName = fullName;
         this.password = password;
+        this.walletBalance = walletBalance;
+    }
+    
+    // Overloaded constructor for backward compatibility (if needed)
+    public User(int userID, String email, String fullName, String password) {
+        this(userID, email, fullName, password, 0.0); // Default wallet balance is 0.0
     }
 
     // Getter for UserID
@@ -52,5 +59,15 @@ public class User {
     // Setter for Password
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    // Getter for WalletBalance
+    public double getWalletBalance() {
+        return walletBalance;
+    }
+
+    // Setter for WalletBalance
+    public void setWalletBalance(double walletBalance) {
+        this.walletBalance = walletBalance;
     }
 }

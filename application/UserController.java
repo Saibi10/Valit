@@ -159,6 +159,8 @@ public class UserController implements Initializable {
 	private Label viewTourId;
 	@FXML
 	private Label viewTourName;
+	@FXML
+	private Label WalletLabel;
 	
 	@FXML
 	private TextField supportTitle;
@@ -427,6 +429,8 @@ public class UserController implements Initializable {
 
                         
                         TMS.cancelTourBooking(Integer.toString(booking.getID()));
+                        double new_amount = TMS.getWalletBalance(UserId) + booking.getTourPrice();
+                        TMS.setWalletBalance(UserId, new_amount);
                     }
                 });
             }
@@ -1142,7 +1146,7 @@ public class UserController implements Initializable {
     	if((supportTitle.getText() != null && supportTitle.getText().trim().isEmpty() == false) && (supportDetail.getText() != null && supportDetail.getText().trim().isEmpty() == false))
     	{
     		TMS.addSupportMessage(UserId, title, detail);
-    		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    		
     		
     	}
     	
@@ -1157,6 +1161,9 @@ public class UserController implements Initializable {
         NameP.setText(user.getFullName());
         EmailP.setText(user.getEmail());
         PassP.setText(user.getPassword());
+        System.out.println(user.getWalletBalance());
+        WalletLabel.setText(String.valueOf(user.getWalletBalance()));
+
         
         
         

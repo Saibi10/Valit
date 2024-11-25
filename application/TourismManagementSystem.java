@@ -317,5 +317,15 @@ public class TourismManagementSystem {
 	 public boolean updateUser(User user) {
 		    return DB.updateUser(user);
 		}
+	 
+	 public double getWalletBalance(int userID) {
+		    return DB.getWalletBalance(userID);
+		}
+	 
+	 public boolean setWalletBalance(int userID, double money) {
+		    return DB.setWalletBalance(userID, money);
+		}
+
+
 
 }
