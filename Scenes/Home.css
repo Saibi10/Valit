@@ -72,6 +72,13 @@ button-nonselected {
 	-fx-font-weight : bold;
 }
 
+.hidden-text {
+    -fx-font-family: "Monospaced"; /* Use a fixed-width font */
+    -fx-text-fill: black; /* Keep text color */
+    -fx-display-caret: true; /* Ensure caret is displayed */
+    -fx-content: "•"; /* Use bullet character (U+2022) */
+}
+
 
 .login-button:hover {
 	-fx-background-color: #242624;  

@@ -155,24 +155,29 @@ public class TourismManagementSystem {
 	}
 	
 	
-	public void updateTour(Tours tour) {
-		DB.updateTour(tour);
+	public Boolean updateTour(Tours tour) {
+		Boolean check = DB.updateTour(tour);
+		return check;
 	}
 	
-	public void addNewTour(Tours tour) {
-		DB.addNewTour(tour);
+	public Boolean addNewTour(Tours tour) {
+		Boolean check = DB.addNewTour(tour);
+		return check;
 	}
 	
-	public void deleteTour(String tour) {
-		DB.deleteTourByID(tour);
+	public Boolean deleteTour(String tour) {
+		Boolean check = DB.deleteTourByID(tour);
+		return check;
 	}
 	
-	public void confirmTourBooking(String booking) {
-		DB.confirmBooking(booking);
+	public Boolean confirmTourBooking(String booking) {
+		Boolean check = DB.confirmBooking(booking);
+		return check;
 	}
 	
-	public void cancelTourBooking(String booking) {
-		DB.cancelBooking(booking);
+	public Boolean cancelTourBooking(String booking) {
+		Boolean check = DB.cancelBooking(booking);
+		return check;
 	}
 	
 	public ArrayList<Tours> getTopTours2() throws SQLException {
@@ -255,12 +260,14 @@ public class TourismManagementSystem {
 		DB.updateRequest(req);
 	}
 	
-	public void updateCustomerCareMessage(CustomerCareMessage req) {
-		DB.updateCustomerCareMessage(req);
+	public boolean updateCustomerCareMessage(CustomerCareMessage req) {
+		Boolean check = DB.updateCustomerCareMessage(req);
+		return check;
 	}
 	
-	public void markCompletedBookings() {
-		DB.markCompletedBookings();
+	public boolean markCompletedBookings() {
+		Boolean check = DB.markCompletedBookings();
+		return check;
 	}
 	
 	public String[] getStats() {

@@ -53,9 +53,9 @@ public class LoginController {
 	@FXML
 	private TourismManagementSystem TMS;
 	
-	public LoginController() throws SQLException
+	public LoginController(TourismManagementSystem TMS) throws SQLException
 	{
-		TMS = new TourismManagementSystem();
+		this.TMS = TMS;
 	}
 	
 	
@@ -130,11 +130,19 @@ public class LoginController {
 	            if (auth == 1) { // Admin
 	                try {
 	                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Admin.fxml"));
+	                    loader.setControllerFactory(param -> {
+							try {
+								return new AdminController(TMS);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return param;
+						});
+	                    
 	                    Parent root = loader.load();
 
-	                    // Pass the UserID to the next controller if needed
 	                    AdminController adminController = loader.getController();
-	                    //adminController.setUserId(userId[0]);
 
 	                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 	                    stage.setScene(new Scene(root));
@@ -145,6 +153,15 @@ public class LoginController {
 	            } else if (auth == 2) { // Customer
 	                try {
 	                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/User.fxml"));
+	                    loader.setControllerFactory(param -> {
+							try {
+								return new UserController(TMS);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return param;
+						});
 	                    Parent root = loader.load();
 
 	                    // Pass the UserID to the next controller if needed

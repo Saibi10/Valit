@@ -61,7 +61,6 @@ public class AdminController {
 	private Pane transportMainDiv;
 	@FXML
 	private ScrollPane editTourMainDiv;
-
 	@FXML
 	private Label headerEditTour;
 	@FXML
@@ -257,8 +256,8 @@ public class AdminController {
 	
 	private int userID;
 	
-	public AdminController() throws SQLException {
-		TMS = new TourismManagementSystem();
+	public AdminController(TourismManagementSystem TMS) throws SQLException {
+		this.TMS = TMS;
 	}
 	
 	public void setUserId(int id)
@@ -1367,6 +1366,7 @@ public class AdminController {
 		transportTab.getStyleClass().add("tab");
 		transportSelected();
 	}
+	
 	public void addNewTransport() {
 		addTranportProvider = true;
 		addTransportProviderHeader.setText("Add New Transport Provider");
@@ -1423,7 +1423,6 @@ public class AdminController {
 		}
 	}
 
-	
 	private void hideAllPane() {
 		dashboardMainDiv.setVisible(false);
 		toursMainDiv.setVisible(false);
@@ -1436,7 +1435,6 @@ public class AdminController {
 		customerCareMainDiv.setVisible(false);
 	}
 
-	
 	public void dashboardSelected() throws SQLException {
 		if (dashboardTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1453,7 +1451,6 @@ public class AdminController {
 		}
 	}
 
-	
 	public void toursSelected() throws SQLException {
 		if (toursTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1475,7 +1472,6 @@ public class AdminController {
 		}
 	}
 
-	
 	public void bookingsSelected() throws SQLException {
 		if (bookingTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1497,7 +1493,6 @@ public class AdminController {
 		}
 	}
 
-	
 	public void transportSelected() throws SQLException {
 		if (transportTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();
@@ -1510,7 +1505,6 @@ public class AdminController {
 		}
 	}
 
-	
 	public void TourRequestsSelected() throws SQLException {
 
 		if (TourRequestsTab.getStyleClass().contains("tab")) {
@@ -1546,7 +1540,6 @@ public class AdminController {
 		}
 	}
 
-	
 	public void settingSelected() {
 		if (settingsTab.getStyleClass().contains("tab")) {
 			removeAllButtonClasses();

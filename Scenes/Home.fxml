@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Pane layoutY="-8.0" prefHeight="800.0" prefWidth="1200.0" styleClass="main-pane" stylesheets="@Home.css">
+      <Pane layoutY="-8.0" prefHeight="809.0" prefWidth="1200.0" styleClass="main-pane" stylesheets="@Home.css">
          <children>
             <Pane fx:id="loginMainDiv" layoutX="362.0" layoutY="144.0" prefHeight="522.0" prefWidth="453.0" styleClass="login-main-div" stylesheets="@Home.css">
                <children>
@@ -41,7 +41,7 @@
                   </ImageView>
                   <ImageView fx:id="locationIcon" fitHeight="27.0" fitWidth="27.0" layoutX="233.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../icons/icons8-location-50.png" />
+                        <Image url="@../icons/12131.png" />
                      </image>
                   </ImageView>
                   <TextField fx:id="emailS" layoutX="34.0" layoutY="221.0" prefHeight="45.0" prefWidth="385.0" promptText="jhon@example.com" styleClass="text-field-input" stylesheets="@Home.css" />

@@ -21,7 +21,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -49,7 +49,6 @@ public class DatabaseHandler {
         return topCustomers;
     }
     
- // Method to fetch top tours based on bookings and average rating
     public ArrayList<Tours> getTopTours() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();
         
@@ -587,7 +586,6 @@ public class DatabaseHandler {
         return myBookingsList;
     }
 
-
     public ArrayList<MyBooking> getBookingsHistoryByUserId(int userId) {
         ArrayList<MyBooking> myBookingsList = new ArrayList<>();
 
@@ -885,7 +883,6 @@ public class DatabaseHandler {
         return 0; // User does not exist
     }
 
-
     public boolean addNewUser(String email, String pass, String fullName) {
         String insertQuery = "INSERT INTO Users (Email, Password, FullName, UserType) VALUES (?, ?, ?, 'Customer')";
 
@@ -910,8 +907,7 @@ public class DatabaseHandler {
             return false;
         }
     }
-    
-    
+
     public void addSupportMessage(int uId, String title, String detail) {
         String query = "INSERT INTO CustomerCareMessage (UserID, Title, Message, DateTime) VALUES (?, ?, ?, GETDATE())";
         
@@ -1024,9 +1020,7 @@ public class DatabaseHandler {
 
         return myRequestsList;
     }
-
-
-    
+ 
     public boolean insertRequest(int userId, String location, String description) {
         // SQL query to insert a new request into the Request table
         String query = "INSERT INTO Request (UserID, Location, Description, Status) VALUES (?, ?, ?, ?)";
@@ -1050,7 +1044,6 @@ public class DatabaseHandler {
         return false;
     }
 
-    
     public boolean deleteRequest(String requestId) {
         // SQL query to delete a request from the Request table where RequestID matches
         String query = "DELETE FROM Request WHERE RequestID = ?";
@@ -1071,7 +1064,6 @@ public class DatabaseHandler {
         return false; // Return false if the operation failed
     }
 
-    
     public boolean deleteCustomerCareMessage(String messageId) {
         // SQL query to delete a message from the CustomerCareMessage table where ID matches
         String query = "DELETE FROM CustomerCareMessage WHERE ID = ?";
@@ -1092,8 +1084,6 @@ public class DatabaseHandler {
         return false; // Return false if the operation failed
     }
 
-
-    
     public ArrayList<CustomerCareMessage> getCustomerCareMessagesByUserId(int userId) {
         ArrayList<CustomerCareMessage> messagesList = new ArrayList<>();
 

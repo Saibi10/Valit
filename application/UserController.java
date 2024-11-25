@@ -193,8 +193,8 @@ public class UserController implements Initializable {
 	
 	private int UserId = 0; // Assuming Userid = 1 is logged in right now
 	
-	public UserController() throws SQLException {
-		TMS = new TourismManagementSystem();
+	public UserController(TourismManagementSystem TMS) throws SQLException {
+		this.TMS = TMS;
 	}
 	
 	public void setUserId(int id)
