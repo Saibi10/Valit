@@ -62,7 +62,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;">
+      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;" visible="false">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="971.0" styleClass="main-div" stylesheets="@Admin.css">
                <children>
@@ -148,7 +148,7 @@
             <Image url="@../icons/traveleaseLowPXL.png" />
          </image>
       </ImageView>
-      <Pane fx:id="toursMainDiv" layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css" visible="false">
+      <Pane fx:id="toursMainDiv" layoutX="226.0" layoutY="52.0" prefHeight="748.0" prefWidth="973.0" styleClass="main-div" stylesheets="@Admin.css">
          <children>
             <Pane layoutX="20.0" layoutY="19.0" prefHeight="701.0" prefWidth="939.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                <children>

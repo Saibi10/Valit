@@ -149,16 +149,19 @@ public class TourismManagementSystem {
 	}
 	
 	
-	public void updateTour(Tours tour) {
-		DB.updateTour(tour);
+	public boolean updateTour(Tours tour) {
+		boolean check = DB.updateTour(tour);
+		return check;
 	}
 	
-	public void addNewTour(Tours tour) {
-		DB.addNewTour(tour);
+	public boolean addNewTour(Tours tour) {
+		boolean check = DB.addNewTour(tour);
+		return check;
 	}
 	
-	public void deleteTour(String tour) {
-		DB.deleteTourByID(tour);
+	public boolean deleteTour(String tour) {
+		boolean check = DB.deleteTourByID(tour);
+		return check;
 	}
 	
 	public void confirmTourBooking(String booking) {
@@ -174,8 +177,9 @@ public class TourismManagementSystem {
 		return topTours;
 	}
 	
-	public void addNewTransportProvider(TransportProvider tp) {
-		DB.addNewTransportProvider(tp);
+	public boolean addNewTransportProvider(TransportProvider tp) {
+		boolean check = DB.addNewTransportProvider(tp);
+		return check;
 	}
 	
 	public void updateTransportProvider(TransportProvider tp) {
@@ -192,8 +196,9 @@ public class TourismManagementSystem {
 	    return userBookings;
 	}
 	
-	public void deleteTransportProvider(String ID) {
-		DB.deleteTransportProvider(ID);
+	public boolean deleteTransportProvider(String ID) {
+		boolean check = DB.deleteTransportProvider(ID);
+		return check;
 	}
 	
 	public ArrayList<Request> getAllRequests() {
@@ -213,7 +218,6 @@ public class TourismManagementSystem {
 	public ArrayList<CustomerCareMessage> getAllCustomerCareMessage() {
 		ArrayList<CustomerCareMessage>  req = DB.getAllCustomerCareMessages();
 		
-		
 		return req;
 	}
 	
@@ -230,8 +234,9 @@ public class TourismManagementSystem {
 		DB.updateRequest(req);
 	}
 	
-	public void updateCustomerCareMessage(CustomerCareMessage req) {
-		DB.updateCustomerCareMessage(req);
+	public boolean updateCustomerCareMessage(CustomerCareMessage req) {
+		boolean check = DB.updateCustomerCareMessage(req);
+		return check;
 	}
 	
 	public void markCompletedBookings() {
