@@ -125,56 +125,9 @@ public class LoginController {
 	            
 	            // Array to hold the UserID
 	            int[] userId = new int[1];
-	            int auth = TMS.authenticateUser(emailS.getText(), passS.getText(), userId);
+	            boolean check = TMS.authenticateUser(emailS.getText(), passS.getText(), userId , event);
 
-	            if (auth == 1) { // Admin
-	                try {
-	                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Admin.fxml"));
-	                    loader.setControllerFactory(param -> {
-							try {
-								return new AdminController(TMS);
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							return param;
-						});
-	                    
-	                    Parent root = loader.load();
-
-	                    AdminController adminController = loader.getController();
-
-	                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	                    stage.setScene(new Scene(root));
-	                    stage.show();
-	                } catch (Exception e) {
-	                    e.printStackTrace();
-	                }
-	            } else if (auth == 2) { // Customer
-	                try {
-	                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/User.fxml"));
-	                    loader.setControllerFactory(param -> {
-							try {
-								return new UserController(TMS);
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							return param;
-						});
-	                    Parent root = loader.load();
-
-	                    // Pass the UserID to the next controller if needed
-	                    UserController userController = loader.getController();
-	                    userController.setUserId(userId[0]);
-
-	                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	                    stage.setScene(new Scene(root));
-	                    stage.show();
-	                } catch (Exception e) {
-	                    e.printStackTrace();
-	                }
-	            } else {
+	            if(check) { 
 	                invalidLabel.setText("Invalid Information");
 	                invalidLabel.setVisible(true);
 	            }

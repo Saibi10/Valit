@@ -9,6 +9,7 @@ import Models.MyBooking;
 import Models.Request;
 
 import java.lang.invoke.MethodHandle;
+import java.math.BigDecimal;
 import java.sql.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS3;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -388,28 +389,65 @@ public class DatabaseHandler {
     }
     
     public boolean cancelBooking(String bookingID) {
-        String updateQuery = "UPDATE Booking SET Status = 'Cancelled' WHERE ID = ?";
+        // Query to update booking status
+        String updateBookingQuery = "UPDATE Booking SET Status = 'Cancelled' WHERE ID = ?";
+        
+        // Query to get the tour price and user ID for the given booking
+        String fetchTourPriceQuery = 
+            "SELECT b.UserID, t.TourPrice " +
+            "FROM Booking b " +
+            "JOIN Tour t ON b.TourID = t.TourID " +
+            "WHERE b.ID = ?";
+        
+        // Query to update the user's wallet balance
+        String updateWalletQuery = 
+            "UPDATE Users SET WalletBalance = WalletBalance + ? WHERE UserID = ?";
 
-        try (PreparedStatement updateStmt = con.prepareStatement(updateQuery)) {
-            // Set the booking ID parameter
-            updateStmt.setString(1, bookingID);
+        try (PreparedStatement updateBookingStmt = con.prepareStatement(updateBookingQuery);
+             PreparedStatement fetchTourPriceStmt = con.prepareStatement(fetchTourPriceQuery);
+             PreparedStatement updateWalletStmt = con.prepareStatement(updateWalletQuery)) {
 
-            // Execute the update query
-            int rowsAffected = updateStmt.executeUpdate();
+            // Step 1: Update booking status to 'Cancelled'
+            updateBookingStmt.setString(1, bookingID);
+            int rowsAffected = updateBookingStmt.executeUpdate();
 
-            // Check if any rows were updated
-            if (rowsAffected > 0) {
-                System.out.println("Booking confirmed successfully for ID: " + bookingID);
-                return true;
-            } else {
+            if (rowsAffected == 0) {
                 System.out.println("No booking found with ID: " + bookingID);
                 return false;
             }
+
+            // Step 2: Fetch the tour price and user ID
+            fetchTourPriceStmt.setString(1, bookingID);
+            try (ResultSet rs = fetchTourPriceStmt.executeQuery()) {
+                if (rs.next()) {
+                    int userID = rs.getInt("UserID");
+                    BigDecimal tourPrice = rs.getBigDecimal("TourPrice");
+
+                    // Step 3: Update the user's wallet balance
+                    updateWalletStmt.setBigDecimal(1, tourPrice);
+                    updateWalletStmt.setInt(2, userID);
+                    int walletRowsAffected = updateWalletStmt.executeUpdate();
+
+                    if (walletRowsAffected > 0) {
+                        System.out.println("Wallet balance updated successfully for UserID: " + userID);
+                    } else {
+                        System.out.println("Failed to update wallet balance for UserID: " + userID);
+                    }
+                } else {
+                    System.out.println("No matching tour or user found for Booking ID: " + bookingID);
+                    return false;
+                }
+            }
+
+            System.out.println("Booking cancelled successfully for ID: " + bookingID);
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
     public ArrayList<Tours> getTopTours2() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();

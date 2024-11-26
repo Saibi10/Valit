@@ -264,6 +264,32 @@ public class AdminController {
 	{
 		userID = id;
 	}
+	
+	private void setDashboardTables()throws SQLException {
+		ArrayList<TopCustomers> topCustomers = TMS.getTop3Customers();
+		ObservableList<TopCustomers> data = FXCollections.observableArrayList(topCustomers);
+
+		CustomerColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("Customer"));
+		setBackGroundColorTopCustomers(CustomerColumn);
+		nobColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("NumberofBookings"));
+		setBackGroundColorTopCustomers(nobColumn);
+		tapColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("TotalAmountPaid"));
+		setBackGroundColorTopCustomers(tapColumn);
+
+		recentBookingTable.setItems(data);
+
+		ArrayList<Tours> topTours = TMS.getTopTours();
+		ObservableList<Tours> data2 = FXCollections.observableArrayList(topTours);
+
+		tournameColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("TourName"));
+		setBackGroundColor(tournameColumn);
+		bookingsColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Bookings"));
+		setBackGroundColor(bookingsColumn);
+		ratingColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Rating"));
+		setBackGroundColor(ratingColumn);
+
+		popularToursTable.setItems(data2);
+	}
 
 	@FXML
 	public void initialize() throws SQLException {
@@ -301,29 +327,7 @@ public class AdminController {
 		addTour = false;
 		addTranportProvider = false;
 		descriptionEditTour.setWrapText(true);
-		ArrayList<TopCustomers> topCustomers = TMS.getTop3Customers();
-		ObservableList<TopCustomers> data = FXCollections.observableArrayList(topCustomers);
-
-		CustomerColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("Customer"));
-		setBackGroundColorTopCustomers(CustomerColumn);
-		nobColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("NumberofBookings"));
-		setBackGroundColorTopCustomers(nobColumn);
-		tapColumn.setCellValueFactory(new PropertyValueFactory<TopCustomers, String>("TotalAmountPaid"));
-		setBackGroundColorTopCustomers(tapColumn);
-
-		recentBookingTable.setItems(data);
-
-		ArrayList<Tours> topTours = TMS.getTopTours();
-		ObservableList<Tours> data2 = FXCollections.observableArrayList(topTours);
-
-		tournameColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("TourName"));
-		setBackGroundColor(tournameColumn);
-		bookingsColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Bookings"));
-		setBackGroundColor(bookingsColumn);
-		ratingColumn.setCellValueFactory(new PropertyValueFactory<Tours, String>("Rating"));
-		setBackGroundColor(ratingColumn);
-
-		popularToursTable.setItems(data2);
+		setDashboardTables();
 
 	}
 
@@ -1447,6 +1451,7 @@ public class AdminController {
 			totalRevenuText.setText(stats[2]);
 			activeTourText.setText(stats[3]);
 			activeUsersText.setText(stats[0]);
+			setDashboardTables();
 
 		}
 	}

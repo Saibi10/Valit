@@ -7,19 +7,49 @@ import Models.TopCustomers;
 import Models.Tours;
 import Models.TransportProvider;
 import Models.User;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import javafx.event.ActionEvent;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;  // Import the correct Button class
 
 public class TourismManagementSystem {
 	
 	private DatabaseHandler DB;
 	
 
-	TourismManagementSystem() throws SQLException  {
+	TourismManagementSystem(Stage primaryStage) throws SQLException, IOException  {
 		DB = new DatabaseHandler();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Home.fxml"));
+		loader.setControllerFactory(param -> {
+			try {
+				return new LoginController(this);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return param;
+		});
+		Parent root = loader.load();
+		Scene scene = new Scene(root,1200,800);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 	}
 	
 	public ArrayList<TopCustomers> getTop3Customers() throws SQLException  {
@@ -213,9 +243,65 @@ public class TourismManagementSystem {
 		DB.joinTour(uId, tId);
 	}
 	
-	public int authenticateUser(String email, String pass, int[] userId)
+	public boolean authenticateUser(String email, String pass, int[] userId , ActionEvent event)
 	{
-		return DB.authenticateUser(email, pass, userId);
+		int auth = DB.authenticateUser(email, pass, userId);
+		
+		if (auth == 1) { 
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/Admin.fxml"));
+                loader.setControllerFactory(param -> {
+					try {
+						return new AdminController(this);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return param;
+				});
+                
+                Parent root = loader.load();
+
+                AdminController adminController = loader.getController();
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else if (auth == 2) { // Customer
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/User.fxml"));
+                loader.setControllerFactory(param -> {
+					try {
+						return new UserController(this);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return param;
+				});
+                Parent root = loader.load();
+
+                // Pass the UserID to the next controller if needed
+                UserController userController = loader.getController();
+                userController.setUserId(userId[0]);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+	
 	}
 	
 	public void addNewUser(String email, String pass, String fullName)
