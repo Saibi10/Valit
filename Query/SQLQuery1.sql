@@ -9,6 +9,9 @@ CREATE TABLE Users (
 
 ALTER TABLE Users
 ADD UserType VARCHAR(50) NOT NULL DEFAULT 'Customer';
+ALTER TABLE Users
+ADD WalletBalance DECIMAL(18, 2) NOT NULL DEFAULT 0.00;
+
 
 CREATE TABLE Tour (
     TourID INT IDENTITY(1,1) PRIMARY KEY, -- Unique tour identifier (auto-incrementing)

@@ -62,7 +62,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;">
+      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;" visible="false">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="971.0" styleClass="main-div" stylesheets="@Admin.css">
                <children>
@@ -259,9 +259,8 @@
                <children>
                   <Pane layoutX="10.0" layoutY="7.0" prefHeight="1014.0" prefWidth="941.0" styleClass="small-div-main-div" stylesheets="@Admin.css">
                      <children>
-                        <Label layoutX="23.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Edit Tour:" />
                         <Label layoutX="25.0" layoutY="55.0" prefHeight="30.0" prefWidth="384.0" style="-fx-font-size: 14px; -fx-text-fill: gray;" styleClass="header-main-div" stylesheets="@Admin.css" text="Update the details of your tour package" />
-                        <Label fx:id="headerEditTour" layoutX="173.0" layoutY="14.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Paris Explorer" />
+                        <Label fx:id="headerEditTour" layoutX="26.0" layoutY="13.0" prefHeight="51.0" prefWidth="344.0" styleClass="edit-main-header" stylesheets="@Admin.css" text="Add/Edit Tour" />
                         <ImageView fx:id="image1" fitHeight="157.0" fitWidth="274.0" layoutX="29.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 5px;" />
                         <Label layoutX="23.0" layoutY="453.0" prefHeight="30.0" prefWidth="91.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Tour Name" />
                         <TextField fx:id="tourNameEditTour" layoutX="22.0" layoutY="481.0" prefHeight="47.0" prefWidth="844.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
@@ -334,13 +333,14 @@
                         <Label layoutX="29.0" layoutY="667.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Transpoprt Provider" />
                         <TextArea fx:id="descriptionEditTour" layoutX="26.0" layoutY="574.0" prefHeight="89.0" prefWidth="839.0" styleClass="edit-text-area" stylesheets="@Admin.css" />
                         <DatePicker fx:id="tourDateEditTour" layoutX="639.0" layoutY="27.0" prefHeight="41.0" prefWidth="226.0" />
+                        <Label fx:id="errorMessage" layoutX="245.0" layoutY="916.0" prefHeight="15.0" prefWidth="487.0" style="-fx-text-fill: red; -fx-font-size: 15px;" />
                      </children>
                   </Pane>
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane fx:id="editTransportProviderMainDiV" layoutX="238.0" layoutY="60.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;" visible="false">
+      <ScrollPane fx:id="editTransportProviderMainDiV" layoutX="238.0" layoutY="60.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="956.0" style="-fx-background-color: #111827;">
                <children>
@@ -362,6 +362,7 @@
                         <Label layoutX="28.0" layoutY="225.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Fleet Size" />
                         <Label layoutX="26.0" layoutY="346.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Contact Information" />
                         <Label layoutX="26.0" layoutY="463.0" prefHeight="30.0" prefWidth="195.0" style="-fx-font-size: 20px;" styleClass="edit-main-label" stylesheets="@Admin.css" text="Vehicle Type" />
+                        <Label fx:id="errorMessage2" layoutX="224.0" layoutY="588.0" prefHeight="15.0" prefWidth="487.0" style="-fx-text-fill: red; -fx-font-size: 15px;" />
                      </children>
                   </Pane>
                   <TextField layoutX="36.0" layoutY="156.0" prefHeight="47.0" prefWidth="36.0" styleClass="edit-main-text-fields" stylesheets="@Admin.css" />
@@ -394,6 +395,7 @@
                         <Image url="@../icons/icons8-cars-50.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="errorMessage1" layoutX="255.0" layoutY="926.0" prefHeight="15.0" prefWidth="487.0" style="-fx-text-fill: red; -fx-font-size: 15px;" />
                </children>
             </AnchorPane>
          </content>

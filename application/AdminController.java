@@ -149,6 +149,10 @@ public class AdminController {
 	private Label activeTourText;
 	@FXML
 	private Label activeUsersText;
+	@FXML
+	private Label errorMessage;
+	@FXML
+	private Label errorMessage2;
 
 	// ----------------------------TABLE
 	@FXML
@@ -1140,80 +1144,115 @@ public class AdminController {
 
 	}
 
-	public void editTour() {
-		try {
-			// Fetch data from fields and labels
-			String tourName = tourNameEditTour.getText();
-			String bookings = bookingEditTour.getText();
-			String description = descriptionEditTour.getText();
-			String price = priceEditTour.getText();
-			String duration = duarationEditTour.getText();
-			String googleMapLink = googleMapEditTour.getText();
-			LocalDate startDate1 = tourDateEditTour.getValue();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-			String startDate = startDate1.format(formatter);
+	public boolean editTour() {
+	    try {
+	        // Fetch data from fields and labels
+	        String tourName = tourNameEditTour.getText().trim();
+	        String bookings = bookingEditTour.getText().trim();
+	        String description = descriptionEditTour.getText().trim();
+	        String price = priceEditTour.getText().trim();
+	        String duration = duarationEditTour.getText().trim();
+	        String googleMapLink = googleMapEditTour.getText().trim();
+	        LocalDate startDate1 = tourDateEditTour.getValue();
+	        LocalDate currentDate = LocalDate.now();
 
-			// Fetch images
-			ArrayList<String> tourImages = new ArrayList<>();
-			if (!textImage1EditTour.getText().isEmpty()) {
-				tourImages.add(textImage1EditTour.getText());
-			}
-			if (!textImage2EditTour.getText().isEmpty()) {
-				tourImages.add(textImage2EditTour.getText());
-			}
-			if (!textImage3EditTour.getText().isEmpty()) {
-				tourImages.add(textImage3EditTour.getText());
-			}
+	        // Validation checks
+	        if (tourName.isEmpty() || bookings.isEmpty() || description.isEmpty() || googleMapLink.isEmpty()) {
+	        	errorMessage.setText("Fields tourName, bookings, description, or googleMapLink must not be empty.");
+	            return false;
+	        }
 
-			// Fetch the selected transport provider
-			String selectedTransportProvider = (String) transportProviderEditTour.getValue();
-			String transportProviderID = null;
+	        if (startDate1 == null || startDate1.isBefore(currentDate)) {
+	        	errorMessage.setText(" Start date must be greater than the current date.");
+	            return false;
+	        }
 
-			if (selectedTransportProvider != null) {
-				// Split the ComboBox value to match Name, VehicleTypes, Contact, and Rating
-				String[] parts = selectedTransportProvider.split(" \\| ");
-				String name = parts[0].trim();
-				String vehicleTypes = parts[1].trim();
+	        if (!price.matches("\\d+")) {
+	        	errorMessage.setText("Price must be a valid integer.");
+	            return false;
+	        }
 
-				// Get all transport providers and find the matching ID
-				ArrayList<TransportProvider> allTransportProviders = TMS.getAllTransportProviders();
-				for (TransportProvider provider : allTransportProviders) {
-					if (provider.getName().equals(name) && provider.getVehicleTypes().equals(vehicleTypes)) {
-						transportProviderID = provider.getID();
-						break;
-					}
-				}
-			}
+	        if (!duration.matches("\\d+")) {
+	        	errorMessage.setText("Duration must be a valid integer.");
+	            return false;
+	        }
 
-			if (transportProviderID == null) {
-				throw new Exception("TransportProvider ID not found for the selected transport provider.");
-			}
-			Tours updatedTour = null;
+	        // Fetch images
+	        ArrayList<String> tourImages = new ArrayList<>();
+	        if (!textImage1EditTour.getText().isEmpty()) {
+	            tourImages.add(textImage1EditTour.getText());
+	        }
+	        if (!textImage2EditTour.getText().isEmpty()) {
+	            tourImages.add(textImage2EditTour.getText());
+	        }
+	        if (!textImage3EditTour.getText().isEmpty()) {
+	            tourImages.add(textImage3EditTour.getText());
+	        }
 
-			
-			// Print the updated tour details for debugging
-			System.out.println("Updated Tour: " + updatedTour);
-			if (addTour == false) {
-                updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration,
-                        googleMapLink, startDate.toString(), transportProviderID, tourImages);
+	        // Fetch the selected transport provider
+	        String selectedTransportProvider = (String) transportProviderEditTour.getValue();
+	        String transportProviderID = null;
 
-                TMS.updateTour(updatedTour);
-            }
-            else {
-                updatedTour = new Tours("", tourName, bookings, description, price, duration,
-                        googleMapLink, startDate.toString(), transportProviderID, tourImages);
-                TMS.addNewTour(updatedTour);
-            }
-			hideAllPane();
-			removeAllButtonClasses();
-			toursTab.getStyleClass().remove("tab-selected");
-			toursTab.getStyleClass().add("tab");
-			toursSelected();
+	        if (selectedTransportProvider == null || selectedTransportProvider.isEmpty()) {
+	        	errorMessage.setText("A transport provider must be selected.");
+	            return false;
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error editing tour: " + e.getMessage());
-		}
+	        // Split the ComboBox value to match Name, VehicleTypes, Contact, and Rating
+	        String[] parts = selectedTransportProvider.split(" \\| ");
+	        if (parts.length < 2) {
+	        	errorMessage.setText("Invalid transport provider format.");
+	            return false;
+	        }
+	        String name = parts[0].trim();
+	        String vehicleTypes = parts[1].trim();
+
+	        // Get all transport providers and find the matching ID
+	        ArrayList<TransportProvider> allTransportProviders = TMS.getAllTransportProviders();
+	        for (TransportProvider provider : allTransportProviders) {
+	            if (provider.getName().equals(name) && provider.getVehicleTypes().equals(vehicleTypes)) {
+	                transportProviderID = provider.getID();
+	                break;
+	            }
+	        }
+
+	        if (transportProviderID == null) {
+	            System.err.println("Error: TransportProvider ID not found for the selected transport provider.");
+	            return false;
+	        }
+
+	        // Format the start date
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	        String startDate = startDate1.format(formatter);
+
+	        Tours updatedTour;
+
+	        // Update or add a new tour based on `addTour` flag
+	        errorMessage.setText("");
+	        if (!addTour) {
+	            updatedTour = new Tours(editTourCurrent.getTourID(), tourName, bookings, description, price, duration,
+	                    googleMapLink, startDate, transportProviderID, tourImages);
+	            TMS.updateTour(updatedTour);
+	        } else {
+	            updatedTour = new Tours("", tourName, bookings, description, price, duration,
+	                    googleMapLink, startDate, transportProviderID, tourImages);
+	            TMS.addNewTour(updatedTour);
+	        }
+
+	        // Reset UI and refresh the tour list
+	        hideAllPane();
+	        removeAllButtonClasses();
+	        toursTab.getStyleClass().remove("tab-selected");
+	        toursTab.getStyleClass().add("tab");
+	        toursSelected();
+
+	        return true; // Success
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("Error editing tour: " + e.getMessage());
+	        return false; // Failure
+	    }
 	}
 
 	public void addNewTour() throws SQLException {
@@ -1357,13 +1396,22 @@ public class AdminController {
 		if (addTranportProvider == true) {
 			TransportProvider tranportProvider = new TransportProvider("", providerNameBooking.getText(), "0",
 					fleetSizeBooking.getText(), contactInfoBooking.getText(), vehicleTypeBooking.getText());
+			if (!fleetSizeBooking.getText().matches("\\d+")) {
+	        	errorMessage2.setText("fleet must be a valid integer.");
+	            return;
+	        }
 			TMS.addNewTransportProvider(tranportProvider);
 		} else {
 			TransportProvider tranportProvider = new TransportProvider(editTourTransport.getID(),
 					providerNameBooking.getText(), "0", fleetSizeBooking.getText(), contactInfoBooking.getText(),
 					vehicleTypeBooking.getText());
+			if (!fleetSizeBooking.getText().matches("\\d+")) {
+	        	errorMessage2.setText("fleet must be a valid integer.");
+	            return;
+	        }
 			TMS.updateTransportProvider(tranportProvider);
 		}
+		 errorMessage2.setText("");
 		hideAllPane();
 		removeAllButtonClasses();
 		transportTab.getStyleClass().remove("tab-selected");

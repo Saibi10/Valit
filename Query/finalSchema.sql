@@ -1,4 +1,5 @@
-USE [TMS]
+
+USE [TMS3]
 GO
 /****** Object:  Table [dbo].[Booking]    Script Date: 11/26/2024 6:07:51 PM ******/
 SET ANSI_NULLS ON
