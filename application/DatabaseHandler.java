@@ -22,7 +22,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS3;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS3;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -452,6 +452,7 @@ public class DatabaseHandler {
     public ArrayList<Tours> getTopTours2() throws SQLException {
         ArrayList<Tours> topToursList = new ArrayList<>();
         
+        // Updated query to exclude tours past the current date
         String query = "SELECT TOP 5 " +
                        "t.TourID, " +
                        "t.TourName, " +
@@ -463,31 +464,36 @@ public class DatabaseHandler {
                        "AVG(b.Rating) AS AverageRating " +
                        "FROM Booking b " +
                        "JOIN Tour t ON b.TourID = t.TourID " +
+                       "WHERE DATEADD(day, t.Duration, t.StartDate) >= CAST(GETDATE() AS DATE) " + // Exclude past tours
                        "GROUP BY t.TourID, t.TourName, t.TourPrice, t.Duration, t.TourDescription, t.StartDate " +
                        "ORDER BY Bookings DESC, AverageRating DESC";
         
         ResultSet rs = st.executeQuery(query);
         
         while (rs.next()) {
-        	// Assuming you fetch data from ResultSet
-        	String tourID = Integer.toString(rs.getInt("TourID"));
-        	String tourPrice = Double.toString(rs.getDouble("TourPrice"));
-        	String duration = Integer.toString(rs.getInt("Duration"));
-        	String startDate = rs.getDate("StartDate").toString(); // Converts Date to String
-        	String tourName = rs.getString("TourName");
-        	String tourDescription = rs.getString("TourDescription");
+            // Fetch data from ResultSet
+            String tourID = Integer.toString(rs.getInt("TourID"));
+            String tourPrice = Double.toString(rs.getDouble("TourPrice"));
+            String duration = Integer.toString(rs.getInt("Duration"));
+            String startDate = rs.getDate("StartDate").toString(); // Converts Date to String
+            String tourName = rs.getString("TourName");
+            String tourDescription = rs.getString("TourDescription");
 
-        	Tours tour = new Tours(tourID, tourName, tourPrice, duration, tourDescription, startDate);
+            // Create a Tours object
+            Tours tour = new Tours(tourID, tourName, tourPrice, duration, tourDescription, startDate);
 
+            // Add it to the list
             topToursList.add(tour);
         }
         
         return topToursList;
     }
+
     
     public ArrayList<Tours> getAllTours2() throws SQLException {
         ArrayList<Tours> toursList = new ArrayList<>();
         
+        // Updated query to exclude tours past the current date
         String query = "SELECT " +
                        "TourID, " +
                        "TourName, " +
@@ -496,6 +502,7 @@ public class DatabaseHandler {
                        "TourDescription, " +
                        "StartDate " +
                        "FROM Tour " +
+                       "WHERE DATEADD(day, Duration, StartDate) >= CAST(GETDATE() AS DATE) " + // Exclude past tours
                        "ORDER BY TourID"; // Optional ordering by TourID
 
         ResultSet rs = st.executeQuery(query);
