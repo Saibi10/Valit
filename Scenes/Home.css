@@ -76,7 +76,6 @@ button-nonselected {
     -fx-font-family: "Monospaced"; /* Use a fixed-width font */
     -fx-text-fill: black; /* Keep text color */
     -fx-display-caret: true; /* Ensure caret is displayed */
-    -fx-content: "•"; /* Use bullet character (U+2022) */
 }
 
 

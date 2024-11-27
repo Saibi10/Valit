@@ -1107,7 +1107,6 @@ public class UserController implements Initializable {
         
     }
     
-    
     public void backToTourTable()
     {
     	tourViewPane.setVisible(false);

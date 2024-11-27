@@ -62,7 +62,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;" visible="false">
+      <ScrollPane fx:id="dashboardMainDiv" layoutX="226.0" layoutY="51.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #1F2937;">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="971.0" styleClass="main-div" stylesheets="@Admin.css">
                <children>
@@ -253,7 +253,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ScrollPane fx:id="editTourMainDiv" layoutX="228.0" layoutY="50.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;" visible="false">
+      <ScrollPane fx:id="editTourMainDiv" layoutX="228.0" layoutY="50.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1033.0" prefWidth="956.0" style="-fx-background-color: #111827;">
                <children>
@@ -333,14 +333,14 @@
                         <Label layoutX="29.0" layoutY="667.0" prefHeight="30.0" prefWidth="160.0" styleClass="edit-main-label" stylesheets="@Admin.css" text="Transpoprt Provider" />
                         <TextArea fx:id="descriptionEditTour" layoutX="26.0" layoutY="574.0" prefHeight="89.0" prefWidth="839.0" styleClass="edit-text-area" stylesheets="@Admin.css" />
                         <DatePicker fx:id="tourDateEditTour" layoutX="639.0" layoutY="27.0" prefHeight="41.0" prefWidth="226.0" />
-                        <Label fx:id="errorMessage" layoutX="245.0" layoutY="916.0" prefHeight="15.0" prefWidth="487.0" style="-fx-text-fill: red; -fx-font-size: 15px;" />
+                        <Label fx:id="errorMessage" layoutX="226.0" layoutY="916.0" prefHeight="21.0" prefWidth="593.0" style="-fx-text-fill: red; -fx-font-size: 15px;" />
                      </children>
                   </Pane>
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane fx:id="editTransportProviderMainDiV" layoutX="238.0" layoutY="60.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;">
+      <ScrollPane fx:id="editTransportProviderMainDiV" layoutX="238.0" layoutY="60.0" prefHeight="748.0" prefWidth="973.0" style="-fx-background-color: #111827;" visible="false">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="956.0" style="-fx-background-color: #111827;">
                <children>

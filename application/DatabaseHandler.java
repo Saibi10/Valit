@@ -22,7 +22,7 @@ public class DatabaseHandler {
     
     public DatabaseHandler() throws SQLException {
 		 DriverManager.registerDriver(new SQLServerDriver()); 
-		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=SQLEXPRESS;databaseName=TMS3;encrpt=true;trustServerCertificate=true";
+		 String url = "jdbc:sqlserver://127.0.0.1;instanceName=HUSSNAINMUGHAL;databaseName=TMS3;encrpt=true;trustServerCertificate=true";
 		 con = DriverManager.getConnection(url, "sa", "123"); 
 		 st = con.createStatement();
 		 System.out.println("Connected");
@@ -604,7 +604,7 @@ public class DatabaseHandler {
                 "b.Rating " + // Include Rating in the query
                 "FROM Booking b " +
                 "JOIN Tour t ON b.TourID = t.TourID " +
-                "WHERE b.UserID = ? AND b.status = 'Pending' OR b.status = 'Confirmed'";
+                "WHERE b.UserID = ? AND (b.status = 'Pending' OR b.status = 'Confirmed')";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, userId); // Set the UserID parameter in the query

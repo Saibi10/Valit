@@ -136,7 +136,8 @@ public class LoginController {
 	            int[] userId = new int[1];
 	            boolean check = TMS.authenticateUser(emailS.getText(), passS.getText(), userId , event);
 
-	            if(check) { 
+	            if(check == false) { 
+	            	System.out.println("6");
 	                invalidLabel.setText("Invalid Information");
 	                invalidLabel.setVisible(true);
 	            }
@@ -144,16 +145,21 @@ public class LoginController {
 	    }
 		else if(isSignIn == 0)
 		{
+			System.out.println("1");
 			if((emailS.getText() != null && emailS.getText().trim().isEmpty() == false) && (passS.getText() != null && passS.getText().trim().isEmpty() == false) && (passwordTextField.getText() != null && passwordTextField.getText().trim().isEmpty() == false) && (passwordTextField2.getText() != null && passwordTextField2.getText().trim().isEmpty() == false))
 			{
+				System.out.println("2");
 				if(passwordTextField.getText().equals(passwordTextField2.getText()))
 				{
+					System.out.println("3");
 					TMS.addNewUser(emailS.getText(), passwordTextField2.getText(), passS.getText());
 					invalidLabel.setVisible(true);
+					invalidLabel.setText("");
 					Login();
 				}
 				else
 				{
+					System.out.println("4");
 					System.out.println("Not Same");
 					invalidLabel.setText("Invalid Information");
 					invalidLabel.setVisible(true);
@@ -161,6 +167,7 @@ public class LoginController {
 			}
 			else
 			{
+				System.out.println("5");
 				invalidLabel.setText("Invalid Information");
 				invalidLabel.setVisible(true);
 			}

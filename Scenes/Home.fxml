@@ -13,7 +13,7 @@
    <children>
       <Pane layoutY="-8.0" prefHeight="809.0" prefWidth="1200.0" styleClass="main-pane" stylesheets="@Home.css">
          <children>
-            <Pane fx:id="loginMainDiv" layoutX="362.0" layoutY="144.0" prefHeight="522.0" prefWidth="453.0" styleClass="login-main-div" stylesheets="@Home.css">
+            <Pane fx:id="loginMainDiv" layoutX="361.0" layoutY="145.0" prefHeight="522.0" prefWidth="453.0" styleClass="login-main-div" stylesheets="@Home.css">
                <children>
                   <Pane fx:id="tabDiv" layoutX="34.0" layoutY="116.0" prefHeight="52.0" prefWidth="385.0" styleClass="tab-div" stylesheets="@Home.css">
                      <children>
@@ -27,7 +27,7 @@
                            </font></Button>
                      </children>
                   </Pane>
-                  <Label fx:id="welcomeHeader" layoutX="84.0" layoutY="14.0" prefHeight="30.0" prefWidth="286.0" styleClass="heading" stylesheets="@Home.css" text="Welcome to TravelEase" />
+                  <Label fx:id="welcomeHeader" layoutX="84.0" layoutY="14.0" prefHeight="30.0" prefWidth="286.0" styleClass="heading" stylesheets="@Home.css" text="Welcome to" />
                   <Label fx:id="solutionHeader" layoutX="76.0" layoutY="49.0" prefHeight="21.0" prefWidth="302.0" styleClass="normal-text" stylesheets="@Home.css" text="Your ultimate tourism management solution" textAlignment="CENTER" />
                   <ImageView fx:id="aeroplanceIcon" fitHeight="33.0" fitWidth="31.0" layoutX="160.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -55,6 +55,11 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="52.0" fitWidth="153.0" layoutX="224.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/f39026_216d74e84bf247ccaf82cca55fb71c3c~mv2.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
             <TextField fx:id="passwordTextField" layoutX="395.0" layoutY="421.0" prefHeight="45.0" prefWidth="385.0" styleClass="text-field-input" stylesheets="@Home.css" visible="false" />
