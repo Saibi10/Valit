@@ -58,8 +58,16 @@ public class LoginController {
 		this.TMS = TMS;
 	}
 	
+	private void resetValues()
+	{
+		emailS.setText("");
+		passS.setText("");
+		passwordTextField.setText("");
+		passwordTextField2.setText("");
+	}
 	
 	public void Login() {
+		resetValues();
 		if(loginButton.getStyleClass().contains("button-nonselected"))
 		{
 			loginButton.getStyleClass().remove("button-nonselected");
@@ -90,6 +98,7 @@ public class LoginController {
 	}
 	
 	public void Register() {
+		resetValues();
 		if(registerButton.getStyleClass().contains("button-nonselected"))
 		{
 			registerButton.getStyleClass().remove("button-nonselected");
@@ -102,7 +111,7 @@ public class LoginController {
 			loginMainDiv.setLayoutY(41);
 			servicePolicyLabel.setLayoutY(580);
 			signinButton.setLayoutY(535);
-			invalidLabel.setLayoutY(510);
+			invalidLabel.setLayoutY(515);
 			
 			passwordText.setText("Full Name");
 			
@@ -141,7 +150,7 @@ public class LoginController {
 				{
 					TMS.addNewUser(emailS.getText(), passwordTextField2.getText(), passS.getText());
 					invalidLabel.setVisible(true);
-					invalidLabel.setText("Go To Sign In Page");
+					Login();
 				}
 				else
 				{
